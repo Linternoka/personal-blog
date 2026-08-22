@@ -54,6 +54,36 @@ function rehypeBasePathImages() {
   };
 }
 
+/**
+ * rehype 插件：将顶层 table 包裹进 .table-scroll 容器，
+ * 使窄屏（手机）上过宽的表格可以横向滚动而不撑破布局
+ */
+function rehypeWrapTables() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (tree: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const walk = (node: any) => {
+      if (node.type === "element" && Array.isArray(node.children)) {
+        node.children = node.children.flatMap((child: any) => {
+          if (child.type === "element" && child.tagName === "table") {
+            return [
+              {
+                type: "element",
+                tagName: "div",
+                properties: { className: ["table-scroll"] },
+                children: [child],
+              },
+            ];
+          }
+          return [child];
+        });
+        node.children.forEach(walk);
+      }
+    };
+    walk(tree);
+  };
+}
+
 /** 将 Markdown/MDX 正文渲染为 HTML 字符串（已消毒，防 XSS） */
 export async function renderMarkdown(content: string): Promise<string> {
   const file = await unified()
@@ -65,6 +95,7 @@ export async function renderMarkdown(content: string): Promise<string> {
     .use(rehypeKatex)
     .use(rehypeHighlight)
     .use(rehypeSanitize, sanitizeSchema)
+    .use(rehypeWrapTables)
     .use(rehypeBasePathImages)
     .use(rehypeStringify)
     .process(content);

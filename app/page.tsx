@@ -13,82 +13,26 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ---------- Hero：留白开场 + 淡金氛围 ---------- */}
-      <section className="kam-hero border-b border-line px-4 text-center">
-        {/* 顶底边框由背景雾气承载 */}
-
-        {/* 背景几何装饰（极淡，增加层次） */}
-        <svg
-          className="absolute -right-24 -top-24 hidden h-96 w-96 text-gold/10 lg:block"
-          viewBox="0 0 200 200"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          aria-hidden="true"
-        >
-          <circle cx="100" cy="100" r="90" />
-          <circle cx="100" cy="100" r="62" opacity="0.6" />
-        </svg>
-        <svg
-          className="absolute -bottom-24 -left-24 hidden h-80 w-80 text-gold/10 lg:block"
-          viewBox="0 0 200 200"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1"
-          aria-hidden="true"
-        >
-          <path d="M100 12 188 100 100 188 12 100Z" />
-          <path d="M100 48 152 100 100 152 48 100Z" opacity="0.6" />
-        </svg>
-
-        {/* 四角细线装饰（SVG） */}
-        <svg className="absolute left-6 top-6 hidden h-6 w-6 text-gold/40 md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
-          <path d="M1 9V1H9" />
-        </svg>
-        <svg className="absolute right-6 top-6 hidden h-6 w-6 text-gold/40 md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
-          <path d="M15 1H23V9" />
-        </svg>
-        <svg className="absolute bottom-6 left-6 hidden h-6 w-6 text-gold/40 md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
-          <path d="M1 15V23H9" />
-        </svg>
-        <svg className="absolute bottom-6 right-6 hidden h-6 w-6 text-gold/40 md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
-          <path d="M15 23H23V15" />
-        </svg>
-
-        {/* 左右竖排文字 */}
-        <span className="kam-vertical absolute left-6 top-1/2 z-10 hidden -translate-y-1/2 text-[11px] text-gold/50 md:block">
-          记录 · 展示 · 分享
-        </span>
-        <span className="kam-vertical absolute right-6 top-1/2 z-10 hidden -translate-y-1/2 text-[11px] text-gold/50 md:block">
-          {siteConfig.author.name}
-        </span>
-
-        <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center pb-16">
-          {/* 终端路径标识 */}
-          <p className="kam-fade-up mb-5 flex items-center justify-center gap-2 text-xs tracking-[0.3em] text-gold">
-            <span aria-hidden="true">❯</span>
-            <span className="kam-caret">~/personal-blog</span>
-          </p>
-
+      {/* ---------- Hero：现代编辑风，全屏留白 ---------- */}
+      <section className="kam-hero px-4 text-center">
+        <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center pb-16 pt-12">
           {/* 中央大字标题（极轻字重） */}
-          <h1 className="kam-hero-title text-5xl leading-tight sm:text-7xl">
+          <h1 className="kam-hero-title text-4xl leading-tight sm:text-6xl lg:text-7xl">
             {siteConfig.name}
           </h1>
 
-          {/* 金色分隔：线 + 菱形 */}
-          <div className="kam-fade-up kam-delay-2 my-8 flex items-center gap-3">
-            <span className="h-px w-12 bg-gradient-to-r from-transparent to-gold/70" />
-            <svg viewBox="0 0 10 10" className="h-2 w-2 text-gold" aria-hidden="true">
-              <path d="M5 0 10 5 5 10 0 5Z" fill="currentColor" />
-            </svg>
-            <span className="h-px w-12 bg-gradient-to-l from-transparent to-gold/70" />
+          {/* 分隔：细线 + 圆点 */}
+          <div className="kam-fade-up kam-delay-1 my-8 flex items-center gap-3">
+            <span className="h-px w-12 bg-gradient-to-r from-transparent to-gold/60" />
+            <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+            <span className="h-px w-12 bg-gradient-to-l from-transparent to-gold/60" />
           </div>
 
-          <p className="kam-fade-up kam-delay-3 mx-auto max-w-xl text-base leading-loose text-herofgs sm:text-lg">
+          <p className="kam-fade-up kam-delay-2 mx-auto max-w-xl text-base leading-loose text-herofgs sm:text-lg">
             {siteConfig.description}
           </p>
 
-          <div className="kam-fade-up kam-delay-4 mt-10 flex flex-wrap items-center justify-center gap-3">
+          <div className="kam-fade-up kam-delay-3 mt-10 flex flex-wrap items-center justify-center gap-3">
             {siteConfig.social.github && (
               <a
                 href={siteConfig.social.github}
@@ -109,12 +53,6 @@ export default function HomePage() {
               关于我
             </Link>
           </div>
-        </div>
-
-        {/* SCROLL 指示 */}
-        <div className="kam-fade-up kam-delay-4 absolute bottom-10 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3">
-          <span className="text-[10px] tracking-[0.35em] text-gold/70">SCROLL</span>
-          <div className="kam-scroll" />
         </div>
       </section>
 

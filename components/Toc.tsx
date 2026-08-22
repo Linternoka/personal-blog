@@ -11,7 +11,13 @@ export interface TocItem {
 /**
  * 文章目录：跟随滚动高亮当前章节，点击平滑滚动
  */
-export default function Toc({ headings }: { headings: TocItem[] }) {
+export default function Toc({
+  headings,
+  hideTitle = false,
+}: {
+  headings: TocItem[];
+  hideTitle?: boolean;
+}) {
   const [active, setActive] = useState("");
 
   useEffect(() => {
@@ -33,7 +39,9 @@ export default function Toc({ headings }: { headings: TocItem[] }) {
 
   return (
     <nav className="toc" aria-label="文章目录">
-      <p className="mb-3 text-xs tracking-[0.3em] text-gold">目录</p>
+      {!hideTitle && (
+        <p className="mb-3 text-xs tracking-[0.3em] text-gold">目录</p>
+      )}
       <ul>
         {headings.map((h) => (
           <li key={h.id}>

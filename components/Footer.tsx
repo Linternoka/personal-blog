@@ -16,7 +16,7 @@ export default function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="mt-16 border-t border-line">
-      <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6">
+      <div className="mx-auto w-full max-w-5xl px-4 pb-[calc(env(safe-area-inset-bottom)+3.5rem)] pt-14 sm:px-6">
         <div className="flex flex-col items-center gap-5">
           {/* 站点名 */}
           <Link

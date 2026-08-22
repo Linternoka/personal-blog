@@ -129,6 +129,24 @@ export default async function PostPage({
             <div className="mt-8 h-px w-full bg-gradient-to-r from-gold/60 via-line to-transparent" />
           </header>
 
+          {/* 移动端目录（折叠，lg 以下显示） */}
+          {headings.length > 0 && (
+            <details className="group mt-8 rounded-sm border border-line bg-bgsoft/50 lg:hidden">
+              <summary className="flex cursor-pointer select-none items-center justify-between px-4 py-3 text-sm tracking-[0.3em] text-gold">
+                <span>目录</span>
+                <span
+                  aria-hidden="true"
+                  className="text-textsoft transition-transform duration-500 group-open:rotate-45"
+                >
+                  ＋
+                </span>
+              </summary>
+              <div className="px-4 pb-4">
+                <Toc headings={headings} hideTitle />
+              </div>
+            </details>
+          )}
+
           {/* 正文 */}
           <div
             className="prose prose-kam mx-auto mt-10"
@@ -165,7 +183,7 @@ export default async function PostPage({
         {next ? (
           <Link
             href={`/posts/${next.slug}`}
-            className="group py-2 pl-4 text-right sm:border-l sm:border-line"
+            className="group mt-4 border-t border-line py-2 pl-4 pt-4 text-right sm:mt-0 sm:border-t-0 sm:border-l sm:pt-2"
           >
             <span className="text-xs tracking-widest text-gold">下一篇 →</span>
             <p className="kam-title mt-1.5 text-base leading-snug text-text transition-colors group-hover:text-goldstrong">

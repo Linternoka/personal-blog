@@ -72,7 +72,7 @@ export default function Header() {
 
       {/* 移动端菜单 */}
       {open && (
-        <nav className="border-t border-line bg-bg px-4 py-3 md:hidden">
+        <nav className="kam-menu-enter border-t border-line bg-bg px-4 py-3 md:hidden">
           {siteConfig.nav.map((item) => (
             <Link
               key={item.href}
