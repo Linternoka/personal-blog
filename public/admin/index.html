@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>内容管理 · 废书库修缮委员会</title>
-    <!-- 后台 UI 定制：暖米白 + 金色 + 衬线，与主站风格统一 -->
+    <!-- 后台 UI 定制：与主站统一（浅色粉红 / 深色青绿，跟随系统，可手动切换） -->
     <link rel="stylesheet" href="./custom.css" />
   </head>
   <body>
@@ -18,6 +18,43 @@
           CMS.registerPreviewStyle(basePath + "/admin/preview.css");
         } catch (e) {
           /* 预览样式注册失败不影响主功能 */
+        }
+      })();
+    </script>
+    <script>
+      // 后台手动深浅色切换（主体编辑区；预览 iframe 仍跟随系统，Decap 机制限制）
+      (function () {
+        try {
+          var saved = localStorage.getItem("decap-theme");
+          if (saved === "dark" || saved === "light") {
+            document.documentElement.setAttribute("data-theme", saved);
+          }
+          var isDark = function () {
+            return (
+              document.documentElement.getAttribute("data-theme") === "dark" ||
+              (!document.documentElement.getAttribute("data-theme") &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+            );
+          };
+          var btn = document.createElement("button");
+          btn.type = "button";
+          btn.title = "切换深色 / 浅色";
+          btn.setAttribute("aria-label", "切换深色 / 浅色");
+          var paint = function () {
+            btn.textContent = isDark() ? "☀" : "☾";
+          };
+          btn.style.cssText =
+            "position:fixed;right:16px;bottom:16px;z-index:9999;width:38px;height:38px;border-radius:50%;border:1px solid var(--decap-line);background:var(--decap-bg);color:var(--decap-gold);cursor:pointer;font-size:16px;box-shadow:0 2px 12px rgba(0,0,0,.18);";
+          btn.addEventListener("click", function () {
+            var next = isDark() ? "light" : "dark";
+            document.documentElement.setAttribute("data-theme", next);
+            localStorage.setItem("decap-theme", next);
+            paint();
+          });
+          paint();
+          document.body.appendChild(btn);
+        } catch (e) {
+          /* 忽略 */
         }
       })();
     </script>

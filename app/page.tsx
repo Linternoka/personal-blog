@@ -119,7 +119,7 @@ export default function HomePage() {
       </section>
 
       {/* ---------- 内容区 ---------- */}
-      <div className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-6">
+      <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6">
         {/* 分类与标签概览 */}
         {(categories.length > 0 || tags.length > 0) && (
           <Reveal>

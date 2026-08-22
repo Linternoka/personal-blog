@@ -4,8 +4,9 @@
    覆盖方式：!important 压制 emotion 内联样式
    ============================================================ */
 
-/* 浅色（跟随系统）：截图淡色基调 */
-:root {
+/* 浅色（默认 / 手动 light）：截图淡色基调 */
+:root,
+html[data-theme="light"] {
   --decap-bg: #f2ece4;
   --decap-text: #191a1c;
   --decap-gold: #e5688f;        /* 粉红（太阳） */
@@ -17,9 +18,22 @@
   --decap-card: #ffffff;
 }
 
-/* 深色（跟随系统）：废墟赛博 */
+/* 深色（手动 dark）：废墟赛博 */
+html[data-theme="dark"] {
+  --decap-bg: #0a0e0d;
+  --decap-text: #e8eae9;
+  --decap-gold: #7fdcc6;
+  --decap-gold-hover: #9de8d6;
+  --decap-gold-light: rgba(127, 220, 198, 0.4);
+  --decap-gold-soft: rgba(127, 220, 198, 0.16);
+  --decap-text-soft: #8a939b;
+  --decap-line: rgba(255, 255, 255, 0.1);
+  --decap-card: #11151c;
+}
+
+/* 深色（未手动设置时跟随系统） */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --decap-bg: #0a0e0d;
     --decap-text: #e8eae9;
     --decap-gold: #7fdcc6;
