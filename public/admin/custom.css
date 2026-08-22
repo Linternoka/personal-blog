@@ -256,7 +256,8 @@ body,
   line-height: 1.4 !important;
   color: var(--decap-text) !important;
   border: none !important;
-  border-bottom: 2px solid var(--decap-gold) !important;
+  /* 底部线：1px 半透明青绿（原 2px 实色在暗色下过亮，弱化避免突兀） */
+  border-bottom: 1px solid var(--decap-gold-light) !important;
   border-radius: 0 !important;
   padding: 14px 0 12px !important;
   background: transparent !important;
@@ -316,6 +317,17 @@ body,
   color: #eae6de !important;
   padding: 14px 16px !important;
   border-radius: 6px !important;
+}
+
+/* ============================================================
+   修复（2026-08-23，v13）：富文本 / Markdown 编辑框 UI 统一
+   - Markdown 模式编辑区是 RawEditorContainer（带边框卡片）
+   - 富文本模式 Editor 容器无边框 → 两种模式外观不一致
+   修复：富文本 Editor 容器补上同样的细线边框 + 圆角
+   ============================================================ */
+#nc-root .cms-editor-visual > [class*="Editor"] {
+  border: 1px solid var(--decap-line) !important;
+  border-radius: 2px !important;
 }
 
 /* ---------- 正文 Markdown 工具栏：跟随主题（深色下不再是白底） ---------- */
