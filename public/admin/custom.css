@@ -134,6 +134,20 @@ body,
   background: var(--decap-bg) !important;
 }
 
+/* 字段列：宽屏下限宽居中（避免正文被拉得过宽、行过长难读） */
+#nc-root [class*="ControlPaneContainer"] > [class*="ControlContainer"] {
+  max-width: 720px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--decap-line);
+}
+#nc-root [class*="ControlPaneContainer"] > [class*="ControlContainer"]:first-of-type {
+  border-bottom: none;
+  padding-top: 4px;
+}
+
 /* ---------- 标题输入：大号衬线（仅第一个字段 = 标题） ---------- */
 #nc-root [class*="ControlPaneContainer"] > [class*="ControlContainer"]:first-of-type input[type="text"] {
   font-family: "Noto Serif SC", "Songti SC", serif !important;
@@ -142,19 +156,26 @@ body,
   line-height: 1.4 !important;
   color: var(--decap-text) !important;
   border: none !important;
-  border-bottom: 1px solid var(--decap-line) !important;
+  border-bottom: 2px solid var(--decap-gold) !important;
   border-radius: 0 !important;
-  padding: 14px 0 !important;
+  padding: 14px 0 12px !important;
   background: transparent !important;
   box-shadow: none !important;
   width: 100% !important;
 }
 
-/* 字段标签：小字、字距，更克制 */
+/* 字段标签：小字、字距，金菱形点缀（呼应主站神椿风） */
 #nc-root [class*="ControlContainer"] label {
   font-size: 12px !important;
   letter-spacing: 0.12em !important;
   color: #8a8578 !important;
+}
+#nc-root [class*="ControlContainer"] label::before {
+  content: "\25C6";
+  color: var(--decap-gold);
+  font-size: 7px;
+  margin-right: 7px;
+  vertical-align: 3px;
 }
 
 /* ---------- 正文编辑区（Slate 视觉模式）：衬线 + 舒适行高 ---------- */
