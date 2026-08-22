@@ -1,0 +1,16 @@
+[
+  {
+    "title": "示例项目：我的第一个作品",
+    "type": "项目",
+    "description": "这是一条示例推荐。替换或删除它，在这里写下作品的简介。",
+    "url": "https://example.com",
+    "author": "Linternoka",
+    "date": "2026-08-22"
+  },
+  {
+    "title": "示例文章：一篇值得读的文章",
+    "type": "文章",
+    "description": "同样是一条示例，方便你理解数据格式：标题、类型、简介、链接。",
+    "url": "https://example.com/article"
+  }
+]

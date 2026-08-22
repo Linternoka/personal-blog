@@ -138,6 +138,11 @@ export default function GuidePage() {
             里的 <code>PRESET_CATEGORIES</code> 数组；
           </li>
           <li>
+            <strong>管理推荐作品</strong>：编辑{" "}
+            <code className="rounded bg-bgsoft px-1.5 py-0.5 text-sm text-goldstrong">content/works.json</code>，
+            按「标题 / 类型 / 简介 / 链接」逐条添加即可，保存推送后自动上线；
+          </li>
+          <li>
             <strong>改外观配色/特效</strong>：全局样式都在{" "}
             <code className="rounded bg-bgsoft px-1.5 py-0.5 text-sm text-goldstrong">app/globals.css</code>；
           </li>
