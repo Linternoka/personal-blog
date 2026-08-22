@@ -133,9 +133,17 @@ body,
   color: var(--decap-gold) !important;
 }
 
-/* ---------- 顶部工具栏：细底边（只给工具条容器，避免误伤内部元素） ---------- */
-#nc-root [class*="ToolbarContainer"] {
+/* ---------- 顶部工具条：细底边 + 统一背景（防止黑白分界） ---------- */
+#nc-root [class*="ToolbarContainer"],
+#nc-root header {
+  background-color: var(--decap-bg) !important;
   border-bottom: 1px solid var(--decap-line) !important;
+}
+/* 内容主区统一背景 */
+#nc-root [class*="Editor"],
+#nc-root [class*="PaneContent"],
+#nc-root main {
+  background-color: var(--decap-bg) !important;
 }
 
 /* ---------- 卡片 / 面板：去掉重阴影，改细线 ---------- */
