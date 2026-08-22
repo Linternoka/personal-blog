@@ -140,7 +140,9 @@ body,
 }
 
 /* ---------- 标题输入：大号衬线，像主流编辑器标题 ---------- */
-#nc-root [class*="ControlPane"] [class*="EditorControl"] input[type="text"] {
+/* 只作用于第一个字段（标题），避免误伤标签等其他 text 输入框 */
+#nc-root [class*="ControlPane"] [class*="EditorControl"]:first-of-type input[type="text"],
+#nc-root [class*="ControlPane"] > div:first-child input[type="text"] {
   font-family: "Noto Serif SC", "Songti SC", serif !important;
   font-size: 26px !important;
   font-weight: 700 !important;
@@ -208,19 +210,26 @@ body,
   border-radius: 6px !important;
 }
 
-/* ---------- Markdown 工具栏：白底、细线、圆角 ---------- */
-#nc-root [class*="Toolbar"] {
+/* ---------- Markdown 编辑工具栏：白底、细线、圆角 ---------- */
+/* 限定在正文编辑区内，避免误伤顶部 EditorToolbar / 列表工具条 */
+#nc-root [class*="MarkdownControl"] [class*="Toolbar"],
+#nc-root [class*="MarkdownEditor"] [class*="Toolbar"],
+#nc-root [class*="Markdown"] [class*="Toolbar"] {
   background: #fff !important;
   border: 1px solid var(--decap-line) !important;
   border-radius: 8px !important;
   padding: 6px 10px !important;
   box-shadow: 0 1px 6px rgba(43, 42, 38, 0.05) !important;
 }
-#nc-root [class*="ToolbarButton"] {
+#nc-root [class*="MarkdownControl"] [class*="ToolbarButton"],
+#nc-root [class*="MarkdownEditor"] [class*="ToolbarButton"],
+#nc-root [class*="Markdown"] [class*="ToolbarButton"] {
   border-radius: 5px !important;
   margin: 0 1px !important;
 }
-#nc-root [class*="ToolbarButton"]:hover {
+#nc-root [class*="MarkdownControl"] [class*="ToolbarButton"]:hover,
+#nc-root [class*="MarkdownEditor"] [class*="ToolbarButton"]:hover,
+#nc-root [class*="Markdown"] [class*="ToolbarButton"]:hover {
   background: rgba(156, 138, 99, 0.1) !important;
   color: var(--decap-gold) !important;
 }
