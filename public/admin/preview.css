@@ -4,6 +4,7 @@
    用于编辑器的右侧预览面板
    ============================================================ */
 
+/* 浅色（默认）：暖白 + 深青绿 */
 :root {
   --preview-bg: #f7f5f0;
   --preview-text: #16181a;
@@ -12,8 +13,18 @@
   --preview-text-soft: #4b4f4d;
   --preview-gold-soft: rgba(15, 118, 110, 0.14);
 }
+/* 深色（后台手动切到深色时，由 index.html 同步 data-theme 到预览 iframe） */
+html[data-theme="dark"] {
+  --preview-bg: #0a0e0d;
+  --preview-text: #e8eae9;
+  --preview-gold: #7fdcc6;
+  --preview-line: rgba(255, 255, 255, 0.1);
+  --preview-text-soft: #8a939b;
+  --preview-gold-soft: rgba(127, 220, 198, 0.14);
+}
+/* 深色兜底（未同步到 data-theme 时跟随系统） */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --preview-bg: #0a0e0d;
     --preview-text: #e8eae9;
     --preview-gold: #7fdcc6;

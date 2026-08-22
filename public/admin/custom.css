@@ -17,6 +17,8 @@ html[data-theme="light"] {
   --decap-text-soft: #4b4f4d;
   --decap-line: rgba(22, 24, 26, 0.12);
   --decap-card: #ffffff;
+  --decap-red: #b91c1c;
+  --decap-red-soft: rgba(185, 28, 28, 0.08);
 }
 
 /* 深色（手动 dark）：废墟赛博 */
@@ -31,6 +33,8 @@ html[data-theme="dark"] {
   --decap-text-soft: #9aa3aa;
   --decap-line: rgba(255, 255, 255, 0.12);
   --decap-card: #14191a;
+  --decap-red: #b0403a;
+  --decap-red-soft: rgba(176, 64, 58, 0.16);
 }
 
 /* 深色（未手动设置时跟随系统） */
@@ -46,6 +50,8 @@ html[data-theme="dark"] {
     --decap-text-soft: #9aa3aa;
     --decap-line: rgba(255, 255, 255, 0.12);
     --decap-card: #14191a;
+    --decap-red: #b0403a;
+    --decap-red-soft: rgba(176, 64, 58, 0.16);
   }
 }
 
@@ -337,4 +343,58 @@ body,
 /* ---------- 编辑器两侧面板分隔线 ---------- */
 #nc-root [class*="PaneContainer"] > div {
   border-color: var(--decap-line) !important;
+}
+
+/* ============================================================
+   修复（2026-08-22）：Decap 默认蓝 / 粉红残留 → 统一主题色
+   - 工具栏 SVG 图标跟随文字色（深色下不再是黑色不可见）
+   - 「点击以预览」按钮 默认蓝 → 主题青绿
+   - 富文本/Markdown 切换 active 标签 默认蓝 → 主题青绿
+   - 开关选中态金色（不再被灰色压平）
+   - 删除按钮 粉红底 → 主题红
+   ============================================================ */
+
+/* 工具栏 SVG 图标跟随文字颜色（浅灰，hover 时随按钮变主题色） */
+#nc-root [class*="IconWrapper"],
+#nc-root [class*="StyledToolbarButton"],
+#nc-root [class*="ToolbarButton"] {
+  color: var(--decap-text-soft) !important;
+}
+#nc-root [class*="IconWrapper"] svg,
+#nc-root [class*="IconWrapper"] path,
+#nc-root [class*="StyledToolbarButton"] svg,
+#nc-root [class*="StyledToolbarButton"] path {
+  fill: currentColor !important;
+  stroke: currentColor !important;
+}
+
+/* 「点击以预览」按钮：默认蓝 → 主题青绿 */
+#nc-root button[class*="RefreshPreviewButton"] {
+  color: var(--decap-gold) !important;
+}
+#nc-root button[class*="RefreshPreviewButton"]:hover {
+  color: var(--decap-gold-hover) !important;
+}
+
+/* 富文本/Markdown 切换：active（3 段式类名）→ 青绿，inactive → 灰 */
+#nc-root [class*="ToolbarToggle"] [class*="ToolbarToggleLabel"] {
+  color: var(--decap-text-soft) !important;
+}
+#nc-root [class*="ToolbarToggle"] [class*="ToolbarToggleLabel"][class*="ToolbarToggleLabel-ToolbarToggleLabel"] {
+  color: var(--decap-gold) !important;
+}
+
+/* 开关选中态：金色（aria-checked=true），handle 白 */
+#nc-root button[role="switch"][aria-checked="true"] [class*="ToggleBackground"] {
+  background-color: var(--decap-gold) !important;
+}
+#nc-root button[role="switch"][aria-checked="true"] [class*="ToggleHandle"] {
+  background-color: #fff !important;
+}
+
+/* 删除按钮：粉红底 → 主题红（细线 + 浅红底） */
+#nc-root button[class*="DeleteButton"] {
+  background-color: var(--decap-red-soft) !important;
+  color: var(--decap-red) !important;
+  border: 1px solid var(--decap-red) !important;
 }
