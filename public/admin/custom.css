@@ -590,3 +590,15 @@ html[data-theme="dark"] #nc-root select {
   border: 1px solid var(--decap-line) !important;
   border-radius: 2px !important;
 }
+
+/* ============================================================
+   修复（2026-08-23，v12）：视觉审查发现 2px 浅白边框
+   - Qwen-VL 审查暗色编辑器截图：DateTimeControl（日期）与
+     草稿开关容器带 Decap 默认 2px #dfdfe3 边框，暗色下像白框
+   修复：统一为主题细线 + 圆角
+   ============================================================ */
+#nc-root [class*="DateTimeControl"],
+#nc-root [class*="ControlContainer"] div:has(> button[role="switch"]) {
+  border: 1px solid var(--decap-line) !important;
+  border-radius: 2px !important;
+}
