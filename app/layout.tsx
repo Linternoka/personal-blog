@@ -4,6 +4,7 @@ import { Geist_Mono, Noto_Sans_JP, Noto_Serif_SC } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FontWarm from "@/components/FontWarm";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          <FontWarm />
         </ThemeProvider>
       </body>
     </html>

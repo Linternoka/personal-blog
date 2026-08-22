@@ -16,24 +16,31 @@ export default function HomePage() {
       {/* ---------- Hero：现代编辑风，全屏留白 ---------- */}
       <section className="kam-hero px-4 text-center">
         <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center pb-16 pt-12">
+          {/* eyebrow：作者说明（单独立行，避免与标题粘连） */}
+          <p className="kam-fade-up mb-6 flex items-center gap-3 text-xs tracking-[0.35em] text-herofgs">
+            <span className="h-px w-8 bg-current opacity-30" />
+            这里是 {siteConfig.author.name} 的个人博客
+            <span className="h-px w-8 bg-current opacity-30" />
+          </p>
+
           {/* 中央大字标题（极轻字重） */}
           <h1 className="kam-hero-title text-4xl leading-tight sm:text-6xl lg:text-7xl">
             {siteConfig.name}
           </h1>
 
-          {/* 说明：标明这是个人博客，避免标题让人一头雾水 */}
-          <p className="kam-fade-up kam-delay-1 mt-6 text-base leading-loose text-herofgs sm:text-lg">
-            这里是 {siteConfig.author.name} 的个人博客，记录、展示、分享。
-          </p>
-
           {/* 分隔：细线 + 圆点 */}
-          <div className="kam-fade-up kam-delay-2 my-8 flex items-center gap-3">
+          <div className="kam-fade-up kam-delay-1 my-7 flex items-center gap-3">
             <span className="h-px w-12 bg-gradient-to-r from-transparent to-gold/60" />
             <span className="h-1.5 w-1.5 rounded-full bg-gold" />
             <span className="h-px w-12 bg-gradient-to-l from-transparent to-gold/60" />
           </div>
 
-          <div className="kam-fade-up kam-delay-3 mt-2 flex flex-wrap items-center justify-center gap-3">
+          {/* 主旨：记录 · 展示 · 分享（强调） */}
+          <p className="kam-fade-up kam-delay-2 text-sm tracking-[0.5em] text-gold sm:text-base">
+            记录 · 展示 · 分享
+          </p>
+
+          <div className="kam-fade-up kam-delay-3 mt-10 flex flex-wrap items-center justify-center gap-3">
             {siteConfig.social.github && (
               <a
                 href={siteConfig.social.github}
