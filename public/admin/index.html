@@ -10,5 +10,16 @@
   <body>
     <!-- Decap CMS 管理后台入口（静态页面，随站点部署） -->
     <script src="https://unpkg.com/decap-cms@^3.4.2/dist/decap-cms.js"></script>
+    <script>
+      // 注册文章实时预览样式（自动适配子路径部署：GitHub Pages 下为 /<repo>/admin/preview.css）
+      (function () {
+        try {
+          var basePath = window.location.pathname.replace(/\/admin\/.*$/, "");
+          CMS.registerPreviewStyle(basePath + "/admin/preview.css");
+        } catch (e) {
+          /* 预览样式注册失败不影响主功能 */
+        }
+      })();
+    </script>
   </body>
 </html>

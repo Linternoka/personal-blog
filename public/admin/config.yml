@@ -26,12 +26,19 @@ collections:
     extension: mdx
     format: frontmatter
     editor:
-      preview: false
+      # 开启实时预览：右侧即时渲染 Markdown 效果（样式见 preview.css）
+      preview: true
     fields:
       - { label: "标题", name: "title", widget: "string" }
       - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
       - { label: "摘要", name: "description", widget: "text", required: false }
-      - { label: "分类", name: "category", widget: "string" }
+      - {
+          label: "分类",
+          name: "category",
+          widget: "select",
+          options: ["杂谈", "评价", "记录", "其他"],
+          default: "杂谈",
+        }
       - {
           label: "标签",
           name: "tags",

@@ -1,0 +1,141 @@
+/* ============================================================
+   Decap CMS 文章实时预览样式
+   模拟站点文章页排版：衬线字体、暖米白底、金色点缀
+   用于编辑器的右侧预览面板
+   ============================================================ */
+
+:root {
+  --preview-bg: #faf9f5;
+  --preview-text: #2b2a26;
+  --preview-gold: #9c8a63;
+  --preview-line: #e8e4da;
+}
+
+html,
+body {
+  background: var(--preview-bg);
+  color: var(--preview-text);
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
+    "SimSun", Georgia, serif;
+  line-height: 1.9;
+  letter-spacing: 0.04em;
+  font-size: 16px;
+  margin: 0;
+  padding: 24px 28px;
+  word-break: break-word;
+}
+
+/* 标题 */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 1.6em 0 0.6em;
+}
+h1 {
+  font-size: 1.8em;
+  letter-spacing: 0.02em;
+}
+h2 {
+  font-size: 1.4em;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--preview-line);
+}
+h3 {
+  font-size: 1.2em;
+}
+h4 {
+  font-size: 1.05em;
+}
+
+/* 段落 */
+p {
+  margin: 0.9em 0;
+}
+
+/* 链接：金色 */
+a {
+  color: var(--preview-gold);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--preview-gold) 40%, transparent);
+}
+a:hover {
+  border-bottom-color: var(--preview-gold);
+}
+
+/* 引用 */
+blockquote {
+  margin: 1.2em 0;
+  padding: 0.2em 1em;
+  border-left: 2px solid var(--preview-gold);
+  color: #6b655a;
+  background: rgba(156, 138, 99, 0.06);
+  border-radius: 0 4px 4px 0;
+}
+
+/* 列表 */
+ul,
+ol {
+  padding-left: 1.6em;
+  margin: 0.8em 0;
+}
+li {
+  margin: 0.3em 0;
+}
+
+/* 代码 */
+code {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.88em;
+  background: rgba(156, 138, 99, 0.12);
+  padding: 0.15em 0.4em;
+  border-radius: 3px;
+}
+pre {
+  background: #1f1e1a;
+  color: #eae6de;
+  padding: 16px 18px;
+  border-radius: 6px;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+pre code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font-size: 0.85em;
+}
+
+/* 图片 */
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* 表格 */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+th,
+td {
+  border: 1px solid var(--preview-line);
+  padding: 8px 12px;
+  text-align: left;
+}
+th {
+  background: rgba(156, 138, 99, 0.08);
+}
+
+/* 分隔线 */
+hr {
+  border: none;
+  border-top: 1px solid var(--preview-line);
+  margin: 2em 0;
+}
