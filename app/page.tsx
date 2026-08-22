@@ -19,7 +19,7 @@ export default function HomePage() {
           {/* eyebrow：作者说明（单独立行，避免与标题粘连） */}
           <p className="kam-fade-up mb-6 flex items-center gap-3 text-xs tracking-[0.35em] text-herofgs">
             <span className="h-px w-8 bg-current opacity-30" />
-            这里是 {siteConfig.author.name} 的个人博客
+            {siteConfig.author.name} 的个人博客
             <span className="h-px w-8 bg-current opacity-30" />
           </p>
 

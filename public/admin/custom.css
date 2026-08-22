@@ -8,6 +8,7 @@
 :root,
 html[data-theme="light"] {
   --decap-bg: #f7f5f0;
+  --decap-bg-soft: #ffffff;
   --decap-text: #16181a;
   --decap-gold: #0f766e;
   --decap-gold-hover: #115e59;
@@ -287,9 +288,9 @@ body,
   border-radius: 6px !important;
 }
 
-/* ---------- 正文 Markdown 工具栏：白底圆角（限定在字段内） ---------- */
+/* ---------- 正文 Markdown 工具栏：跟随主题（深色下不再是白底） ---------- */
 #nc-root [class*="ControlContainer"] [class*="ToolbarContainer"] {
-  background: #fff !important;
+  background: var(--decap-card) !important;
   border: 1px solid var(--decap-line) !important;
   border-radius: 8px !important;
   padding: 6px 8px !important;

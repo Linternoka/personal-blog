@@ -24,7 +24,7 @@ function Section({
         <span className="text-sm tracking-widest text-gold">{num}</span>
         {title}
       </h2>
-      <div className="mt-5 space-y-4 text-[15px] leading-7 text-text">
+      <div className="mt-5 space-y-4 text-[15px] leading-7 text-text [&_strong]:font-medium">
         {children}
       </div>
     </section>

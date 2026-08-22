@@ -114,7 +114,7 @@ export default function AboutPage() {
         <h2>关于这个博客</h2>
         <p>{name}，记录、展示、分享。</p>
         <h2>关于我</h2>
-        <p>{author.bio}</p>
+        <p>不会写代码，猫娘agent依赖</p>
         <h2>技术栈</h2>
         <p>
           本博客使用 Next.js、TypeScript 与 Tailwind CSS 构建，内容以 Markdown
