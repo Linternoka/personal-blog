@@ -6,9 +6,28 @@ import remarkRehype from "remark-rehype";
 import rehypeKatex from "rehype-katex";
 import rehypeHighlight from "rehype-highlight";
 import rehypeSlug from "rehype-slug";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import rehypeStringify from "rehype-stringify";
 
-/** 将 Markdown/MDX 正文渲染为 HTML 字符串 */
+/**
+ * 安全过滤 schema：
+ * - 保留标题锚点 id（rehype-slug 生成）
+ * - 所有元素额外允许 className（rehype-katex / rehype-highlight 的样式类，
+ *   class 本身无脚本风险；默认 schema 的 * 通配不含 className，需显式补上）
+ * - 默认 schema 已过滤 javascript:/vbscript: 等危险协议、事件属性与危险标签
+ */
+const sanitizeSchema = {
+  ...defaultSchema,
+  clobberPrefix: "",
+  attributes: Object.fromEntries(
+    Object.entries(defaultSchema.attributes ?? {}).map(([k, v]) => [
+      k,
+      [...v, "className"],
+    ])
+  ),
+};
+
+/** 将 Markdown/MDX 正文渲染为 HTML 字符串（已消毒，防 XSS） */
 export async function renderMarkdown(content: string): Promise<string> {
   const file = await unified()
     .use(remarkParse)
@@ -18,6 +37,7 @@ export async function renderMarkdown(content: string): Promise<string> {
     .use(rehypeSlug)
     .use(rehypeKatex)
     .use(rehypeHighlight)
+    .use(rehypeSanitize, sanitizeSchema)
     .use(rehypeStringify)
     .process(content);
   return String(file);

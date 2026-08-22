@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL(`${siteConfig.url}${siteConfig.basePath}`),
   alternates: {
     types: {
       "application/rss+xml": `${siteConfig.basePath}/rss.xml`,
@@ -56,7 +56,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body className="flex min-h-full flex-col bg-bg text-text">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >

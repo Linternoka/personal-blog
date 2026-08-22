@@ -4,23 +4,16 @@ import { siteConfig } from "@/lib/site";
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="mt-16 border-t border-line bg-bgdeep">
+    <footer className="mt-16 border-t border-line">
       <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6">
-        <div className="flex flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-5">
           {/* 站点名 */}
           <Link
             href="/"
-            className="kam-title text-2xl font-black tracking-[0.4em] text-gold"
+            className="kam-title text-xl font-bold tracking-[0.08em] text-goldstrong"
           >
             {siteConfig.name}
           </Link>
-
-          {/* 装饰分隔 */}
-          <div className="flex items-center gap-4">
-            <span className="h-px w-12 bg-gradient-to-r from-transparent to-gold/60" />
-            <span className="text-gold/80">❖</span>
-            <span className="h-px w-12 bg-gradient-to-l from-transparent to-gold/60" />
-          </div>
 
           <p className="max-w-md text-center text-sm leading-relaxed text-textsoft">
             {siteConfig.description}
@@ -61,7 +54,7 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-        <p className="mt-10 text-center text-xs tracking-[0.3em] text-textsoft">
+        <p className="mt-10 text-center text-xs tracking-widest text-textsoft">
           © {year} {siteConfig.author.name} · Powered by Next.js
         </p>
       </div>

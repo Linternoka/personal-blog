@@ -52,11 +52,14 @@ export default async function PostPage({
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
       {/* 文章头部 */}
       <header>
-        <span className="kam-section-en block">Article · {formatDate(post.date)}</span>
-        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
+        <div className="flex flex-wrap items-center gap-3 text-sm text-textsoft">
+          <time dateTime={post.date} className="tabular-nums tracking-wider">
+            {formatDate(post.date)}
+          </time>
+          <span className="text-line-strong">/</span>
           <Link
             href={`/categories/${encodeURIComponent(post.category)}`}
-            className="border border-gold px-2.5 py-1 font-serif font-semibold tracking-widest text-gold transition-colors hover:bg-gold hover:text-cream"
+            className="tracking-widest transition-colors hover:text-goldstrong"
           >
             {post.category}
           </Link>
@@ -66,7 +69,7 @@ export default async function PostPage({
             </span>
           )}
         </div>
-        <h1 className="kam-title mt-5 text-3xl font-black leading-snug text-text sm:text-4xl">
+        <h1 className="kam-title mt-5 text-3xl font-bold leading-snug text-text sm:text-4xl">
           {post.title}
         </h1>
         {post.description && (
@@ -80,13 +83,14 @@ export default async function PostPage({
               <Link
                 key={tag}
                 href={`/tags/${encodeURIComponent(tag)}`}
-                className="kam-link text-sm tracking-widest"
+                className="text-sm tracking-widest text-textsoft/80 transition-colors hover:text-goldstrong"
               >
                 #{tag}
               </Link>
             ))}
           </div>
         )}
+        <div className="mt-8 h-px w-full bg-gradient-to-r from-gold/60 via-line to-transparent" />
       </header>
 
       {/* 正文 */}
@@ -99,14 +103,14 @@ export default async function PostPage({
       <GiscusComments />
 
       {/* 上一篇 / 下一篇 */}
-      <nav className="mt-12 grid gap-4 border-t border-line pt-6 sm:grid-cols-2">
+      <nav className="mt-12 grid border-t border-line pt-6 sm:grid-cols-2">
         {prev ? (
           <Link
             href={`/posts/${prev.slug}`}
-            className="group relative border border-line bg-bgsoft p-5 transition-colors duration-300 hover:border-gold"
+            className="group py-2 pr-4"
           >
             <span className="text-xs tracking-widest text-gold">← 上一篇</span>
-            <p className="kam-title mt-2 text-base font-semibold leading-snug text-text transition-colors group-hover:text-goldstrong">
+            <p className="kam-title mt-1.5 text-base font-semibold leading-snug text-text transition-colors group-hover:text-goldstrong">
               {prev.title}
             </p>
           </Link>
@@ -116,10 +120,10 @@ export default async function PostPage({
         {next ? (
           <Link
             href={`/posts/${next.slug}`}
-            className="group relative border border-line bg-bgsoft p-5 text-right transition-colors duration-300 hover:border-gold"
+            className="group py-2 pl-4 text-right sm:border-l sm:border-line"
           >
             <span className="text-xs tracking-widest text-gold">下一篇 →</span>
-            <p className="kam-title mt-2 text-base font-semibold leading-snug text-text transition-colors group-hover:text-goldstrong">
+            <p className="kam-title mt-1.5 text-base font-semibold leading-snug text-text transition-colors group-hover:text-goldstrong">
               {next.title}
             </p>
           </Link>
@@ -129,13 +133,13 @@ export default async function PostPage({
       </nav>
 
       {/* 站点署名 */}
-      <div className="mt-10 flex items-center justify-between border border-line bg-bgsoft px-6 py-5">
+      <div className="mt-10 flex items-center justify-between border-t border-line pt-6">
         <div className="flex items-center gap-4">
-          <div className="kam-title flex h-11 w-11 items-center justify-center border border-gold text-lg text-gold">
+          <div className="kam-title flex h-11 w-11 items-center justify-center border border-gold/60 text-lg text-goldstrong">
             {siteConfig.author.name.slice(0, 1)}
           </div>
           <div>
-            <p className="kam-title text-sm font-bold tracking-widest text-text">
+            <p className="kam-title text-sm font-bold text-text">
               {siteConfig.author.name}
             </p>
             <p className="mt-0.5 text-xs text-textsoft">
@@ -144,7 +148,7 @@ export default async function PostPage({
           </div>
         </div>
         <Link href="/about" className="kam-link text-sm tracking-widest">
-          关于 →
+          关于
         </Link>
       </div>
     </article>

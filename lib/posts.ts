@@ -39,8 +39,17 @@ export function getPostSlugs(): string[] {
     .map((file) => file.replace(/\.mdx?$/, ""));
 }
 
+/** 将 frontmatter 日期安全转为 ISO 字符串（无效日期返回 fallback，避免构建崩溃） */
+function safeIsoDate(value: unknown, fallback?: string): string | undefined {
+  if (!value) return fallback;
+  const d = new Date(String(value));
+  return Number.isNaN(d.getTime()) ? fallback : d.toISOString();
+}
+
 export function getPostBySlug(slug: string): Post | null {
   const realSlug = slug.replace(/\.mdx?$/, "");
+  // 安全校验：仅允许文件名字符（字母/数字/中文/下划线/连字符），防止路径穿越
+  if (!/^[\w\u4e00-\u9fa5-]+$/.test(realSlug)) return null;
   const fullPath = path.join(postsDirectory, `${realSlug}.mdx`);
   if (!fs.existsSync(fullPath)) return null;
   const fileContents = fs.readFileSync(fullPath, "utf8");
@@ -48,8 +57,8 @@ export function getPostBySlug(slug: string): Post | null {
   return {
     slug: realSlug,
     title: data.title || realSlug,
-    date: data.date ? new Date(data.date).toISOString() : "",
-    updated: data.updated ? new Date(data.updated).toISOString() : undefined,
+    date: safeIsoDate(data.date, "") ?? "",
+    updated: safeIsoDate(data.updated, undefined),
     description: data.description || "",
     category: data.category || "未分类",
     tags: toArray(data.tags),

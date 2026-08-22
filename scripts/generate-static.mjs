@@ -31,6 +31,12 @@ function stripMarkdown(content) {
     .trim();
 }
 
+function safeDate(value, fallback) {
+  const d = value ? new Date(value) : new Date();
+  const fb = fallback || new Date();
+  return Number.isNaN(d.getTime()) ? fb : d;
+}
+
 function readPosts() {
   if (!fs.existsSync(postsDir)) return [];
   return fs
@@ -42,8 +48,8 @@ function readPosts() {
       return {
         slug: file.replace(/\.mdx?$/, ""),
         title: data.title || file,
-        date: data.date ? new Date(data.date) : new Date(),
-        updated: data.updated ? new Date(data.updated) : undefined,
+        date: safeDate(data.date),
+        updated: data.updated ? safeDate(data.updated) : undefined,
         description: data.description || "",
         category: data.category || "未分类",
         tags: Array.isArray(data.tags) ? data.tags.map(String) : [],
@@ -111,7 +117,7 @@ function main() {
   const staticUrls = ["/", "/about/", "/friends/", "/search/", "/categories/", "/tags/"];
   const allUrls = [
     ...staticUrls,
-    ...posts.map((p) => `/posts/${p.slug}/`),
+    ...posts.map((p) => `/posts/${encodeURIComponent(p.slug)}/`),
     ...categories.map((c) => `/categories/${encodeURIComponent(c)}/`),
     ...tags.map((t) => `/tags/${encodeURIComponent(t)}/`),
   ];

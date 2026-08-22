@@ -7,48 +7,52 @@
 /* 基于 class 的暗色模式（next-themes 会在 html 上添加 .dark） */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ---------- 神椿（Kamitsubaki）配色系统 ---------- */
+/* ---------- 配色：中性为主 + 少量金色点缀（克制不缭乱） ---------- */
 :root {
-  --bg: #ffffff; /* 纯白（神椿市建設中。主体底色） */
-  --bg-soft: #fafafa; /* 卡片微灰 */
-  --bg-deep: #f2f2f0; /* 深一档 */
-  --text: #111111; /* 纯黑文字 */
-  --text-soft: #555555; /* 次要文字 */
-  --line: #e5e5e3; /* 分割线 */
-  --gold: #a08a60; /* 复古金 */
-  --gold-strong: #8a744c; /* 深金 */
-  --cream: #fff7ea; /* 奶油 */
-  --ink: #111111; /* 黑底（Hero 用） */
-  /* Hero 主题变量：亮色 = 浅金米白底 + 深色文字 */
-  --hero-bg: #faf6ee;
-  --hero-fg: #1a160f;
-  --hero-fg-soft: rgba(26, 22, 15, 0.72);
-  --hero-fg-faint: rgba(26, 22, 15, 0.45);
-  --hero-glitch-a: rgba(200, 60, 60, 0.6);
-  --hero-glitch-b: rgba(80, 120, 200, 0.6);
+  --bg: #ffffff;
+  --bg-soft: #fafaf8;
+  --bg-deep: #f2f1ee;
+  --text: #1a1a18;
+  --text-soft: #6f6b62;
+  --line: #e7e4de;
+  --line-strong: #c9c4ba;
+  --gold: #a08a60; /* 复古金（点缀用） */
+  --gold-strong: #8a744c;
+  --gold-soft: rgba(160, 138, 96, 0.45);
+  --cream: #fff7ea;
+  --ink: #161512;
+  --hero-bg: #ffffff;
+  --hero-fg: #1a1a18;
+  --hero-fg-soft: rgba(26, 26, 24, 0.68);
+  --hero-fg-faint: rgba(26, 26, 24, 0.42);
+  --hero-glow: rgba(160, 138, 96, 0.1);
+  --hero-glitch-a: rgba(190, 70, 70, 0.45);
+  --hero-glitch-b: rgba(90, 120, 190, 0.45);
 }
 
 .dark {
-  --bg: #0e0d0b; /* 夜黑 */
-  --bg-soft: #161411; /* 卡片 */
-  --bg-deep: #0a0908;
-  --text: #f2e8d5; /* 米白 */
-  --text-soft: #a89b87; /* 灰米 */
-  --line: #2c2821; /* 暗线 */
-  --gold: #aa946d; /* 复古金 */
-  --gold-strong: #c6b18c; /* 亮金 */
-  --cream: #fff3e3; /* 椿色 */
-  --ink: #070605; /* 纯黑 */
-  /* Hero 主题变量：暗色 = 深黑底 + 米白文字 */
-  --hero-bg: #070605;
-  --hero-fg: #fff3e3;
-  --hero-fg-soft: rgba(255, 243, 227, 0.72);
-  --hero-fg-faint: rgba(255, 243, 227, 0.45);
-  --hero-glitch-a: rgba(200, 60, 60, 0.85);
-  --hero-glitch-b: rgba(80, 160, 200, 0.85);
+  --bg: #12110f;
+  --bg-soft: #191714;
+  --bg-deep: #0c0b0a;
+  --text: #eae6de;
+  --text-soft: #9b958a;
+  --line: #292620;
+  --line-strong: #453f35;
+  --gold: #b3a184;
+  --gold-strong: #c8b795;
+  --gold-soft: rgba(179, 161, 132, 0.45);
+  --cream: #fff3e3;
+  --ink: #0a0908;
+  --hero-bg: #12110f;
+  --hero-fg: #eae6de;
+  --hero-fg-soft: rgba(234, 230, 222, 0.68);
+  --hero-fg-faint: rgba(234, 230, 222, 0.42);
+  --hero-glow: rgba(179, 161, 132, 0.12);
+  --hero-glitch-a: rgba(220, 90, 90, 0.5);
+  --hero-glitch-b: rgba(110, 150, 220, 0.5);
 }
 
-/* ---------- 神椿市建設中。氛围：日式竖排文字 ---------- */
+/* ---------- 竖排文字（Hero 点缀） ---------- */
 .kam-vertical {
   writing-mode: vertical-rl;
   text-orientation: upright;
@@ -56,7 +60,7 @@
   font-family: var(--font-serif);
 }
 
-/* ---------- 神椿 glitch 故障特效（仿 uc.kamitsubaki.jp） ---------- */
+/* ---------- 神椿 glitch 特效（信号闪现：短促、优雅、低频） ---------- */
 .kam-glitch {
   position: relative;
   display: inline-block;
@@ -70,80 +74,104 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  clip-path: inset(0 0 0 0);
+  pointer-events: none;
+  opacity: 0;
 }
 .kam-glitch::before {
-  left: 2px;
-  text-shadow: -1px 0 var(--hero-glitch-a);
-  animation: kam-glitch-anim-1 3s infinite linear alternate-reverse;
+  left: 1.5px;
   color: var(--hero-fg);
+  text-shadow: -1px 0 var(--hero-glitch-a), 1px 0 var(--hero-glitch-b);
+  animation: kam-glitch-a 9s infinite;
 }
 .kam-glitch::after {
-  left: -2px;
-  text-shadow: 1px 0 var(--hero-glitch-b);
-  animation: kam-glitch-anim-2 2.7s infinite linear alternate-reverse;
+  left: -1.5px;
   color: var(--hero-fg);
+  text-shadow: 1px 0 var(--hero-glitch-a);
+  animation: kam-glitch-b 7.6s infinite;
 }
-@keyframes kam-glitch-anim-1 {
-  0% { clip-path: inset(20% 0 60% 0); }
-  20% { clip-path: inset(80% 0 5% 0); }
-  40% { clip-path: inset(40% 0 40% 0); }
-  60% { clip-path: inset(5% 0 85% 0); }
-  80% { clip-path: inset(65% 0 20% 0); }
-  100% { clip-path: inset(30% 0 55% 0); }
+/* 大约每 7-9 秒闪一次条带，0.15s 内完成，像信号干扰 */
+@keyframes kam-glitch-a {
+  0%, 95.5% { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateX(0); }
+  96% { opacity: 1; clip-path: inset(18% 0 55% 0); transform: translateX(-2px); }
+  96.5% { opacity: 1; clip-path: inset(62% 0 10% 0); transform: translateX(2px); }
+  97%, 100% { opacity: 0; clip-path: inset(0 0 100% 0); transform: translateX(0); }
 }
-@keyframes kam-glitch-anim-2 {
-  0% { clip-path: inset(55% 0 25% 0); }
-  25% { clip-path: inset(10% 0 70% 0); }
-  50% { clip-path: inset(75% 0 10% 0); }
-  75% { clip-path: inset(25% 0 60% 0); }
-  100% { clip-path: inset(45% 0 30% 0); }
+@keyframes kam-glitch-b {
+  0%, 93.5% { opacity: 0; clip-path: inset(100% 0 0 0); transform: translateX(0); }
+  94% { opacity: 1; clip-path: inset(40% 0 32% 0); transform: translateX(2px); }
+  94.5% { opacity: 1; clip-path: inset(8% 0 78% 0); transform: translateX(-2px); }
+  95%, 100% { opacity: 0; clip-path: inset(100% 0 0 0); transform: translateX(0); }
 }
 
-/* ---------- 神椿 滚动渐入动画 ---------- */
+/* ---------- 滚动渐入动画（模糊 + 上移，更精致） ---------- */
 .kam-reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, transform;
+  transform: translateY(22px);
+  filter: blur(6px);
+  transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform, filter;
 }
 .kam-reveal.is-visible {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
 }
 
-/* ---------- Hero 标题渐入 ---------- */
+/* ---------- 神椿文字闪入：逐字 blur → 清晰 + 上移 ---------- */
+@keyframes kam-char-in {
+  0% {
+    opacity: 0;
+    transform: translateY(0.55em);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+.kam-char {
+  display: inline-block;
+  opacity: 0;
+  animation: kam-char-in 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  will-change: opacity, transform, filter;
+}
+
+/* ---------- 元素渐入（Hero 小元素 + 内页标题） ---------- */
 @keyframes kam-fade-up {
   from {
     opacity: 0;
-    transform: translateY(28px);
+    transform: translateY(26px);
+    filter: blur(6px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 .kam-fade-up {
   opacity: 0;
-  animation: kam-fade-up 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: kam-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 .kam-delay-1 { animation-delay: 0.15s; }
 .kam-delay-2 { animation-delay: 0.3s; }
 .kam-delay-3 { animation-delay: 0.45s; }
 .kam-delay-4 { animation-delay: 0.6s; }
 
-/* ---------- 分区标题（英文小字 + 中文大字 + 金色装饰线） ---------- */
+/* ---------- 分区标题（中文大字 + 金色短线点缀） ---------- */
 .kam-section {
   position: relative;
-  padding-top: 2.5rem;
+  padding-top: 1.75rem;
 }
 .kam-section::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
-  width: 56px;
+  width: 44px;
   height: 1px;
   background: var(--gold);
 }
@@ -151,25 +179,37 @@
   display: block;
   font-family: var(--font-sans);
   font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.5em;
+  font-weight: 500;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.5rem;
 }
 .kam-section-ja {
   font-family: var(--font-serif);
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.02em;
   color: var(--text);
+  animation: kam-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* 标题左侧金色小菱形装饰 */
+.kam-section-ja::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 0.55em;
+  transform: rotate(45deg) translateY(-0.08em);
+  background: var(--gold);
+  vertical-align: middle;
 }
 
-/* ---------- 「」日式角引号装饰 ---------- */
+/* ---------- 「」角引号装饰（金色淡） ---------- */
 .kam-kakko {
   color: var(--gold);
 }
 
-/* ---------- 神椿 Hero 全屏大视觉 ---------- */
+/* ---------- Hero：全屏留白 + 极淡金色氛围 ---------- */
 .kam-hero {
   position: relative;
   display: flex;
@@ -179,29 +219,17 @@
   overflow: hidden;
   background: var(--hero-bg);
 }
-/* 视觉纹理：噪点 + 金色光晕 */
+/* 极淡金色光晕（克制，不缭乱） */
 .kam-hero::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 85% 60% at 50% 0%, rgba(170, 148, 109, 0.18), transparent 65%),
-    radial-gradient(ellipse 60% 50% at 50% 115%, rgba(170, 148, 109, 0.08), transparent 60%);
+    radial-gradient(ellipse 70% 55% at 50% 0%, var(--hero-glow), transparent 65%),
+    radial-gradient(ellipse 55% 45% at 50% 115%, var(--hero-glow), transparent 60%);
   pointer-events: none;
 }
-.kam-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.3;
-  pointer-events: none;
-  background-image: radial-gradient(rgba(17, 17, 17, 0.05) 1px, transparent 1px);
-  background-size: 3px 3px;
-}
-.dark .kam-hero::after {
-  background-image: radial-gradient(rgba(255, 243, 227, 0.06) 1px, transparent 1px);
-}
-/* 顶 / 底金线框 */
+/* 顶 / 底金线框（简洁版） */
 .kam-hero-frame {
   position: absolute;
   inset: 0;
@@ -212,16 +240,16 @@
   content: "";
   position: absolute;
   left: 50%;
-  width: 160px;
+  width: 140px;
   height: 1px;
   transform: translateX(-50%);
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
 }
 .kam-hero-frame::before {
-  top: 24px;
+  top: 22px;
 }
 .kam-hero-frame::after {
-  bottom: 24px;
+  bottom: 22px;
 }
 
 @theme inline {
@@ -231,6 +259,7 @@
   --color-text: var(--text);
   --color-textsoft: var(--text-soft);
   --color-line: var(--line);
+  --color-linestrong: var(--line-strong);
   --color-gold: var(--gold);
   --color-goldstrong: var(--gold-strong);
   --color-cream: var(--cream);
@@ -267,31 +296,31 @@ body {
   color: var(--cream);
 }
 
-/* ---------- 神椿衬线标题 ---------- */
+/* ---------- 衬线标题 ---------- */
 .kam-title {
   font-family: var(--font-serif);
   font-weight: 700;
-  letter-spacing: 0.12em;
-  line-height: 1.4;
+  letter-spacing: 0.02em;
+  line-height: 1.45;
 }
 
-/* ---------- 神椿 Hero 大字标题（紧排，仿 uc.kamitsubaki.jp） ---------- */
+/* ---------- Hero 大字标题（紧排，仿 uc.kamitsubaki.jp） ---------- */
 .kam-hero-title {
   font-family: var(--font-serif);
   font-weight: 900;
   letter-spacing: 0.02em;
-  line-height: 1.25;
+  line-height: 1.2;
   color: var(--hero-fg);
 }
 
-/* ---------- 首页导航（神椿式极简，居中大字距） ---------- */
+/* ---------- 导航文字 ---------- */
 .kam-nav {
   font-family: var(--font-serif);
-  letter-spacing: 0.35em;
+  letter-spacing: 0.12em;
   font-weight: 500;
 }
 
-/* ---------- 金色描边按钮（hover 金色填充反白） ---------- */
+/* ---------- 描边按钮（金色描边，hover 金色填充反白） ---------- */
 .kam-btn {
   position: relative;
   display: inline-flex;
@@ -299,11 +328,11 @@ body {
   justify-content: center;
   overflow: hidden;
   border: 1px solid var(--gold);
-  color: var(--gold);
+  color: var(--gold-strong);
   background: transparent;
   font-family: var(--font-serif);
   font-weight: 600;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.1em;
   transition: color 0.25s ease-out, border-color 0.25s ease-out;
 }
 .kam-btn::before {
@@ -329,51 +358,43 @@ body {
   z-index: 1;
 }
 
-/* ---------- 导航链接（滑动填充动画） ---------- */
+/* ---------- 导航链接（底部细线指示） ---------- */
 .kam-nav-link {
   position: relative;
-  overflow: hidden;
+  transition: color 0.25s ease-out;
 }
-.kam-nav-link::before {
+.kam-nav-link::after {
   content: "";
   position: absolute;
-  top: 0;
-  left: -100%;
+  left: 0;
+  bottom: 2px;
   width: 100%;
-  height: 100%;
-  background: var(--gold);
-  transition: left 0.25s ease-out;
-  z-index: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease-out;
 }
-.kam-nav-link:hover::before {
-  left: 0;
-}
-.kam-nav-link:hover {
-  color: var(--cream);
-}
-.kam-nav-link > * {
-  position: relative;
-  z-index: 1;
-}
-.kam-nav-link.active::before {
-  left: 0;
+.kam-nav-link:hover::after,
+.kam-nav-link.active::after {
+  transform: scaleX(1);
 }
 .kam-nav-link.active {
-  color: var(--cream);
+  color: var(--gold-strong);
 }
 
-/* ---------- 金色下划线链接 ---------- */
+/* ---------- 下划线链接（细线滑入） ---------- */
 .kam-link {
-  color: var(--gold-strong);
+  color: var(--text);
   text-decoration: none;
-  background-image: linear-gradient(var(--gold), var(--gold));
+  background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-size: 0% 1px;
   background-position: left bottom;
   transition: background-size 0.3s ease-out, color 0.3s ease-out;
 }
 .kam-link:hover {
-  color: var(--gold);
+  color: var(--gold-strong);
   background-size: 100% 1px;
 }
 
@@ -382,7 +403,7 @@ body {
   position: relative;
   width: 1px;
   height: 56px;
-  background: var(--text-soft);
+  background: var(--line-strong);
   overflow: hidden;
 }
 .kam-scroll::after {
@@ -444,15 +465,16 @@ body {
   letter-spacing: 0.04em;
 }
 .prose-kam :where(a) {
+  color: var(--gold-strong);
   text-decoration: none;
-  background-image: linear-gradient(var(--gold), var(--gold));
+  background-image: linear-gradient(currentColor, currentColor);
   background-repeat: no-repeat;
   background-size: 0% 1px;
   background-position: left bottom;
   transition: background-size 0.3s ease-out, color 0.3s ease-out;
 }
 .prose-kam :where(a:hover) {
-  color: var(--gold);
+  color: var(--text);
   background-size: 100% 1px;
 }
 .prose-kam :where(blockquote) {
@@ -549,9 +571,24 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  opacity: 0.7;
+  background: var(--gold-soft);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--gold-strong);
+  background: var(--gold);
+}
+
+/* ---------- 无障碍：尊重系统减弱动态效果 ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .kam-char,
+  .kam-fade-up,
+  .kam-reveal,
+  .kam-glitch::before,
+  .kam-glitch::after,
+  .kam-scroll::after {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
 }

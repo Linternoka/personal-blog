@@ -10,37 +10,36 @@ export default function AboutPage() {
   const { author, name } = siteConfig;
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6">
-      <div className="kam-section">
-        <span className="kam-section-en">About</span>
+      <div className="border-b border-line pb-6">
         <h1 className="kam-section-ja text-3xl">关于</h1>
       </div>
       <div className="mt-8 flex flex-col items-start gap-6 sm:flex-row">
         {/* 头像 */}
-        <div className="kam-title flex h-24 w-24 shrink-0 items-center justify-center border border-gold bg-bgsoft text-4xl text-gold">
+        <div className="kam-title flex h-20 w-20 shrink-0 items-center justify-center border border-line-strong bg-bgsoft text-3xl text-text">
           {author.name.slice(0, 1)}
         </div>
         <div>
-          <h2 className="kam-title text-xl font-black tracking-widest text-text">
+          <h2 className="kam-title text-xl font-bold text-text">
             {author.name}
           </h2>
           <p className="mt-1 text-textsoft">{author.bio}</p>
-          <div className="mt-4 flex flex-wrap gap-4 text-sm">
+          <div className="mt-4 flex flex-wrap gap-5 text-sm">
             {siteConfig.social.github && (
               <a
                 href={siteConfig.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link"
+                className="kam-link tracking-widest"
               >
-                GitHub →
+                GitHub
               </a>
             )}
             {siteConfig.social.email && (
               <a
                 href={siteConfig.social.email}
-                className="kam-link"
+                className="kam-link tracking-widest"
               >
-                联系我 →
+                联系我
               </a>
             )}
           </div>

@@ -51,7 +51,7 @@ export default function ThemeToggle() {
       type="button"
       aria-label="切换主题"
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="inline-flex h-9 w-9 items-center justify-center rounded-sm text-gold transition-colors hover:bg-gold/15 hover:text-goldstrong"
+      className="inline-flex h-9 w-9 items-center justify-center text-textsoft transition-colors hover:text-text"
     >
       {isDark ? <SunIcon /> : <MoonIcon />}
     </button>

@@ -5,6 +5,7 @@ import Fuse from "fuse.js";
 import { useEffect, useMemo, useState } from "react";
 import { siteConfig } from "@/lib/site";
 import { formatDate } from "@/lib/utils";
+import Reveal from "./Reveal";
 
 interface SearchItem {
   slug: string;
@@ -55,22 +56,21 @@ export default function SearchClient() {
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-14 sm:px-6">
-      <div className="kam-section">
-        <span className="kam-section-en">Search</span>
+      <div className="border-b border-line pb-6">
         <h1 className="kam-section-ja text-3xl">搜索</h1>
+        <p className="mt-3 text-sm tracking-widest text-textsoft">
+          搜索博客中的文章、标签与内容
+        </p>
       </div>
-      <p className="mt-4 text-sm tracking-widest text-textsoft">
-        搜索博客中的文章、标签与内容
-      </p>
 
-      <div className="relative mt-6">
+      <div className="relative mt-8">
         <svg
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
-          strokeWidth="2"
+          strokeWidth="1.5"
           strokeLinecap="round"
-          className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gold"
+          className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-textsoft"
         >
           <circle cx="11" cy="11" r="8" />
           <path d="m21 21-4.3-4.3" />
@@ -80,7 +80,7 @@ export default function SearchClient() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="输入关键词，回车或直接搜索…"
-          className="w-full border border-line bg-bgsoft py-3 pl-12 pr-4 text-text outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/20"
+          className="w-full border-b border-line-strong bg-transparent py-3 pl-12 pr-4 text-text outline-none transition-colors focus:border-text"
           autoFocus
         />
       </div>
@@ -91,28 +91,29 @@ export default function SearchClient() {
 
       {loaded && query.trim() && results.length === 0 && (
         <p className="mt-8 text-textsoft">
-          没有找到与「{query.trim()}」相关的文章喵~
+          没有找到与「{query.trim()}」相关的文章~
         </p>
       )}
 
       {results.length > 0 && (
-        <div className="mt-6 flex flex-col gap-4">
-          <p className="text-sm tracking-widest text-textsoft">
+        <div className="mt-6 flex flex-col">
+          <p className="pb-2 text-sm tracking-widest text-textsoft">
             共找到 {results.length} 篇相关文章
           </p>
-          {results.map((post) => (
-            <Link
-              key={post.slug}
-              href={`/posts/${post.slug}`}
-              className="group relative border border-line bg-bgsoft p-5 transition-colors duration-300 hover:border-gold"
-            >
+          {results.map((post, i) => (
+            <Reveal key={post.slug} delay={Math.min(i, 6) * 70}>
+              <Link
+                href={`/posts/${post.slug}`}
+                className="group block border-b border-line py-5 transition-colors duration-300 hover:border-gold/40"
+              >
               <div className="flex flex-wrap items-center gap-3 text-xs">
-                <span className="border border-gold px-2 py-0.5 font-serif font-semibold tracking-widest text-gold">
-                  {post.category}
-                </span>
-                <time dateTime={post.date} className="tracking-widest text-textsoft">
+                <time dateTime={post.date} className="tabular-nums tracking-wider text-textsoft">
                   {formatDate(post.date)}
                 </time>
+                <span className="text-line-strong">/</span>
+                <span className="tracking-widest text-textsoft">
+                  {post.category}
+                </span>
               </div>
               <h2 className="kam-title mt-2 text-lg font-bold text-text transition-colors group-hover:text-goldstrong">
                 {post.title}
@@ -123,18 +124,19 @@ export default function SearchClient() {
                 </p>
               )}
               {post.tags.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
+                <div className="mt-3 flex flex-wrap gap-3">
                   {post.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs tracking-widest text-gold"
+                      className="text-xs tracking-widest text-textsoft/80"
                     >
                       #{tag}
                     </span>
                   ))}
                 </div>
               )}
-            </Link>
+              </Link>
+            </Reveal>
           ))}
         </div>
       )}

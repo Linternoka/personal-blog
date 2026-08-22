@@ -19,22 +19,19 @@ export default function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="kam-title flex items-center gap-3 text-lg font-black tracking-[0.3em] text-gold"
+          className="kam-title text-lg font-bold tracking-[0.08em] text-goldstrong"
         >
-          <span className="text-xl">🌸</span>
-          <span>{siteConfig.name}</span>
+          {siteConfig.name}
         </Link>
 
         {/* 桌面端导航 */}
-        <nav className="hidden items-center gap-2 md:flex">
+        <nav className="hidden items-center gap-6 md:flex">
           {siteConfig.nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`kam-nav-link kam-nav rounded-sm px-3 py-2 text-sm ${
-                isActive(item.href)
-                  ? "active"
-                  : "text-textsoft hover:text-cream"
+              className={`kam-nav-link kam-nav pb-0.5 text-sm ${
+                isActive(item.href) ? "active" : "text-textsoft hover:text-text"
               }`}
             >
               {item.title}
@@ -53,7 +50,7 @@ export default function Header() {
             aria-label="打开菜单"
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-sm text-gold transition-colors hover:bg-gold/10"
+            className="inline-flex h-9 w-9 items-center justify-center text-text transition-colors hover:text-gold"
           >
             {open ? (
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="h-5 w-5">
@@ -70,16 +67,14 @@ export default function Header() {
 
       {/* 移动端菜单 */}
       {open && (
-        <nav className="border-t border-line bg-bgsoft px-4 py-3 md:hidden">
+        <nav className="border-t border-line bg-bg px-4 py-3 md:hidden">
           {siteConfig.nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className={`kam-nav-link kam-nav block rounded-sm px-3 py-2.5 text-sm ${
-                isActive(item.href)
-                  ? "active"
-                  : "text-textsoft hover:text-cream"
+              className={`kam-nav block border-b border-line/60 py-3 text-sm last:border-b-0 ${
+                isActive(item.href) ? "text-text" : "text-textsoft"
               }`}
             >
               {item.title}

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCategoriesWithCount, getPostsByCategory } from "@/lib/posts";
 import PostCard from "@/components/PostCard";
+import Reveal from "@/components/Reveal";
 
 function safeDecode(s: string): string {
   try {
@@ -46,22 +47,21 @@ export default async function CategoryPage({
         <Link href="/categories" className="kam-link">
           分类
         </Link>
-        <span className="mx-2">/</span>
-        <span className="text-gold">{name}</span>
+        <span className="mx-2 text-line-strong">/</span>
+        <span className="text-text">{name}</span>
       </nav>
-      <div className="kam-section mt-6">
-        <span className="kam-section-en">Category</span>
-        <h1 className="kam-section-ja text-3xl">
-          <span className="kam-kakko">「</span>{name}<span className="kam-kakko">」</span>
-        </h1>
+      <div className="mt-6 border-b border-line pb-6">
+        <h1 className="kam-section-ja text-3xl">{name}</h1>
+        <p className="mt-3 text-sm tracking-widest text-textsoft">
+          共 {posts.length} 篇文章
+        </p>
       </div>
-      <p className="mt-4 text-sm tracking-widest text-textsoft">
-        共 {posts.length} 篇文章
-      </p>
 
-      <div className="mt-8 flex flex-col gap-5">
-        {posts.map((post) => (
-          <PostCard key={post.slug} post={post} />
+      <div className="mt-2 flex flex-col">
+        {posts.map((post, i) => (
+          <Reveal key={post.slug} delay={i * 90}>
+            <PostCard post={post} />
+          </Reveal>
         ))}
       </div>
     </div>
