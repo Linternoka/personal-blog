@@ -73,6 +73,9 @@ exports.handler = async (event) => {
     }
 
     // 与 Decap 的 NetlifyAuthenticator 握手
+    // 注意：CMS 在 GitHub Pages（linternoka.github.io），而弹窗在本站（Netlify），
+    // 跨域时 targetOrigin 必须用 "*"，否则浏览器会丢弃发给 opener 的消息；
+    // Decap 侧会自行校验 e.origin === base_url，安全性不受影响。
     const tokenJson = JSON.stringify({ token: data.access_token });
     const html = `<!DOCTYPE html>
 <html lang="zh-CN">
@@ -80,15 +83,14 @@ exports.handler = async (event) => {
 <body>
 <script>
 (function () {
-  var origin = window.location.origin;
   function receiveMessage(e) {
     if (e.data === 'authorizing:github') {
-      window.opener.postMessage('authorization:github:success:' + ${JSON.stringify(tokenJson)}, origin);
+      window.opener.postMessage('authorization:github:success:' + ${JSON.stringify(tokenJson)}, '*');
       window.close();
     }
   }
   window.addEventListener('message', receiveMessage, false);
-  window.opener.postMessage('authorizing:github', origin);
+  window.opener.postMessage('authorizing:github', '*');
 })();
 </script>
 </body>
