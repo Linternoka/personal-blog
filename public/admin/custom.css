@@ -21,28 +21,30 @@ html[data-theme="light"] {
 /* 深色（手动 dark）：废墟赛博 */
 html[data-theme="dark"] {
   --decap-bg: #0a0e0d;
+  --decap-bg-soft: rgba(255, 255, 255, 0.05);
   --decap-text: #e8eae9;
   --decap-gold: #7fdcc6;
   --decap-gold-hover: #9de8d6;
   --decap-gold-light: rgba(127, 220, 198, 0.4);
   --decap-gold-soft: rgba(127, 220, 198, 0.16);
-  --decap-text-soft: #8a939b;
-  --decap-line: rgba(255, 255, 255, 0.1);
-  --decap-card: #11151c;
+  --decap-text-soft: #9aa3aa;
+  --decap-line: rgba(255, 255, 255, 0.12);
+  --decap-card: #14191a;
 }
 
 /* 深色（未手动设置时跟随系统） */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --decap-bg: #0a0e0d;
+    --decap-bg-soft: rgba(255, 255, 255, 0.05);
     --decap-text: #e8eae9;
     --decap-gold: #7fdcc6;
     --decap-gold-hover: #9de8d6;
     --decap-gold-light: rgba(127, 220, 198, 0.4);
     --decap-gold-soft: rgba(127, 220, 198, 0.16);
-    --decap-text-soft: #8a939b;
-    --decap-line: rgba(255, 255, 255, 0.1);
-    --decap-card: #11151c;
+    --decap-text-soft: #9aa3aa;
+    --decap-line: rgba(255, 255, 255, 0.12);
+    --decap-card: #14191a;
   }
 }
 
@@ -131,6 +133,34 @@ body,
 #nc-root aside a[class*="active"],
 #nc-root aside [class*="Active"] {
   color: var(--decap-gold) !important;
+}
+
+/* ---------- 覆盖 Decap 默认浅色组件（深色下保持统一，防黑白分界） ---------- */
+#nc-root [class*="AppHeader"],
+#nc-root [class*="CollectionTopContainer"],
+#nc-root [class*="CardTop"] {
+  background-color: var(--decap-bg) !important;
+  border-bottom: 1px solid var(--decap-line) !important;
+}
+#nc-root [class*="SearchInput"],
+#nc-root [class*="Sidebar"] input[type="text"],
+#nc-root [class*="Sidebar"] input[type="search"] {
+  background-color: var(--decap-bg-soft) !important;
+  border: 1px solid var(--decap-line) !important;
+  color: var(--decap-text) !important;
+}
+#nc-root [class*="SidebarNavLinkActive"],
+#nc-root [class*="sidebarNavLinkActive"] {
+  background-color: var(--decap-gold-soft) !important;
+  color: var(--decap-gold) !important;
+}
+
+/* 列表条目：卡片白底统一 */
+#nc-root [class*="CollectionView"] a,
+#nc-root [class*="EntryCard"],
+#nc-root [class*="Card"] {
+  background-color: var(--decap-card) !important;
+  color: var(--decap-text) !important;
 }
 
 /* ---------- 顶部工具条：细底边 + 统一背景（防止黑白分界） ---------- */
