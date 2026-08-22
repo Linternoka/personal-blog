@@ -1,0 +1,124 @@
+/* ============================================================
+   Decap CMS 后台 UI 定制
+   贴合站点「废书库修缮委员会」风格：暖米白 + 金色 + 衬线
+   覆盖方式：!important 压制 emotion 内联样式
+   ============================================================ */
+
+:root {
+  --decap-bg: #faf9f5;        /* 暖米白背景 */
+  --decap-text: #2b2a26;      /* 墨色正文 */
+  --decap-gold: #9c8a63;      /* 主金色 */
+  --decap-gold-hover: #8a7a55;
+  --decap-gold-light: #c9bda0;/* 淡金（装饰/滚动条） */
+  --decap-line: #e8e4da;      /* 细分割线 */
+  --decap-card: #ffffff;      /* 卡片/输入框底 */
+}
+
+/* ---------- 全局底色、字体、文字色 ---------- */
+html,
+body,
+#nc-root {
+  background-color: var(--decap-bg) !important;
+  color: var(--decap-text) !important;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
+    "SimSun", Georgia, serif !important;
+}
+
+/* ---------- 细金色滚动条（与主站一致） ---------- */
+#nc-root ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+#nc-root ::-webkit-scrollbar-track {
+  background: transparent;
+}
+#nc-root ::-webkit-scrollbar-thumb {
+  background: var(--decap-gold-light);
+  border-radius: 4px;
+}
+#nc-root ::-webkit-scrollbar-thumb:hover {
+  background: var(--decap-gold);
+}
+
+/* ---------- 链接与文字弱化 ---------- */
+#nc-root a {
+  color: var(--decap-gold) !important;
+}
+
+/* ---------- 登录按钮：金色描边 + hover 反色填充 ---------- */
+#nc-root button[class*="LoginButton"] {
+  background-color: transparent !important;
+  color: var(--decap-gold) !important;
+  border: 1px solid var(--decap-gold) !important;
+  border-radius: 2px !important;
+  letter-spacing: 0.12em !important;
+  font-family: inherit !important;
+  transition: background-color 0.25s ease, color 0.25s ease !important;
+}
+#nc-root button[class*="LoginButton"]:hover:not(:disabled) {
+  background-color: var(--decap-gold) !important;
+  color: #fff !important;
+}
+
+/* ---------- 主按钮（保存 / 新建 / 发布等）金色底 ---------- */
+#nc-root button[class*="PrimaryButton"] {
+  background-color: var(--decap-gold) !important;
+  border-color: var(--decap-gold) !important;
+  border-radius: 2px !important;
+  font-family: inherit !important;
+}
+#nc-root button[class*="PrimaryButton"]:hover:not(:disabled) {
+  background-color: var(--decap-gold-hover) !important;
+  border-color: var(--decap-gold-hover) !important;
+}
+
+/* ---------- 输入框：白底 + 细线 ---------- */
+#nc-root input[type="text"],
+#nc-root input[type="date"],
+#nc-root input[type="datetime-local"],
+#nc-root textarea,
+#nc-root select {
+  background-color: var(--decap-card) !important;
+  border: 1px solid var(--decap-line) !important;
+  border-radius: 2px !important;
+  font-family: inherit !important;
+}
+#nc-root input:focus,
+#nc-root textarea:focus,
+#nc-root select:focus {
+  border-color: var(--decap-gold) !important;
+  box-shadow: 0 0 0 1px var(--decap-gold) !important;
+  outline: none !important;
+}
+
+/* ---------- 侧边栏：米白底 + 金色选中 ---------- */
+#nc-root aside {
+  background-color: var(--decap-bg) !important;
+  border-right: 1px solid var(--decap-line) !important;
+}
+#nc-root aside a[aria-current="true"],
+#nc-root aside a[class*="active"],
+#nc-root aside [class*="Active"] {
+  color: var(--decap-gold) !important;
+}
+
+/* ---------- 顶部工具栏：细底边 ---------- */
+#nc-root header,
+#nc-root [class*="Toolbar"],
+#nc-root [class*="AppMainContainer"] > div:first-child {
+  border-bottom: 1px solid var(--decap-line) !important;
+}
+
+/* ---------- 卡片 / 面板：去掉重阴影，改细线 ---------- */
+#nc-root [class*="Card"] {
+  background-color: var(--decap-card) !important;
+  border: 1px solid var(--decap-line) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+
+/* ---------- 状态提示 / 选中高亮：金色 ---------- */
+#nc-root [class*="SuccessIcon"],
+#nc-root [class*="Check"] {
+  color: var(--decap-gold) !important;
+}
