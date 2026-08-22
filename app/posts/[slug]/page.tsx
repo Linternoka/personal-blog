@@ -14,13 +14,26 @@ export function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
+/**
+ * 安全解码动态路由参数：Next.js 16 对中文等非 ASCII slug 会传入 URL 编码形式
+ * （如 %E6%B5%8B...），而 generateStaticParams 返回未编码的中文；
+ * 统一解码后再查找，兼容两种情况；畸形编码回退原值，避免抛错。
+ */
+function safeDecodeSlug(slug: string): string {
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = getPostBySlug(safeDecodeSlug(slug));
   if (!post) return {};
   return {
     title: post.title,
@@ -42,7 +55,7 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = getPostBySlug(safeDecodeSlug(slug));
   if (!post) notFound();
 
   const html = await renderMarkdown(post.content);
