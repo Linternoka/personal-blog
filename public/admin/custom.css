@@ -102,10 +102,8 @@ body,
   color: var(--decap-gold) !important;
 }
 
-/* ---------- 顶部工具栏：细底边 ---------- */
-#nc-root header,
-#nc-root [class*="Toolbar"],
-#nc-root [class*="AppMainContainer"] > div:first-child {
+/* ---------- 顶部工具栏：细底边（只给工具条容器，避免误伤内部元素） ---------- */
+#nc-root [class*="ToolbarContainer"] {
   border-bottom: 1px solid var(--decap-line) !important;
 }
 
@@ -128,21 +126,16 @@ body,
    ============================================================ */
 
 /* 编辑区整体：舒展留白，内容不贴边 */
-#nc-root [class*="PaneContent"] {
+#nc-root [class*="PaneContent"],
+#nc-root [class*="ControlPaneContainer"] {
   padding: 28px 36px !important;
 }
-#nc-root [class*="EditorContainer"] {
+#nc-root [class*="Editor"] {
   background: var(--decap-bg) !important;
 }
-/* 编辑面板本身做成白色卡片 */
-#nc-root [class*="ControlPane"] {
-  background: #fff !important;
-}
 
-/* ---------- 标题输入：大号衬线，像主流编辑器标题 ---------- */
-/* 只作用于第一个字段（标题），避免误伤标签等其他 text 输入框 */
-#nc-root [class*="ControlPane"] [class*="EditorControl"]:first-of-type input[type="text"],
-#nc-root [class*="ControlPane"] > div:first-child input[type="text"] {
+/* ---------- 标题输入：大号衬线（仅第一个字段 = 标题） ---------- */
+#nc-root [class*="ControlPaneContainer"] > [class*="ControlContainer"]:first-of-type input[type="text"] {
   font-family: "Noto Serif SC", "Songti SC", serif !important;
   font-size: 26px !important;
   font-weight: 700 !important;
@@ -154,96 +147,76 @@ body,
   padding: 14px 0 !important;
   background: transparent !important;
   box-shadow: none !important;
+  width: 100% !important;
 }
 
 /* 字段标签：小字、字距，更克制 */
-#nc-root [class*="EditorControl"] label {
+#nc-root [class*="ControlContainer"] label {
   font-size: 12px !important;
   letter-spacing: 0.12em !important;
   color: #8a8578 !important;
-  text-transform: none !important;
 }
 
-/* ---------- 正文编辑区（Slate 富文本）：衬线 + 舒适行高 ---------- */
-#nc-root [class*="MarkdownControl"],
-#nc-root [class*="Slate"] {
+/* ---------- 正文编辑区（Slate 视觉模式）：衬线 + 舒适行高 ---------- */
+#nc-root .cms-editor-visual {
   font-family: "Noto Serif SC", "Songti SC", serif !important;
   font-size: 16.5px !important;
   line-height: 1.95 !important;
   letter-spacing: 0.03em !important;
   color: var(--decap-text) !important;
 }
-/* Markdown 源码模式也统一字体 */
-#nc-root [class*="RawEditor"] textarea {
-  font-family: ui-monospace, "Cascadia Code", Consolas, monospace !important;
-  font-size: 14px !important;
-  line-height: 1.8 !important;
-}
-
-/* 正文里的标题 / 列表 / 引用 / 代码样式 */
-#nc-root [class*="MarkdownControl"] h1 {
+#nc-root .cms-editor-visual h1 {
   font-size: 1.7em !important;
+  font-weight: 700 !important;
 }
-#nc-root [class*="MarkdownControl"] h2 {
+#nc-root .cms-editor-visual h2 {
   font-size: 1.4em !important;
+  font-weight: 700 !important;
 }
-#nc-root [class*="MarkdownControl"] h3 {
+#nc-root .cms-editor-visual h3 {
   font-size: 1.2em !important;
+  font-weight: 700 !important;
 }
-#nc-root [class*="MarkdownControl"] blockquote {
+#nc-root .cms-editor-visual blockquote {
   border-left: 3px solid var(--decap-gold) !important;
   margin: 1em 0 !important;
   padding: 0.2em 1em !important;
   color: #6b655a !important;
   background: rgba(156, 138, 99, 0.06) !important;
 }
-#nc-root [class*="MarkdownControl"] code {
+#nc-root .cms-editor-visual code {
   background: rgba(156, 138, 99, 0.12) !important;
   padding: 0.15em 0.4em !important;
   border-radius: 3px !important;
   font-size: 0.88em !important;
 }
-#nc-root [class*="MarkdownControl"] pre {
+#nc-root .cms-editor-visual pre {
   background: #1f1e1a !important;
   color: #eae6de !important;
   padding: 14px 16px !important;
   border-radius: 6px !important;
 }
 
-/* ---------- Markdown 编辑工具栏：白底、细线、圆角 ---------- */
-/* 限定在正文编辑区内，避免误伤顶部 EditorToolbar / 列表工具条 */
-#nc-root [class*="MarkdownControl"] [class*="Toolbar"],
-#nc-root [class*="MarkdownEditor"] [class*="Toolbar"],
-#nc-root [class*="Markdown"] [class*="Toolbar"] {
+/* ---------- 正文 Markdown 工具栏：白底圆角（限定在字段内） ---------- */
+#nc-root [class*="ControlContainer"] [class*="ToolbarContainer"] {
   background: #fff !important;
   border: 1px solid var(--decap-line) !important;
   border-radius: 8px !important;
-  padding: 6px 10px !important;
-  box-shadow: 0 1px 6px rgba(43, 42, 38, 0.05) !important;
+  padding: 6px 8px !important;
+  box-shadow: none !important;
 }
-#nc-root [class*="MarkdownControl"] [class*="ToolbarButton"],
-#nc-root [class*="MarkdownEditor"] [class*="ToolbarButton"],
-#nc-root [class*="Markdown"] [class*="ToolbarButton"] {
+#nc-root [class*="ControlContainer"] [class*="StyledToolbarButton"] {
   border-radius: 5px !important;
   margin: 0 1px !important;
 }
-#nc-root [class*="MarkdownControl"] [class*="ToolbarButton"]:hover,
-#nc-root [class*="MarkdownEditor"] [class*="ToolbarButton"]:hover,
-#nc-root [class*="Markdown"] [class*="ToolbarButton"]:hover {
+#nc-root [class*="ControlContainer"] [class*="StyledToolbarButton"]:hover {
   background: rgba(156, 138, 99, 0.1) !important;
   color: var(--decap-gold) !important;
 }
 
-/* ---------- 保存 / 发布按钮：金色，圆角 ---------- */
-#nc-root [class*="EditorToolbar"] button,
-#nc-root [class*="TopBar"] button {
+/* ---------- 保存 / 发布按钮：统一字体 ---------- */
+#nc-root [class*="ToolbarButton"] {
   font-family: inherit !important;
-}
-
-/* ---------- 日期 / 分类 / 标签等下拉控件 ---------- */
-#nc-root [class*="ControlPane"] select,
-#nc-root [class*="ControlPane"] [class*="Dropdown"] {
-  border-radius: 6px !important;
 }
 
 /* ---------- 编辑器两侧面板分隔线 ---------- */
