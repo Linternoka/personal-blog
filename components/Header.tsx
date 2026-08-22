@@ -14,24 +14,24 @@ export default function Header() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-bg/85 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
         {/* Logo */}
         <Link
           href="/"
-          className="kam-title flex items-center gap-2 text-xl font-black tracking-widest text-gold"
+          className="kam-title flex items-center gap-3 text-lg font-black tracking-[0.3em] text-gold"
         >
-          <span className="text-2xl">🌸</span>
+          <span className="text-xl">🌸</span>
           <span>{siteConfig.name}</span>
         </Link>
 
         {/* 桌面端导航 */}
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-2 md:flex">
           {siteConfig.nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className={`kam-nav-link rounded-sm px-3 py-2 text-sm tracking-widest ${
+              className={`kam-nav-link kam-nav rounded-sm px-3 py-2 text-sm ${
                 isActive(item.href)
                   ? "active"
                   : "text-textsoft hover:text-cream"
@@ -40,7 +40,7 @@ export default function Header() {
               {item.title}
             </Link>
           ))}
-          <div className="ml-1">
+          <div className="ml-2">
             <ThemeToggle />
           </div>
         </nav>
@@ -76,7 +76,7 @@ export default function Header() {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className={`kam-nav-link block rounded-sm px-3 py-2.5 text-sm tracking-widest ${
+              className={`kam-nav-link kam-nav block rounded-sm px-3 py-2.5 text-sm ${
                 isActive(item.href)
                   ? "active"
                   : "text-textsoft hover:text-cream"

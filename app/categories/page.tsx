@@ -11,9 +11,12 @@ export default function CategoriesPage() {
   const categories = getCategoriesWithCount();
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6">
-      <h1 className="kam-title text-3xl font-black text-gold">分类</h1>
-      <p className="mt-2 text-sm tracking-widest text-textsoft">
+    <div className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6">
+      <div className="kam-section">
+        <span className="kam-section-en">Category</span>
+        <h1 className="kam-section-ja text-3xl">分类</h1>
+      </div>
+      <p className="mt-4 text-sm tracking-widest text-textsoft">
         共 {categories.length} 个分类
       </p>
 

@@ -49,10 +49,13 @@ export default async function TagPage({
         <span className="mx-2">/</span>
         <span className="text-gold">#{name}</span>
       </nav>
-      <h1 className="kam-title mt-3 text-3xl font-black text-gold">
-        标签：{name}
-      </h1>
-      <p className="mt-2 text-sm tracking-widest text-textsoft">
+      <div className="kam-section mt-6">
+        <span className="kam-section-en">Tag</span>
+        <h1 className="kam-section-ja text-3xl">
+          <span className="kam-kakko">「</span>#{name}<span className="kam-kakko">」</span>
+        </h1>
+      </div>
+      <p className="mt-4 text-sm tracking-widest text-textsoft">
         共 {posts.length} 篇文章
       </p>
 

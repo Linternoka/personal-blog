@@ -12,11 +12,13 @@ export default function PostCard({ post }: { post: PostMeta }) {
           href={`/categories/${encodeURIComponent(post.category)}`}
           className="border border-gold px-2 py-0.5 font-serif font-semibold tracking-widest text-gold transition-colors hover:bg-gold hover:text-cream"
         >
+          <span className="kam-kakko">「</span>
           {post.category}
+          <span className="kam-kakko">」</span>
         </Link>
         <time
           dateTime={post.date}
-          className="tracking-widest text-textsoft"
+          className="tracking-[0.25em] text-textsoft"
         >
           {formatDate(post.date)}
         </time>

@@ -52,22 +52,17 @@ export default async function PostPage({
     <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
       {/* 文章头部 */}
       <header>
-        <div className="flex flex-wrap items-center gap-3 text-sm">
+        <span className="kam-section-en block">Article · {formatDate(post.date)}</span>
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-sm">
           <Link
             href={`/categories/${encodeURIComponent(post.category)}`}
             className="border border-gold px-2.5 py-1 font-serif font-semibold tracking-widest text-gold transition-colors hover:bg-gold hover:text-cream"
           >
             {post.category}
           </Link>
-          <time
-            dateTime={post.date}
-            className="tracking-widest text-textsoft"
-          >
-            {formatDate(post.date)}
-          </time>
           {post.updated && post.updated !== post.date && (
             <span className="text-xs text-textsoft/70">
-              （更新于 {formatDate(post.updated)}）
+              更新于 {formatDate(post.updated)}
             </span>
           )}
         </div>

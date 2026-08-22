@@ -54,9 +54,12 @@ export default function SearchClient() {
   }, [query, fuse]);
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6">
-      <h1 className="kam-title text-3xl font-black text-gold">搜索</h1>
-      <p className="mt-2 text-sm tracking-widest text-textsoft">
+    <div className="mx-auto w-full max-w-4xl px-4 py-14 sm:px-6">
+      <div className="kam-section">
+        <span className="kam-section-en">Search</span>
+        <h1 className="kam-section-ja text-3xl">搜索</h1>
+      </div>
+      <p className="mt-4 text-sm tracking-widest text-textsoft">
         搜索博客中的文章、标签与内容
       </p>
 

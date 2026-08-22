@@ -9,8 +9,11 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   const { author, name } = siteConfig;
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-12 sm:px-6">
-      <h1 className="kam-title text-3xl font-black text-gold">关于</h1>
+    <div className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6">
+      <div className="kam-section">
+        <span className="kam-section-en">About</span>
+        <h1 className="kam-section-ja text-3xl">关于</h1>
+      </div>
       <div className="mt-8 flex flex-col items-start gap-6 sm:flex-row">
         {/* 头像 */}
         <div className="kam-title flex h-24 w-24 shrink-0 items-center justify-center border border-gold bg-bgsoft text-4xl text-gold">
