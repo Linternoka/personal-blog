@@ -218,17 +218,6 @@ h4,
     border-color 0.8s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.card-archive::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 14px;
-  height: 14px;
-  background: linear-gradient(135deg, transparent 50%, rgba(0, 0, 0, 0.35) 50%, rgba(0, 0, 0, 0.35) 55%, transparent 55%);
-  opacity: 0.5;
-  pointer-events: none;
-}
 .card-archive:hover {
   transform: rotate(0deg) translateY(-4px);
   border-color: rgba(127, 220, 198, 0.4);
