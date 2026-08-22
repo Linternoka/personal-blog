@@ -164,6 +164,21 @@ body,
   color: var(--decap-text) !important;
 }
 
+/* ---------- 深色下残留的 Decap 默认浅色组件（字段标签/日期按钮/开关） ---------- */
+#nc-root [class*="FieldLabel"] {
+  background-color: transparent !important;
+  color: var(--decap-text-soft) !important;
+}
+#nc-root [class*="DateTimeControl"] button,
+#nc-root [class*="DateTimeControl"] [class*="button"] {
+  background-color: var(--decap-bg-soft) !important;
+  color: var(--decap-text) !important;
+  border: 1px solid var(--decap-line) !important;
+}
+#nc-root [class*="ToggleBackground"] {
+  background-color: var(--decap-line) !important;
+}
+
 /* ---------- 顶部工具条：细底边 + 统一背景（防止黑白分界） ---------- */
 #nc-root [class*="ToolbarContainer"],
 #nc-root header {
