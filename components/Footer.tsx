@@ -109,7 +109,7 @@ export default function Footer() {
         </p>
         <p className="mt-3 text-center">
           <Link
-            href={`${siteConfig.basePath}/admin/`}
+            href="/admin/"
             className="kam-link inline-flex items-center gap-1 text-xs tracking-widest text-textsoft/80 transition-colors hover:text-gold"
             title="进入图形化内容管理后台（Decap CMS）"
           >

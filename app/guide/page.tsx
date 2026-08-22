@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: `如何使用与维护 ${siteConfig.name}`,
 };
 
-const adminHref = `${siteConfig.basePath}/admin/`;
+const adminHref = "/admin/";
 
 function Section({
   num,
