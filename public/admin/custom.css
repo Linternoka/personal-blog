@@ -122,3 +122,122 @@ body,
 #nc-root [class*="Check"] {
   color: var(--decap-gold) !important;
 }
+
+/* ============================================================
+   编辑器界面美化（主流平台风格：语雀 / 公众号后台）
+   ============================================================ */
+
+/* 编辑区整体：舒展留白，内容不贴边 */
+#nc-root [class*="PaneContent"] {
+  padding: 28px 36px !important;
+}
+#nc-root [class*="EditorContainer"] {
+  background: var(--decap-bg) !important;
+}
+/* 编辑面板本身做成白色卡片 */
+#nc-root [class*="ControlPane"] {
+  background: #fff !important;
+}
+
+/* ---------- 标题输入：大号衬线，像主流编辑器标题 ---------- */
+#nc-root [class*="ControlPane"] [class*="EditorControl"] input[type="text"] {
+  font-family: "Noto Serif SC", "Songti SC", serif !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  color: var(--decap-text) !important;
+  border: none !important;
+  border-bottom: 1px solid var(--decap-line) !important;
+  border-radius: 0 !important;
+  padding: 14px 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* 字段标签：小字、字距，更克制 */
+#nc-root [class*="EditorControl"] label {
+  font-size: 12px !important;
+  letter-spacing: 0.12em !important;
+  color: #8a8578 !important;
+  text-transform: none !important;
+}
+
+/* ---------- 正文编辑区（Slate 富文本）：衬线 + 舒适行高 ---------- */
+#nc-root [class*="MarkdownControl"],
+#nc-root [class*="Slate"] {
+  font-family: "Noto Serif SC", "Songti SC", serif !important;
+  font-size: 16.5px !important;
+  line-height: 1.95 !important;
+  letter-spacing: 0.03em !important;
+  color: var(--decap-text) !important;
+}
+/* Markdown 源码模式也统一字体 */
+#nc-root [class*="RawEditor"] textarea {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace !important;
+  font-size: 14px !important;
+  line-height: 1.8 !important;
+}
+
+/* 正文里的标题 / 列表 / 引用 / 代码样式 */
+#nc-root [class*="MarkdownControl"] h1 {
+  font-size: 1.7em !important;
+}
+#nc-root [class*="MarkdownControl"] h2 {
+  font-size: 1.4em !important;
+}
+#nc-root [class*="MarkdownControl"] h3 {
+  font-size: 1.2em !important;
+}
+#nc-root [class*="MarkdownControl"] blockquote {
+  border-left: 3px solid var(--decap-gold) !important;
+  margin: 1em 0 !important;
+  padding: 0.2em 1em !important;
+  color: #6b655a !important;
+  background: rgba(156, 138, 99, 0.06) !important;
+}
+#nc-root [class*="MarkdownControl"] code {
+  background: rgba(156, 138, 99, 0.12) !important;
+  padding: 0.15em 0.4em !important;
+  border-radius: 3px !important;
+  font-size: 0.88em !important;
+}
+#nc-root [class*="MarkdownControl"] pre {
+  background: #1f1e1a !important;
+  color: #eae6de !important;
+  padding: 14px 16px !important;
+  border-radius: 6px !important;
+}
+
+/* ---------- Markdown 工具栏：白底、细线、圆角 ---------- */
+#nc-root [class*="Toolbar"] {
+  background: #fff !important;
+  border: 1px solid var(--decap-line) !important;
+  border-radius: 8px !important;
+  padding: 6px 10px !important;
+  box-shadow: 0 1px 6px rgba(43, 42, 38, 0.05) !important;
+}
+#nc-root [class*="ToolbarButton"] {
+  border-radius: 5px !important;
+  margin: 0 1px !important;
+}
+#nc-root [class*="ToolbarButton"]:hover {
+  background: rgba(156, 138, 99, 0.1) !important;
+  color: var(--decap-gold) !important;
+}
+
+/* ---------- 保存 / 发布按钮：金色，圆角 ---------- */
+#nc-root [class*="EditorToolbar"] button,
+#nc-root [class*="TopBar"] button {
+  font-family: inherit !important;
+}
+
+/* ---------- 日期 / 分类 / 标签等下拉控件 ---------- */
+#nc-root [class*="ControlPane"] select,
+#nc-root [class*="ControlPane"] [class*="Dropdown"] {
+  border-radius: 6px !important;
+}
+
+/* ---------- 编辑器两侧面板分隔线 ---------- */
+#nc-root [class*="PaneContainer"] > div {
+  border-color: var(--decap-line) !important;
+}
