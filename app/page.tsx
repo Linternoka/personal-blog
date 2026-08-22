@@ -3,6 +3,7 @@ import { getAllPosts, getCategoriesWithCount, getTagsWithCount } from "@/lib/pos
 import { siteConfig } from "@/lib/site";
 import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
+import ContactLink from "@/components/ContactLink";
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -100,12 +101,10 @@ export default function HomePage() {
               </a>
             )}
             {siteConfig.social.email && (
-              <a
-                href={siteConfig.social.email}
+              <ContactLink
+                email={siteConfig.social.email.replace(/^mailto:/, "")}
                 className="kam-btn px-7 py-2.5 text-sm"
-              >
-                联系我
-              </a>
+              />
             )}
             <Link href="/about" className="kam-btn px-7 py-2.5 text-sm">
               关于我

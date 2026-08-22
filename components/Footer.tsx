@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
+import ContactLink from "./ContactLink";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -42,12 +43,11 @@ export default function Footer() {
               </a>
             )}
             {siteConfig.social.email && (
-              <a
-                href={siteConfig.social.email}
+              <ContactLink
+                email={siteConfig.social.email.replace(/^mailto:/, "")}
                 className="kam-btn px-6 py-2 text-xs"
-              >
-                邮箱
-              </a>
+                label="邮箱"
+              />
             )}
             <Link href="/rss.xml" className="kam-btn px-6 py-2 text-xs" title="RSS 订阅">
               RSS
