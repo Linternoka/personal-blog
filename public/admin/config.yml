@@ -5,8 +5,10 @@ backend:
   name: github
   repo: Linternoka/personal-blog
   branch: main
-  # GitHub App 认证（无需自建服务器，使用 GitHub App 的 implicit OAuth）
-  base_url: https://github.com/apps/feishuku-cms
+  # 认证经 Netlify 的 OAuth 服务中转（Decap 官方配套，无需自建服务器）
+  # Decap 会自动拼 /auth，故 base_url 只写主域
+  # Netlify 站点：spontaneous-frangollo-baf0ae（用于承载认证配置）
+  base_url: https://api.netlify.com
 
 # 媒体文件（文章配图）保存到 public/images/，引用路径为 /images/xxx
 media_folder: "public/images"
