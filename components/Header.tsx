@@ -22,16 +22,14 @@ export default function Header() {
           className="kam-title flex items-center gap-3 text-lg font-bold tracking-[0.08em] text-goldstrong"
         >
           {siteConfig.logo && (
-            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bgsoft ring-1 ring-line">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`${siteConfig.basePath}${siteConfig.logo}`}
-                alt={siteConfig.name}
-                width={32}
-                height={32}
-                className="h-8 w-8 object-contain"
-              />
-            </span>
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={`${siteConfig.basePath}${siteConfig.logo}`}
+              alt={siteConfig.name}
+              width={40}
+              height={40}
+              className="h-10 w-10 shrink-0 object-contain"
+            />
           )}
           <span>{siteConfig.name}</span>
         </Link>

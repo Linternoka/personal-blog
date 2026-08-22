@@ -23,16 +23,14 @@ export default function Footer() {
             className="kam-title flex items-center gap-3 text-xl font-bold tracking-[0.08em] text-goldstrong"
           >
             {siteConfig.logo && (
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-bgsoft ring-1 ring-line">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`${siteConfig.basePath}${siteConfig.logo}`}
-                  alt=""
-                  width={30}
-                  height={30}
-                  className="h-[30px] w-[30px] object-contain"
-                />
-              </span>
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={`${siteConfig.basePath}${siteConfig.logo}`}
+                alt=""
+                width={40}
+                height={40}
+                className="h-10 w-10 shrink-0 object-contain"
+              />
             )}
             <span>{siteConfig.name}</span>
           </Link>
