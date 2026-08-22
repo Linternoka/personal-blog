@@ -19,17 +19,19 @@ export default function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="kam-title flex items-center gap-2.5 text-lg font-bold tracking-[0.08em] text-goldstrong"
+          className="kam-title flex items-center gap-3 text-lg font-bold tracking-[0.08em] text-goldstrong"
         >
           {siteConfig.logo && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={`${siteConfig.basePath}${siteConfig.logo}`}
-              alt={siteConfig.name}
-              width={28}
-              height={28}
-              className="h-7 w-7 object-contain"
-            />
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-bgsoft ring-1 ring-line">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`${siteConfig.basePath}${siteConfig.logo}`}
+                alt={siteConfig.name}
+                width={32}
+                height={32}
+                className="h-8 w-8 object-contain"
+              />
+            </span>
           )}
           <span>{siteConfig.name}</span>
         </Link>

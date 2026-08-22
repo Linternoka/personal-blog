@@ -21,28 +21,30 @@ export default function AboutPage() {
       <div className="border-b border-line pb-6">
         <h1 className="kam-section-ja text-3xl">关于</h1>
       </div>
-      <div className="mt-8 flex flex-col items-start gap-6 sm:flex-row">
+      <div className="mt-10 flex flex-col items-center text-center">
         {/* 头像 */}
         {siteConfig.avatar ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={`${siteConfig.basePath}${siteConfig.avatar}`}
-            alt={author.name}
-            width={80}
-            height={80}
-            className="h-20 w-20 shrink-0 rounded-full border border-line-strong object-cover"
-          />
+          <span className="rounded-full bg-bgsoft p-1.5 ring-1 ring-line">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={`${siteConfig.basePath}${siteConfig.avatar}`}
+              alt={author.name}
+              width={112}
+              height={112}
+              className="h-28 w-28 rounded-full object-cover"
+            />
+          </span>
         ) : (
-          <div className="kam-title flex h-20 w-20 shrink-0 items-center justify-center border border-line-strong bg-bgsoft text-3xl text-text">
+          <div className="kam-title flex h-28 w-28 items-center justify-center rounded-full border border-line-strong bg-bgsoft text-5xl text-text">
             {author.name.slice(0, 1)}
           </div>
         )}
-        <div>
-          <h2 className="kam-title text-xl font-bold text-text">
+        <div className="mt-6">
+          <h2 className="kam-title text-2xl font-bold text-text">
             {author.name}
           </h2>
-          <p className="mt-1 text-textsoft">{author.bio}</p>
-          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+          <p className="mt-2 text-textsoft">{author.bio}</p>
+          <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm">
             {siteConfig.social.github && (
               <a
                 href={siteConfig.social.github}
