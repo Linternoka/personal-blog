@@ -355,6 +355,22 @@ h4,
 .kam-nav-link.active::before {
   opacity: 0.8;
 }
+.kam-nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.kam-nav-link:hover::after,
+.kam-nav-link.active::after {
+  transform: scaleX(1);
+}
 
 /* ---------- 终端日志引用块 ---------- */
 .kam-quote,
@@ -375,6 +391,8 @@ blockquote::before {
 .kam-section-ja {
   position: relative;
   font-weight: 200;
+  display: inline-block;
+  padding-bottom: 0.35em;
 }
 .kam-section-ja::before {
   content: "\25C6";
@@ -383,6 +401,15 @@ blockquote::before {
   margin-right: 10px;
   color: var(--accent);
   opacity: 0.8;
+}
+.kam-section-ja::after {
+  content: "";
+  display: block;
+  margin-top: 0.45em;
+  height: 1px;
+  width: 3.5em;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  opacity: 0.55;
 }
 
 /* ---------- Hero：全屏留白，极淡青绿氛围 ---------- */

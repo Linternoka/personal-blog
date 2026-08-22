@@ -14,7 +14,7 @@ export default function Header() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/60 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
         {/* 站点名（终端提示符前缀） */}
         <Link

@@ -22,7 +22,7 @@
       })();
     </script>
     <script>
-      // 后台手动深浅色切换（主体编辑区；预览 iframe 仍跟随系统，Decap 机制限制）
+      // 后台工具：手动深浅色切换 + 返回前台（预览 iframe 仍跟随系统，Decap 机制限制）
       (function () {
         try {
           var saved = localStorage.getItem("decap-theme");
@@ -36,23 +36,37 @@
                 window.matchMedia("(prefers-color-scheme: dark)").matches)
             );
           };
-          var btn = document.createElement("button");
-          btn.type = "button";
-          btn.title = "切换深色 / 浅色";
-          btn.setAttribute("aria-label", "切换深色 / 浅色");
-          var paint = function () {
-            btn.textContent = isDark() ? "☀" : "☾";
+          var base = window.location.pathname.replace(/\/admin\/.*$/, "") + "/";
+          var box = document.createElement("div");
+          box.style.cssText =
+            "position:fixed;right:16px;bottom:16px;z-index:9999;display:flex;gap:8px;";
+          var mkBtn = function (html, title, onClick) {
+            var b = document.createElement("button");
+            b.type = "button";
+            b.title = title;
+            b.setAttribute("aria-label", title);
+            b.innerHTML = html;
+            b.style.cssText =
+              "width:38px;height:38px;border-radius:50%;border:1px solid var(--decap-line);background:var(--decap-bg);color:var(--decap-gold);cursor:pointer;font-size:16px;box-shadow:0 2px 12px rgba(0,0,0,.18);";
+            b.addEventListener("click", onClick);
+            return b;
           };
-          btn.style.cssText =
-            "position:fixed;right:16px;bottom:16px;z-index:9999;width:38px;height:38px;border-radius:50%;border:1px solid var(--decap-line);background:var(--decap-bg);color:var(--decap-gold);cursor:pointer;font-size:16px;box-shadow:0 2px 12px rgba(0,0,0,.18);";
-          btn.addEventListener("click", function () {
+          var homeBtn = mkBtn("↩", "返回前台", function () {
+            window.location.href = base;
+          });
+          var themeBtn = mkBtn("☾", "切换深色 / 浅色", function () {
             var next = isDark() ? "light" : "dark";
             document.documentElement.setAttribute("data-theme", next);
             localStorage.setItem("decap-theme", next);
-            paint();
+            themeBtn.innerHTML = isDark() ? "☀" : "☾";
           });
+          var paint = function () {
+            themeBtn.innerHTML = isDark() ? "☀" : "☾";
+          };
           paint();
-          document.body.appendChild(btn);
+          box.appendChild(homeBtn);
+          box.appendChild(themeBtn);
+          document.body.appendChild(box);
         } catch (e) {
           /* 忽略 */
         }
