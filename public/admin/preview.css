@@ -5,18 +5,29 @@
    ============================================================ */
 
 :root {
-  --preview-bg: #faf9f5;
-  --preview-text: #2b2a26;
-  --preview-gold: #9c8a63;
-  --preview-line: #e8e4da;
+  --preview-bg: #f2ece4;
+  --preview-text: #191a1c;
+  --preview-gold: #e5688f;
+  --preview-line: rgba(25, 26, 28, 0.1);
+  --preview-text-soft: #5e5b56;
+  --preview-gold-soft: rgba(229, 104, 143, 0.14);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --preview-bg: #0a0e0d;
+    --preview-text: #e8eae9;
+    --preview-gold: #7fdcc6;
+    --preview-line: rgba(255, 255, 255, 0.1);
+    --preview-text-soft: #8a939b;
+    --preview-gold-soft: rgba(127, 220, 198, 0.14);
+  }
 }
 
 html,
 body {
   background: var(--preview-bg);
   color: var(--preview-text);
-  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
-    "SimSun", Georgia, serif;
+  font-family: "Noto Sans JP", "PingFang SC", "Microsoft YaHei", sans-serif;
   line-height: 1.9;
   letter-spacing: 0.04em;
   font-size: 16px;
@@ -72,8 +83,8 @@ blockquote {
   margin: 1.2em 0;
   padding: 0.2em 1em;
   border-left: 2px solid var(--preview-gold);
-  color: #6b655a;
-  background: rgba(156, 138, 99, 0.06);
+  color: var(--preview-text-soft);
+  background: var(--preview-gold-soft);
   border-radius: 0 4px 4px 0;
 }
 
@@ -91,7 +102,7 @@ li {
 code {
   font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
   font-size: 0.88em;
-  background: rgba(156, 138, 99, 0.12);
+  background: var(--preview-gold-soft);
   padding: 0.15em 0.4em;
   border-radius: 3px;
 }
@@ -130,7 +141,7 @@ td {
   text-align: left;
 }
 th {
-  background: rgba(156, 138, 99, 0.08);
+  background: var(--preview-gold-soft);
 }
 
 /* 分隔线 */

@@ -1,17 +1,35 @@
 /* ============================================================
    Decap CMS 后台 UI 定制
-   贴合站点「废书库修缮委员会」风格：暖米白 + 金色 + 衬线
+   与主站统一：浅色截图淡色基调（米白+粉红）/ 深色废墟（暗色+青绿），跟随系统
    覆盖方式：!important 压制 emotion 内联样式
    ============================================================ */
 
+/* 浅色（跟随系统）：截图淡色基调 */
 :root {
-  --decap-bg: #faf9f5;        /* 暖米白背景 */
-  --decap-text: #2b2a26;      /* 墨色正文 */
-  --decap-gold: #9c8a63;      /* 主金色 */
-  --decap-gold-hover: #8a7a55;
-  --decap-gold-light: #c9bda0;/* 淡金（装饰/滚动条） */
-  --decap-line: #e8e4da;      /* 细分割线 */
-  --decap-card: #ffffff;      /* 卡片/输入框底 */
+  --decap-bg: #f2ece4;
+  --decap-text: #191a1c;
+  --decap-gold: #e5688f;        /* 粉红（太阳） */
+  --decap-gold-hover: #d64f7d;
+  --decap-gold-light: #f0b8c9;
+  --decap-gold-soft: rgba(229, 104, 143, 0.16);
+  --decap-text-soft: #5e5b56;
+  --decap-line: rgba(25, 26, 28, 0.1);
+  --decap-card: #ffffff;
+}
+
+/* 深色（跟随系统）：废墟赛博 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --decap-bg: #0a0e0d;
+    --decap-text: #e8eae9;
+    --decap-gold: #7fdcc6;
+    --decap-gold-hover: #9de8d6;
+    --decap-gold-light: rgba(127, 220, 198, 0.4);
+    --decap-gold-soft: rgba(127, 220, 198, 0.16);
+    --decap-text-soft: #8a939b;
+    --decap-line: rgba(255, 255, 255, 0.1);
+    --decap-card: #11151c;
+  }
 }
 
 /* ---------- 全局底色、字体、文字色 ---------- */
@@ -20,8 +38,7 @@ body,
 #nc-root {
   background-color: var(--decap-bg) !important;
   color: var(--decap-text) !important;
-  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC",
-    "SimSun", Georgia, serif !important;
+  font-family: "Noto Sans JP", "PingFang SC", "Microsoft YaHei", sans-serif !important;
 }
 
 /* ---------- 细金色滚动条（与主站一致） ---------- */
@@ -150,7 +167,7 @@ body,
 
 /* ---------- 标题输入：大号衬线（仅第一个字段 = 标题） ---------- */
 #nc-root [class*="ControlPaneContainer"] > [class*="ControlContainer"]:first-of-type input[type="text"] {
-  font-family: "Noto Serif SC", "Songti SC", serif !important;
+  font-family: "Noto Serif JP", "Source Han Serif SC", serif !important;
   font-size: 26px !important;
   font-weight: 700 !important;
   line-height: 1.4 !important;
@@ -168,7 +185,7 @@ body,
 #nc-root [class*="ControlContainer"] label {
   font-size: 12px !important;
   letter-spacing: 0.12em !important;
-  color: #8a8578 !important;
+  color: var(--decap-text-soft) !important;
 }
 #nc-root [class*="ControlContainer"] label::before {
   content: "\25C6";
@@ -180,7 +197,7 @@ body,
 
 /* ---------- 正文编辑区（Slate 视觉模式）：衬线 + 舒适行高 ---------- */
 #nc-root .cms-editor-visual {
-  font-family: "Noto Serif SC", "Songti SC", serif !important;
+  font-family: "Noto Sans JP", "PingFang SC", "Microsoft YaHei", sans-serif !important;
   font-size: 16.5px !important;
   line-height: 1.95 !important;
   letter-spacing: 0.03em !important;
@@ -202,11 +219,11 @@ body,
   border-left: 3px solid var(--decap-gold) !important;
   margin: 1em 0 !important;
   padding: 0.2em 1em !important;
-  color: #6b655a !important;
-  background: rgba(156, 138, 99, 0.06) !important;
+  color: var(--decap-text-soft) !important;
+  background: var(--decap-gold-soft) !important;
 }
 #nc-root .cms-editor-visual code {
-  background: rgba(156, 138, 99, 0.12) !important;
+  background: var(--decap-gold-soft) !important;
   padding: 0.15em 0.4em !important;
   border-radius: 3px !important;
   font-size: 0.88em !important;
@@ -231,7 +248,7 @@ body,
   margin: 0 1px !important;
 }
 #nc-root [class*="ControlContainer"] [class*="StyledToolbarButton"]:hover {
-  background: rgba(156, 138, 99, 0.1) !important;
+  background: var(--decap-gold-soft) !important;
   color: var(--decap-gold) !important;
 }
 
