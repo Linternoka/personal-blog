@@ -1,0 +1,49 @@
+# Decap CMS 配置：图形界面编辑博客内容
+# 后台地址：/admin/（部署后为 /personal-blog/admin/）
+
+backend:
+  name: github
+  repo: Linternoka/personal-blog
+  branch: main
+  # GitHub App 认证（无需自建服务器）：
+  # 请在 GitHub 创建 App 后，把下方 <你的App名称> 换成实际的 App slug
+  # 创建教程见仓库 README 或编辑器内说明
+  base_url: https://github.com/apps/<你的App名称>
+
+# 媒体文件（文章配图）保存到 public/images/，引用路径为 /images/xxx
+media_folder: "public/images"
+public_folder: "/images"
+
+# 界面语言：简体中文
+locale: zh_Hans
+
+collections:
+  - name: "posts"
+    label: "文章"
+    folder: "content/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: mdx
+    format: frontmatter
+    editor:
+      preview: false
+    fields:
+      - { label: "标题", name: "title", widget: "string" }
+      - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "摘要", name: "description", widget: "text", required: false }
+      - { label: "分类", name: "category", widget: "string" }
+      - {
+          label: "标签",
+          name: "tags",
+          widget: "list",
+          default: [],
+          required: false,
+        }
+      - {
+          label: "草稿（勾选则暂不发布）",
+          name: "draft",
+          widget: "boolean",
+          required: false,
+          default: false,
+        }
+      - { label: "正文", name: "body", widget: "markdown" }
