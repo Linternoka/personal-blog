@@ -21,18 +21,19 @@ export default function HomePage() {
             {siteConfig.name}
           </h1>
 
+          {/* 说明：标明这是个人博客，避免标题让人一头雾水 */}
+          <p className="kam-fade-up kam-delay-1 mt-6 text-base leading-loose text-herofgs sm:text-lg">
+            这里是 {siteConfig.author.name} 的个人博客，记录、展示、分享。
+          </p>
+
           {/* 分隔：细线 + 圆点 */}
-          <div className="kam-fade-up kam-delay-1 my-8 flex items-center gap-3">
+          <div className="kam-fade-up kam-delay-2 my-8 flex items-center gap-3">
             <span className="h-px w-12 bg-gradient-to-r from-transparent to-gold/60" />
             <span className="h-1.5 w-1.5 rounded-full bg-gold" />
             <span className="h-px w-12 bg-gradient-to-l from-transparent to-gold/60" />
           </div>
 
-          <p className="kam-fade-up kam-delay-2 mx-auto max-w-xl text-base leading-loose text-herofgs sm:text-lg">
-            {siteConfig.description}
-          </p>
-
-          <div className="kam-fade-up kam-delay-3 mt-10 flex flex-wrap items-center justify-center gap-3">
+          <div className="kam-fade-up kam-delay-3 mt-2 flex flex-wrap items-center justify-center gap-3">
             {siteConfig.social.github && (
               <a
                 href={siteConfig.social.github}
@@ -53,6 +54,13 @@ export default function HomePage() {
               关于我
             </Link>
           </div>
+
+          {/* 落点小字（杂志版权行，克制填充） */}
+          <p className="kam-fade-up kam-delay-4 mt-16 flex items-center gap-3 text-[11px] tracking-[0.35em] text-herofgf">
+            <span className="h-px w-8 bg-current opacity-30" />
+            ✎ 写代码，也写生活 · SINCE 2026
+            <span className="h-px w-8 bg-current opacity-30" />
+          </p>
         </div>
       </section>
 

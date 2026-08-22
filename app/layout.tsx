@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Geist_Mono, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+import { Geist_Mono, Noto_Sans_JP, Noto_Serif_SC } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// 标题衬线：Noto Serif JP（废墟感、极轻字重）
-const notoSerifJp = Noto_Serif_JP({
-  variable: "--font-noto-serif-jp",
+// 标题衬线：Noto Serif SC（思源宋体，覆盖简体中文，极轻字重 200）
+const notoSerifSc = Noto_Serif_SC({
+  variable: "--font-noto-serif-sc",
   subsets: ["latin"],
   weight: ["200", "300", "400", "500", "600", "700"],
   display: "swap",
@@ -54,7 +54,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       lang="zh-CN"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${geistMono.variable} ${notoSerifJp.variable} ${notoSansJp.variable} h-full antialiased`}
+      className={`${geistMono.variable} ${notoSerifSc.variable} ${notoSansJp.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-bg text-text">
         <ThemeProvider
