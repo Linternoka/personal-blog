@@ -1,0 +1,15 @@
+# Netlify 配置
+# 说明：GitHub Pages 是主部署；Netlify 仅用于承载 Decap CMS 的 OAuth 认证代理。
+# /auth 与 /callback 是 Decap 的 NetlifyAuthenticator 约定端点，
+# 必须位于站点根路径（base_url 要求不带路径，origin 精确匹配），
+# 故用 redirects 把它们转发到 Netlify Function。
+
+[[redirects]]
+  from = "/auth"
+  to = "/.netlify/functions/oauth/auth"
+  status = 200
+
+[[redirects]]
+  from = "/callback"
+  to = "/.netlify/functions/oauth/callback"
+  status = 200

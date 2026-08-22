@@ -5,10 +5,10 @@ backend:
   name: github
   repo: Linternoka/personal-blog
   branch: main
-  # 认证经 Netlify 的 OAuth 服务中转（Decap 官方配套，无需自建服务器）
-  # Decap 会自动拼 /auth，故 base_url 只写主域
-  # Netlify 站点：spontaneous-frangollo-baf0ae（用于承载认证配置）
-  base_url: https://api.netlify.com
+  # 认证经自托管的 Netlify Function OAuth 代理中转
+  # （Netlify 已废弃旧 OAuth 服务 api.netlify.com/auth，故自建 proxy）
+  # Decap 会自动拼 /auth 和 /callback，base_url 只写主域（origin 需精确匹配）
+  base_url: https://spontaneous-frangollo-baf0ae.netlify.app
 
 # 媒体文件（文章配图）保存到 public/images/，引用路径为 /images/xxx
 media_folder: "public/images"
