@@ -162,11 +162,9 @@ body,
   color: var(--decap-gold) !important;
 }
 
-/* 列表条目：卡片白底统一 */
+/* 列表条目：卡片白底统一（不用宽泛 [class*="Card"]，避免误伤 CardsGrid 等嵌套容器） */
 #nc-root [class*="CollectionView"] a,
-#nc-root [class*="EntryCard"],
-#nc-root [class*="Card"] {
-  background-color: var(--decap-card) !important;
+#nc-root [class*="EntryCard"] {
   color: var(--decap-text) !important;
 }
 
@@ -207,11 +205,25 @@ body,
   background-color: transparent !important;
 }
 
-/* ---------- 卡片 / 面板：去掉重阴影，改细线 ---------- */
-#nc-root [class*="Card"] {
+/* ============================================================
+   修复（2026-08-23，v15）：文章列表卡片多层边框堆叠
+   - 原宽泛选择器 [class*="Card"] 匹配到 CardsGrid(UL)/ListCard(LI)/
+     ListCardLink(A)/ListCardTitle(H2)，全部加了边框+背景 →
+     三层嵌套边框，用户看到的「错误堆叠」
+   修复：只对最外层卡片容器（ListCard-card / EntryCard）设边框，
+   链接与标题透明无边框，网格容器 UL 不再误伤
+   ============================================================ */
+#nc-root [class*="EntryCard"],
+#nc-root [class*="ListCard-card"] {
   background-color: var(--decap-card) !important;
   border: 1px solid var(--decap-line) !important;
   border-radius: 2px !important;
+  box-shadow: none !important;
+}
+#nc-root [class*="ListCardLink"],
+#nc-root [class*="ListCardTitle"] {
+  background-color: transparent !important;
+  border: none !important;
   box-shadow: none !important;
 }
 
