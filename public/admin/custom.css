@@ -424,9 +424,13 @@ body,
   background-color: transparent !important;
 }
 
-/* 分类下拉（react-select）外层容器透明 */
+/* 分类下拉（react-select）外层容器透明 + 边框主题化（默认蓝 → 细线/青绿） */
 #nc-root div[class*="-container"] {
   background-color: transparent !important;
+  border: 1px solid var(--decap-line) !important;
+}
+#nc-root div[class*="-container"]:focus-within {
+  border-color: var(--decap-gold) !important;
 }
 /* react-select 控制条：深色卡片底 + 细线 + 主题文字 */
 #nc-root div[class*="-control"] {
@@ -502,4 +506,58 @@ body,
 #nc-root .react-datepicker__time-list-item {
   background-color: var(--decap-card) !important;
   color: var(--decap-text) !important;
+}
+
+/* ============================================================
+   修复（2026-08-22，v10）：暗色模式剩余白色残留 / 黑色原生控件
+   - 原生 date/datetime 控件 color-scheme: dark（日历图标不再黑色）
+   - 布尔开关（草稿）外层 Decap 白容器透明化
+   - NoPreviewContainer（预览关闭占位）白块 → 主题底
+   - 账号下拉按钮浅青底 → 主题表面
+   - 分类下拉箭头图标 / 菜单边框主题化
+   ============================================================ */
+
+/* 原生日期/时间/选择控件：暗色下用浏览器深色渲染（图标/弹层不再黑） */
+html[data-theme="dark"] #nc-root input[type="date"],
+html[data-theme="dark"] #nc-root input[type="datetime-local"],
+html[data-theme="dark"] #nc-root select {
+  color-scheme: dark !important;
+}
+
+/* 布尔开关（草稿）外层 Decap 默认白容器：透明化 */
+#nc-root [class*="ControlContainer"] div:has(> button[role="switch"]) {
+  background-color: transparent !important;
+}
+
+/* 预览关闭时的占位容器：白块 → 主题背景 */
+#nc-root [class*="NoPreviewContainer"] {
+  background-color: var(--decap-bg) !important;
+  color: var(--decap-text) !important;
+  border: 1px solid var(--decap-line) !important;
+}
+
+/* 右上角账号下拉按钮：浅青底 → 主题表面 */
+#nc-root [class*="StyledDropdownButton"] {
+  background-color: var(--decap-bg-soft) !important;
+  color: var(--decap-text) !important;
+  border: 1px solid var(--decap-line) !important;
+}
+
+/* 分类下拉箭头图标：深灰 → 主题弱色，hover 时主题色 */
+#nc-root div[class*="-control"] [class*="indicator"] {
+  color: var(--decap-text-soft) !important;
+}
+#nc-root div[class*="-control"] [class*="indicator"] svg,
+#nc-root div[class*="-control"] [class*="indicator"] path {
+  fill: currentColor !important;
+}
+#nc-root div[class*="-control"]:hover [class*="indicator"],
+#nc-root div[class*="-control"]:focus-within [class*="indicator"] {
+  color: var(--decap-gold) !important;
+}
+
+/* 分类下拉菜单列表：去掉 Decap 默认深灰轮廓（实际是 outline） */
+#nc-root div[class*="-menu"] [role="listbox"] {
+  outline: none !important;
+  border: none !important;
 }
