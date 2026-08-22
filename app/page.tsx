@@ -55,12 +55,19 @@ export default function HomePage() {
             </Link>
           </div>
 
-          {/* 落点小字（杂志版权行，克制填充） */}
-          <p className="kam-fade-up kam-delay-4 mt-16 flex items-center gap-3 text-[11px] tracking-[0.35em] text-herofgf">
-            <span className="h-px w-8 bg-current opacity-30" />
-            ✎ 写代码，也写生活 · SINCE 2026
-            <span className="h-px w-8 bg-current opacity-30" />
-          </p>
+          {/* 格言（克制填充） */}
+          <div className="kam-fade-up kam-delay-4 mt-16 max-w-md">
+            <p className="text-[13px] leading-relaxed text-herofgs">
+              简言之，其结果必然是世界整个地变成另外的样子。
+            </p>
+            <p className="mt-2 text-xs italic leading-relaxed text-herofgf">
+              Kurz gesagt: das Ergebnis muß sein, daß die Welt ganz und gar zu
+              einer anderen wird.
+            </p>
+            <p className="mt-3 text-[10px] tracking-[0.3em] text-herofgf">
+              —— Wittgenstein, L. TLP, 6.43.
+            </p>
+          </div>
         </div>
       </section>
 
