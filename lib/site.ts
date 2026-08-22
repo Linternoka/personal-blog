@@ -13,6 +13,7 @@ export const siteConfig = {
     { title: "分类", href: "/categories" },
     { title: "标签", href: "/tags" },
     { title: "搜索", href: "/search" },
+    { title: "指南", href: "/guide" },
     { title: "关于", href: "/about" },
     { title: "友链", href: "/friends" },
   ] as { title: string; href: string }[],
