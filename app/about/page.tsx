@@ -40,7 +40,7 @@ export default function AboutPage() {
           </div>
         )}
         <div className="mt-6">
-          <h2 className="kam-title text-2xl font-bold text-text">
+          <h2 className="kam-title text-2xl text-text">
             {author.name}
           </h2>
           <p className="mt-2 text-textsoft">{author.bio}</p>

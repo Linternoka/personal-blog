@@ -105,7 +105,7 @@ export default async function PostPage({
                 </span>
               )}
             </div>
-            <h1 className="kam-title mt-5 text-3xl font-light leading-snug text-text sm:text-4xl">
+            <h1 className="kam-title mt-5 text-3xl leading-snug text-text sm:text-4xl">
               {post.title}
             </h1>
             {post.description && (
@@ -155,7 +155,7 @@ export default async function PostPage({
             className="group py-2 pr-4"
           >
             <span className="text-xs tracking-widest text-gold">← 上一篇</span>
-            <p className="kam-title mt-1.5 text-base font-semibold leading-snug text-text transition-colors group-hover:text-goldstrong">
+            <p className="kam-title mt-1.5 text-base leading-snug text-text transition-colors group-hover:text-goldstrong">
               {prev.title}
             </p>
           </Link>
@@ -168,7 +168,7 @@ export default async function PostPage({
             className="group py-2 pl-4 text-right sm:border-l sm:border-line"
           >
             <span className="text-xs tracking-widest text-gold">下一篇 →</span>
-            <p className="kam-title mt-1.5 text-base font-semibold leading-snug text-text transition-colors group-hover:text-goldstrong">
+            <p className="kam-title mt-1.5 text-base leading-snug text-text transition-colors group-hover:text-goldstrong">
               {next.title}
             </p>
           </Link>
@@ -195,7 +195,7 @@ export default async function PostPage({
             </div>
           )}
           <div>
-            <p className="kam-title text-sm font-bold text-text">
+            <p className="kam-title text-sm text-text">
               {siteConfig.author.name}
             </p>
             <p className="mt-0.5 text-xs text-textsoft">

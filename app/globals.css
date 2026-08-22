@@ -17,51 +17,55 @@
    ============================================================ */
 
 :root,
+.light {
+  --bg: #f2ece4; /* 苍白米白天际 */
+  --bg-soft: rgba(255, 255, 255, 0.55); /* 玻璃拟态表面 */
+  --bg-deep: #e9e2d8; /* 淡暖灰（云层） */
+  --text: #191a1c; /* 近黑（黑色大字） */
+  --text-soft: #5e5b56; /* 雾灰 */
+  --line: rgba(25, 26, 28, 0.1);
+  --line-strong: rgba(25, 26, 28, 0.18);
+  --gold: #e5688f; /* 粉红（太阳） */
+  --gold-strong: #d64f7d;
+  --gold-soft: rgba(229, 104, 143, 0.16);
+  --accent: #e5688f;
+  --accent-b: #b78cc7; /* 淡紫点缀 */
+  --accent-b-soft: rgba(183, 140, 199, 0.16);
+  --accent-soft: rgba(229, 104, 143, 0.4);
+  --accent-faint: rgba(229, 104, 143, 0.12);
+  --red: #c2565a; /* 暗红点缀 */
+  --hero-fg: #191a1c;
+  --hero-fg-soft: rgba(25, 26, 28, 0.72);
+  --hero-fg-faint: rgba(25, 26, 28, 0.38);
+  --hero-glow: rgba(229, 104, 143, 0.18); /* 粉色太阳光晕 */
+  --fog-a: rgba(229, 104, 143, 0.16); /* 粉色霞光 */
+  --fog-b: rgba(140, 175, 215, 0.14); /* 淡蓝天空 */
+}
+
+/* 深色模式：废墟赛博（保留暗色基底 + 青绿/品红强调） */
 .dark {
-  --bg: #0a0e0d; /* 雾墨绿黑 */
-  --bg-soft: rgba(255, 255, 255, 0.03); /* 玻璃拟态表面 */
-  --bg-deep: #11151c; /* 雾蓝黑 */
-  --text: #e8eae9; /* 冰雾白 */
-  --text-soft: #8a939b; /* 雾灰 */
+  --bg: #0a0e0d;
+  --bg-soft: rgba(255, 255, 255, 0.03);
+  --bg-deep: #11151c;
+  --text: #e8eae9;
+  --text-soft: #8a939b;
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.16);
-  --gold: #7fdcc6; /* 强调 A：低饱和青绿（兼容旧类名） */
+  --gold: #7fdcc6;
   --gold-strong: #9de8d6;
   --gold-soft: rgba(127, 220, 198, 0.16);
   --accent: #7fdcc6;
-  --accent-b: #c77dab; /* 强调 B：低饱和品红 */
+  --accent-b: #c77dab;
   --accent-b-soft: rgba(199, 125, 171, 0.14);
-  --red: #b0403a; /* 暗色赛博红点缀 */
+  --accent-soft: rgba(127, 220, 198, 0.4);
+  --accent-faint: rgba(127, 220, 198, 0.12);
+  --red: #b0403a;
   --hero-fg: #e8eae9;
   --hero-fg-soft: rgba(232, 234, 233, 0.72);
   --hero-fg-faint: rgba(232, 234, 233, 0.38);
   --hero-glow: rgba(127, 220, 198, 0.08);
   --fog-a: rgba(127, 220, 198, 0.06);
   --fog-b: rgba(199, 125, 171, 0.05);
-}
-
-/* 亮色模式：同一色系的浅色派生（保持克制，不用商业高饱和渐变） */
-.light {
-  --bg: #eef1f0;
-  --bg-soft: rgba(10, 14, 13, 0.04);
-  --bg-deep: #e2e7e5;
-  --text: #1c2120;
-  --text-soft: #5d6766;
-  --line: rgba(10, 14, 13, 0.1);
-  --line-strong: rgba(10, 14, 13, 0.2);
-  --gold: #2f9d85;
-  --gold-strong: #1f8a72;
-  --gold-soft: rgba(47, 157, 133, 0.14);
-  --accent: #2f9d85;
-  --accent-b: #a04f87;
-  --accent-b-soft: rgba(160, 79, 135, 0.12);
-  --red: #a63a35;
-  --hero-fg: #1c2120;
-  --hero-fg-soft: rgba(28, 33, 32, 0.72);
-  --hero-fg-faint: rgba(28, 33, 32, 0.38);
-  --hero-glow: rgba(47, 157, 133, 0.1);
-  --fog-a: rgba(47, 157, 133, 0.05);
-  --fog-b: rgba(160, 79, 135, 0.04);
 }
 
 /* ---------- 雾气背景：缓慢漂移（60-120s），不阻塞主线程 ---------- */
@@ -74,7 +78,7 @@ body {
   background:
     radial-gradient(1100px 720px at 88% -8%, var(--fog-a), transparent 62%),
     radial-gradient(900px 640px at 6% 112%, var(--fog-b), transparent 60%),
-    linear-gradient(155deg, #0a0e0d 0%, #0d1213 45%, #11151c 100%);
+    linear-gradient(155deg, #f2ece4 0%, #eee7dd 45%, #e9e2d8 100%);
   background-attachment: fixed;
   background-size: 180% 180%;
   animation: fog-drift 90s ease-in-out infinite alternate;
@@ -82,11 +86,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
-.light body {
+.dark body {
   background:
     radial-gradient(1100px 720px at 88% -8%, var(--fog-a), transparent 62%),
     radial-gradient(900px 640px at 6% 112%, var(--fog-b), transparent 60%),
-    linear-gradient(155deg, #eef1f0 0%, #e6ebe9 45%, #e2e7e5 100%);
+    linear-gradient(155deg, #0a0e0d 0%, #0d1213 45%, #11151c 100%);
 }
 @keyframes fog-drift {
   0% {
@@ -433,7 +437,7 @@ blockquote::before {
 /* ---------- Hero 大字标题 ---------- */
 .kam-hero-title {
   font-family: var(--font-serif);
-  font-weight: 100;
+  font-weight: 200;
   letter-spacing: 0.05em;
   line-height: 1.2;
   color: var(--hero-fg);

@@ -34,7 +34,7 @@ export default function FriendsPage() {
                   {friend.name.slice(0, 1)}
                 </div>
                 <div className="min-w-0">
-                  <h2 className="kam-title font-bold text-text transition-colors group-hover:text-goldstrong">
+                  <h2 className="kam-title text-text transition-colors group-hover:text-goldstrong">
                     {friend.name}
                   </h2>
                   <p className="mt-1 line-clamp-2 text-sm text-textsoft">

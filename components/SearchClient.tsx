@@ -114,7 +114,7 @@ export default function SearchClient() {
                   {post.category}
                 </span>
               </div>
-              <h2 className="kam-title mt-2 text-lg font-bold text-text transition-colors group-hover:text-goldstrong">
+              <h2 className="kam-title mt-2 text-lg text-text transition-colors group-hover:text-goldstrong">
                 {post.title}
               </h2>
               {post.description && (

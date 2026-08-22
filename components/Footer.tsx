@@ -21,7 +21,7 @@ export default function Footer() {
           {/* 站点名 */}
           <Link
             href="/"
-            className="kam-title text-xl font-bold tracking-[0.08em] text-goldstrong"
+            className="kam-title text-xl tracking-[0.08em] text-goldstrong"
           >
             {siteConfig.name}
           </Link>

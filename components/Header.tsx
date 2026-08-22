@@ -19,7 +19,7 @@ export default function Header() {
         {/* 站点名（终端提示符前缀） */}
         <Link
           href="/"
-          className="kam-title group flex items-center gap-2 text-lg font-light tracking-[0.08em] text-text"
+          className="kam-title group flex items-center gap-2 text-lg tracking-[0.08em] text-text"
         >
           <span className="text-gold" aria-hidden="true">
             ❯

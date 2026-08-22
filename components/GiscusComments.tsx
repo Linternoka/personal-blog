@@ -16,7 +16,7 @@ export default function GiscusComments() {
 
   return (
     <section className="mt-12 border-t border-gray-200 pt-8 dark:border-gray-800">
-      <h2 className="mb-4 text-lg font-bold text-gray-900 dark:text-gray-50">
+      <h2 className="mb-4 text-lg text-gray-900 dark:text-gray-50">
         评论
       </h2>
       <Giscus

@@ -31,7 +31,7 @@ export default function CategoriesPage() {
                 href={`/categories/${encodeURIComponent(category.name)}`}
                 className="group flex items-center justify-between border-b border-line py-5 transition-colors duration-300 hover:border-gold/40"
               >
-                <span className="kam-title text-lg font-bold text-text transition-colors group-hover:text-goldstrong">
+                <span className="kam-title text-lg text-text transition-colors group-hover:text-goldstrong">
                   {category.name}
                 </span>
                 <span className="text-xs tabular-nums tracking-widest text-textsoft">
