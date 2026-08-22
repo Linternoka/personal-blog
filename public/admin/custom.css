@@ -192,6 +192,15 @@ body,
   background-color: var(--decap-bg) !important;
 }
 
+/* ---------- 暗色下残留白色：编辑器分栏面板（SplitPane）与正文可视编辑区内容容器 ---------- */
+#nc-root [class*="SplitPane"] {
+  background-color: var(--decap-bg) !important;
+  box-shadow: none !important;
+}
+#nc-root .cms-editor-visual [class*="Editor"] > div {
+  background-color: transparent !important;
+}
+
 /* ---------- 卡片 / 面板：去掉重阴影，改细线 ---------- */
 #nc-root [class*="Card"] {
   background-color: var(--decap-card) !important;
