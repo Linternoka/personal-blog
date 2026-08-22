@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
+import ContactLink from "@/components/ContactLink";
 
 export const metadata: Metadata = {
   title: "关于",
@@ -23,7 +24,7 @@ export default function AboutPage() {
             {author.name}
           </h2>
           <p className="mt-1 text-textsoft">{author.bio}</p>
-          <div className="mt-4 flex flex-wrap gap-5 text-sm">
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
             {siteConfig.social.github && (
               <a
                 href={siteConfig.social.github}
@@ -34,13 +35,51 @@ export default function AboutPage() {
                 GitHub
               </a>
             )}
-            {siteConfig.social.email && (
+            {siteConfig.social.bilibili && (
               <a
-                href={siteConfig.social.email}
+                href={siteConfig.social.bilibili}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="kam-link tracking-widest"
               >
-                联系我
+                Bilibili
               </a>
+            )}
+            {siteConfig.social.moegirl && (
+              <a
+                href={siteConfig.social.moegirl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="kam-link tracking-widest"
+              >
+                萌娘百科
+              </a>
+            )}
+            {siteConfig.social.bangumi && (
+              <a
+                href={siteConfig.social.bangumi}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="kam-link tracking-widest"
+              >
+                Bangumi
+              </a>
+            )}
+            {siteConfig.social.scp && (
+              <a
+                href={siteConfig.social.scp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="kam-link tracking-widest"
+              >
+                SCP 基金会
+              </a>
+            )}
+            {siteConfig.social.email && (
+              <ContactLink
+                email={siteConfig.social.email.replace(/^mailto:/, "")}
+                className="kam-link tracking-widest"
+              />
             )}
           </div>
         </div>
