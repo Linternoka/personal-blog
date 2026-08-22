@@ -18,29 +18,29 @@
 
 :root,
 .light {
-  --bg: #f2ece4; /* 苍白米白天际 */
-  --bg-soft: rgba(255, 255, 255, 0.55); /* 玻璃拟态表面 */
-  --bg-deep: #e9e2d8; /* 淡暖灰（云层） */
-  --text: #191a1c; /* 近黑（黑色大字） */
-  --text-soft: #5e5b56; /* 雾灰 */
-  --line: rgba(25, 26, 28, 0.1);
-  --line-strong: rgba(25, 26, 28, 0.18);
-  --gold: #e5688f; /* 粉红（太阳） */
-  --gold-strong: #d64f7d;
-  --gold-soft: rgba(229, 104, 143, 0.16);
-  --accent: #e5688f;
-  --accent-b: #b78cc7; /* 淡紫点缀 */
-  --accent-b-soft: rgba(183, 140, 199, 0.16);
-  --accent-soft: rgba(229, 104, 143, 0.4);
-  --accent-faint: rgba(229, 104, 143, 0.12);
-  --red: #c2565a; /* 暗红点缀 */
-  --hero-fg: #191a1c;
-  --hero-fg-soft: rgba(25, 26, 28, 0.72);
-  --hero-fg-faint: rgba(25, 26, 28, 0.38);
-  --hero-glow: rgba(229, 104, 143, 0.09); /* 粉色太阳光晕（克制） */
-  --fog-a: rgba(229, 104, 143, 0.07); /* 粉色霞光 */
-  --fog-b: rgba(140, 175, 215, 0.08); /* 淡蓝天空 */
-  --grid: rgba(25, 26, 28, 0.05); /* 网格线 */
+  --bg: #f7f5f0; /* 暖白底 */
+  --bg-soft: rgba(255, 255, 255, 0.7); /* 玻璃拟态表面 */
+  --bg-deep: #efece4; /* 稍深暖灰 */
+  --text: #16181a; /* 近黑（强对比） */
+  --text-soft: #4b4f4d; /* 深雾灰（对比增强） */
+  --line: rgba(22, 24, 26, 0.12);
+  --line-strong: rgba(22, 24, 26, 0.2);
+  --gold: #0f766e; /* 深青绿（呼应暗色青绿，浅底上对比强） */
+  --gold-strong: #115e59;
+  --gold-soft: rgba(15, 118, 110, 0.14);
+  --accent: #0f766e;
+  --accent-b: #9d174d; /* 深品红 */
+  --accent-b-soft: rgba(157, 23, 77, 0.12);
+  --accent-soft: rgba(15, 118, 110, 0.4);
+  --accent-faint: rgba(15, 118, 110, 0.12);
+  --red: #b91c1c;
+  --hero-fg: #16181a;
+  --hero-fg-soft: rgba(22, 24, 26, 0.75);
+  --hero-fg-faint: rgba(22, 24, 26, 0.4);
+  --hero-glow: rgba(15, 118, 110, 0.08);
+  --fog-a: rgba(15, 118, 110, 0.06);
+  --fog-b: rgba(120, 150, 190, 0.08);
+  --grid: rgba(22, 24, 26, 0.05);
 }
 
 /* 深色模式：废墟赛博（保留暗色基底 + 青绿/品红强调） */
@@ -80,7 +80,7 @@ body {
   background:
     radial-gradient(1100px 720px at 88% -8%, var(--fog-a), transparent 62%),
     radial-gradient(900px 640px at 6% 112%, var(--fog-b), transparent 60%),
-    linear-gradient(155deg, #f2ece4 0%, #eee7dd 45%, #e9e2d8 100%);
+    linear-gradient(155deg, #f7f5f0 0%, #f3f1ea 45%, #efece4 100%);
   background-attachment: fixed;
   background-size: 180% 180%;
   animation: fog-drift 90s ease-in-out infinite alternate;

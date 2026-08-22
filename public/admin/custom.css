@@ -4,17 +4,17 @@
    覆盖方式：!important 压制 emotion 内联样式
    ============================================================ */
 
-/* 浅色（默认 / 手动 light）：截图淡色基调 */
+/* 浅色（默认 / 手动 light）：暖白 + 深青绿 */
 :root,
 html[data-theme="light"] {
-  --decap-bg: #f2ece4;
-  --decap-text: #191a1c;
-  --decap-gold: #e5688f;        /* 粉红（太阳） */
-  --decap-gold-hover: #d64f7d;
-  --decap-gold-light: #f0b8c9;
-  --decap-gold-soft: rgba(229, 104, 143, 0.16);
-  --decap-text-soft: #5e5b56;
-  --decap-line: rgba(25, 26, 28, 0.1);
+  --decap-bg: #f7f5f0;
+  --decap-text: #16181a;
+  --decap-gold: #0f766e;
+  --decap-gold-hover: #115e59;
+  --decap-gold-light: rgba(15, 118, 110, 0.4);
+  --decap-gold-soft: rgba(15, 118, 110, 0.14);
+  --decap-text-soft: #4b4f4d;
+  --decap-line: rgba(22, 24, 26, 0.12);
   --decap-card: #ffffff;
 }
 
