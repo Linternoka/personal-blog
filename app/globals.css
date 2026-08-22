@@ -7,27 +7,27 @@
 /* 基于 class 的暗色模式（next-themes 会在 html 上添加 .dark） */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* ---------- 配色：中性为主 + 少量金色点缀（克制不缭乱） ---------- */
+/* ---------- 配色：暖米白为底（柔和护眼）+ 少量金色点缀 ---------- */
 :root {
-  --bg: #ffffff;
-  --bg-soft: #fafaf8;
-  --bg-deep: #f2f1ee;
-  --text: #1a1a18;
-  --text-soft: #6f6b62;
-  --line: #e7e4de;
-  --line-strong: #c9c4ba;
-  --gold: #a08a60; /* 复古金（点缀用） */
-  --gold-strong: #8a744c;
-  --gold-soft: rgba(160, 138, 96, 0.45);
-  --cream: #fff7ea;
-  --ink: #161512;
-  --hero-bg: #ffffff;
-  --hero-fg: #1a1a18;
-  --hero-fg-soft: rgba(26, 26, 24, 0.68);
-  --hero-fg-faint: rgba(26, 26, 24, 0.42);
-  --hero-glow: rgba(160, 138, 96, 0.1);
-  --hero-glitch-a: rgba(190, 70, 70, 0.45);
-  --hero-glitch-b: rgba(90, 120, 190, 0.45);
+  --bg: #faf9f5; /* 柔和米白 */
+  --bg-soft: #f4f2ec;
+  --bg-deep: #ebe8e0;
+  --text: #2b2a26; /* 柔和深灰，非纯黑 */
+  --text-soft: #77716a;
+  --line: #e6e2d8;
+  --line-strong: #c9c4b8;
+  --gold: #9c8a63; /* 复古金（点缀用） */
+  --gold-strong: #7c6c4a;
+  --gold-soft: rgba(156, 138, 99, 0.45);
+  --cream: #fff6e6;
+  --ink: #1c1b18;
+  --hero-bg: #faf9f5;
+  --hero-fg: #2b2a26;
+  --hero-fg-soft: rgba(43, 42, 38, 0.68);
+  --hero-fg-faint: rgba(43, 42, 38, 0.42);
+  --hero-glow: rgba(156, 138, 99, 0.12);
+  --hero-glitch-a: rgba(190, 70, 70, 0.4);
+  --hero-glitch-b: rgba(90, 120, 190, 0.4);
 }
 
 .dark {

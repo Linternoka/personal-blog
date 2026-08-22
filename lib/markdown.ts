@@ -27,6 +27,33 @@ const sanitizeSchema = {
   ),
 };
 
+/**
+ * rehype 插件：给站内图片（/ 开头的绝对路径）自动拼接部署子路径 basePath，
+ * 使 markdown 里写 `/images/xxx.png` 在子路径部署下也能正确加载
+ */
+function rehypeBasePathImages() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+  if (!basePath) return () => undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (tree: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const walk = (node: any) => {
+      if (
+        node.type === "element" &&
+        node.tagName === "img" &&
+        typeof node.properties?.src === "string"
+      ) {
+        const src = node.properties.src;
+        if (src.startsWith("/") && !src.startsWith("//")) {
+          node.properties.src = `${basePath}${src}`;
+        }
+      }
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
 /** 将 Markdown/MDX 正文渲染为 HTML 字符串（已消毒，防 XSS） */
 export async function renderMarkdown(content: string): Promise<string> {
   const file = await unified()
@@ -38,6 +65,7 @@ export async function renderMarkdown(content: string): Promise<string> {
     .use(rehypeKatex)
     .use(rehypeHighlight)
     .use(rehypeSanitize, sanitizeSchema)
+    .use(rehypeBasePathImages)
     .use(rehypeStringify)
     .process(content);
   return String(file);
