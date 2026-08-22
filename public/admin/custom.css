@@ -338,6 +338,32 @@ body,
   padding: 6px 8px !important;
   box-shadow: none !important;
 }
+
+/* ============================================================
+   修复（2026-08-23，v14）：Markdown 工具栏窄列垂直堆叠错位
+   - 预览 SplitPane 下字段列变窄，工具栏按钮组（无 class 的
+     直接子 div）是 display:block + 宽 106px → 9 个格式按钮
+     垂直堆叠成 184px 高，富文本/Markdown 切换还覆盖在图标上
+   修复：按钮组改 flex 横排，工具栏整体 nowrap + 横向滚动
+   ============================================================ */
+/* 按钮组（第一个直接子 div）横排，不再垂直堆叠 */
+#nc-root [class*="ControlContainer"] [class*="ToolbarContainer"] > div {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+}
+/* 工具栏整体不换行，超出部分横向滚动（保持一行） */
+#nc-root [class*="ControlContainer"] [class*="ToolbarContainer"] {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+}
+/* 按钮与切换不压缩，保证图标完整 */
+#nc-root [class*="ControlContainer"] [class*="ToolbarContainer"] [class*="StyledToolbarButton"],
+#nc-root [class*="ControlContainer"] [class*="ToolbarContainer"] [class*="ToolbarToggle"],
+#nc-root [class*="ControlContainer"] [class*="ToolbarContainer"] [class*="ToolbarDropdownWrapper"] {
+  flex-shrink: 0 !important;
+}
 #nc-root [class*="ControlContainer"] [class*="StyledToolbarButton"] {
   border-radius: 5px !important;
   margin: 0 1px !important;
