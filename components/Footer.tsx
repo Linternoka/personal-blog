@@ -9,6 +9,7 @@ import {
   ShieldIcon,
   MailIcon,
   RssIcon,
+  EditIcon,
 } from "./icons";
 
 export default function Footer() {
@@ -105,6 +106,16 @@ export default function Footer() {
         </div>
         <p className="mt-10 text-center text-xs tracking-widest text-textsoft">
           © {year} {siteConfig.author.name} · Powered by Next.js
+        </p>
+        <p className="mt-3 text-center">
+          <Link
+            href={`${siteConfig.basePath}/admin/`}
+            className="kam-link inline-flex items-center gap-1 text-xs tracking-widest text-textsoft/80 transition-colors hover:text-gold"
+            title="进入图形化内容管理后台（Decap CMS）"
+          >
+            <EditIcon className="h-3 w-3" />
+            后台管理
+          </Link>
         </p>
       </div>
     </footer>

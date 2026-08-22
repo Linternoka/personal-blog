@@ -79,6 +79,14 @@ export function RssIcon({ className }: IconProps) {
   );
 }
 
+export function EditIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden="true">
+      <path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z" />
+    </svg>
+  );
+}
+
 /** 空态插画：一本被修缮的旧书（呼应「废书库修缮」主题） */
 export function BookRepairIllustration({ className }: IconProps) {
   return (
