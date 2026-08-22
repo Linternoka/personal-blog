@@ -5,10 +5,8 @@ backend:
   name: github
   repo: Linternoka/personal-blog
   branch: main
-  # GitHub App 认证（无需自建服务器）：
-  # 请在 GitHub 创建 App 后，把下方 <你的App名称> 换成实际的 App slug
-  # 创建教程见仓库 README 或编辑器内说明
-  base_url: https://github.com/apps/<你的App名称>
+  # GitHub App 认证（无需自建服务器，使用 GitHub App 的 implicit OAuth）
+  base_url: https://github.com/apps/feishuku-cms
 
 # 媒体文件（文章配图）保存到 public/images/，引用路径为 /images/xxx
 media_folder: "public/images"
