@@ -4,6 +4,7 @@ import { siteConfig } from "@/lib/site";
 import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
 import ContactLink from "@/components/ContactLink";
+import EmptyState from "@/components/EmptyState";
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -15,6 +16,30 @@ export default function HomePage() {
       {/* ---------- Hero：留白开场 + 淡金氛围 ---------- */}
       <section className="kam-hero border-b border-line px-4 text-center">
         <div className="kam-hero-frame" />
+
+        {/* 背景几何装饰（极淡，增加层次） */}
+        <svg
+          className="absolute -right-24 -top-24 hidden h-96 w-96 text-gold/10 lg:block"
+          viewBox="0 0 200 200"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+          aria-hidden="true"
+        >
+          <circle cx="100" cy="100" r="90" />
+          <circle cx="100" cy="100" r="62" opacity="0.6" />
+        </svg>
+        <svg
+          className="absolute -bottom-24 -left-24 hidden h-80 w-80 text-gold/10 lg:block"
+          viewBox="0 0 200 200"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1"
+          aria-hidden="true"
+        >
+          <path d="M100 12 188 100 100 188 12 100Z" />
+          <path d="M100 48 152 100 100 152 48 100Z" opacity="0.6" />
+        </svg>
 
         {/* 四角细线装饰（SVG） */}
         <svg className="absolute left-6 top-6 hidden h-6 w-6 text-gold/40 md:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true">
@@ -172,10 +197,7 @@ export default function HomePage() {
               </Link>
             </div>
             {posts.length === 0 ? (
-              <div className="border border-dashed border-line p-12 text-center text-textsoft">
-                还没有文章~ 去 <code className="rounded bg-bgdeep px-1.5 py-0.5">content/posts</code>{" "}
-                目录添加第一篇吧！
-              </div>
+              <EmptyState title="还没有文章" hint="去 content/posts 目录添加第一篇吧" />
             ) : (
               <div className="flex flex-col">
                 {posts.map((post, i) => (

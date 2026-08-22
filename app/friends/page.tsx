@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { friends } from "@/lib/friends";
 import Reveal from "@/components/Reveal";
+import EmptyState from "@/components/EmptyState";
 
 export const metadata: Metadata = {
   title: "友链",
@@ -18,9 +19,7 @@ export default function FriendsPage() {
       </div>
 
       {friends.length === 0 ? (
-        <p className="mt-8 text-textsoft">
-          暂无友链，欢迎联系我交换链接~
-        </p>
+        <EmptyState title="暂无友链" hint="欢迎联系我交换链接" />
       ) : (
         <div className="mt-2">
           {friends.map((friend, i) => (

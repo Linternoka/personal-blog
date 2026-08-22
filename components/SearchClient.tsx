@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { siteConfig } from "@/lib/site";
 import { formatDate } from "@/lib/utils";
 import Reveal from "./Reveal";
+import EmptyState from "./EmptyState";
 
 interface SearchItem {
   slug: string;
@@ -90,9 +91,7 @@ export default function SearchClient() {
       )}
 
       {loaded && query.trim() && results.length === 0 && (
-        <p className="mt-8 text-textsoft">
-          没有找到与「{query.trim()}」相关的文章~
-        </p>
+        <EmptyState title={`没有找到与「${query.trim()}」相关的文章`} />
       )}
 
       {results.length > 0 && (

@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { PRESET_CATEGORIES, getCategoriesWithCount, getPostsByCategory } from "@/lib/posts";
 import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
+import EmptyState from "@/components/EmptyState";
 
 function safeDecode(s: string): string {
   try {
@@ -60,7 +61,7 @@ export default async function CategoryPage({
       </div>
 
       {posts.length === 0 ? (
-        <p className="mt-8 text-textsoft">该分类下暂无文章</p>
+        <EmptyState title="该分类下暂无文章" />
       ) : (
         <div className="mt-2 flex flex-col">
           {posts.map((post, i) => (

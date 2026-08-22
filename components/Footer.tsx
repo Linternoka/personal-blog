@@ -1,6 +1,15 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 import ContactLink from "./ContactLink";
+import {
+  GitHubIcon,
+  BilibiliIcon,
+  BookIcon,
+  StarIcon,
+  ShieldIcon,
+  MailIcon,
+  RssIcon,
+} from "./icons";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -37,8 +46,9 @@ export default function Footer() {
                 href={siteConfig.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link text-xs tracking-widest"
+                className="kam-link flex items-center gap-1.5 text-xs tracking-widest"
               >
+                <GitHubIcon className="h-3.5 w-3.5" />
                 GitHub
               </a>
             )}
@@ -47,8 +57,9 @@ export default function Footer() {
                 href={siteConfig.social.bilibili}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link text-xs tracking-widest"
+                className="kam-link flex items-center gap-1.5 text-xs tracking-widest"
               >
+                <BilibiliIcon className="h-3.5 w-3.5" />
                 Bilibili
               </a>
             )}
@@ -57,8 +68,9 @@ export default function Footer() {
                 href={siteConfig.social.moegirl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link text-xs tracking-widest"
+                className="kam-link flex items-center gap-1.5 text-xs tracking-widest"
               >
+                <BookIcon className="h-3.5 w-3.5" />
                 萌娘百科
               </a>
             )}
@@ -67,8 +79,9 @@ export default function Footer() {
                 href={siteConfig.social.bangumi}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link text-xs tracking-widest"
+                className="kam-link flex items-center gap-1.5 text-xs tracking-widest"
               >
+                <StarIcon className="h-3.5 w-3.5" />
                 Bangumi
               </a>
             )}
@@ -77,19 +90,25 @@ export default function Footer() {
                 href={siteConfig.social.scp}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link text-xs tracking-widest"
+                className="kam-link flex items-center gap-1.5 text-xs tracking-widest"
               >
+                <ShieldIcon className="h-3.5 w-3.5" />
                 SCP 基金会
               </a>
             )}
             {siteConfig.social.email && (
               <ContactLink
                 email={siteConfig.social.email.replace(/^mailto:/, "")}
-                className="kam-link text-xs tracking-widest"
+                className="kam-link flex items-center gap-1.5 text-xs tracking-widest"
                 label="邮箱"
               />
             )}
-            <Link href="/rss.xml" className="kam-link text-xs tracking-widest" title="RSS 订阅">
+            <Link
+              href="/rss.xml"
+              className="kam-link flex items-center gap-1.5 text-xs tracking-widest"
+              title="RSS 订阅"
+            >
+              <RssIcon className="h-3.5 w-3.5" />
               RSS
             </Link>
           </div>

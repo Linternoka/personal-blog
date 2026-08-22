@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getCategoriesWithCount } from "@/lib/posts";
 import Reveal from "@/components/Reveal";
+import EmptyState from "@/components/EmptyState";
 
 export const metadata: Metadata = {
   title: "分类",
@@ -21,7 +22,7 @@ export default function CategoriesPage() {
       </div>
 
       {categories.length === 0 ? (
-        <p className="mt-8 text-textsoft">还没有文章~</p>
+        <EmptyState title="还没有文章" />
       ) : (
         <div className="mt-2">
           {categories.map((category, i) => (

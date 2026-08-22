@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getTagsWithCount } from "@/lib/posts";
+import EmptyState from "@/components/EmptyState";
 
 export const metadata: Metadata = {
   title: "标签",
@@ -20,7 +21,7 @@ export default function TagsPage() {
       </div>
 
       {tags.length === 0 ? (
-        <p className="mt-8 text-textsoft">还没有标签~</p>
+        <EmptyState title="还没有标签" />
       ) : (
         <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
           {tags.map((tag) => (

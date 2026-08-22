@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 import ContactLink from "@/components/ContactLink";
+import {
+  GitHubIcon,
+  BilibiliIcon,
+  BookIcon,
+  StarIcon,
+  ShieldIcon,
+} from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "关于",
@@ -41,8 +48,9 @@ export default function AboutPage() {
                 href={siteConfig.social.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link tracking-widest"
+                className="kam-link flex items-center gap-1.5 tracking-widest"
               >
+                <GitHubIcon className="h-4 w-4" />
                 GitHub
               </a>
             )}
@@ -51,8 +59,9 @@ export default function AboutPage() {
                 href={siteConfig.social.bilibili}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link tracking-widest"
+                className="kam-link flex items-center gap-1.5 tracking-widest"
               >
+                <BilibiliIcon className="h-4 w-4" />
                 Bilibili
               </a>
             )}
@@ -61,8 +70,9 @@ export default function AboutPage() {
                 href={siteConfig.social.moegirl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link tracking-widest"
+                className="kam-link flex items-center gap-1.5 tracking-widest"
               >
+                <BookIcon className="h-4 w-4" />
                 萌娘百科
               </a>
             )}
@@ -71,8 +81,9 @@ export default function AboutPage() {
                 href={siteConfig.social.bangumi}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link tracking-widest"
+                className="kam-link flex items-center gap-1.5 tracking-widest"
               >
+                <StarIcon className="h-4 w-4" />
                 Bangumi
               </a>
             )}
@@ -81,8 +92,9 @@ export default function AboutPage() {
                 href={siteConfig.social.scp}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="kam-link tracking-widest"
+                className="kam-link flex items-center gap-1.5 tracking-widest"
               >
+                <ShieldIcon className="h-4 w-4" />
                 SCP 基金会
               </a>
             )}
