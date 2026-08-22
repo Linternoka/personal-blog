@@ -1,0 +1,81 @@
+---
+title: "用 Next.js 搭建个人博客：完整指南"
+date: "2026-08-20"
+updated: "2026-08-22"
+description: "从零开始，使用 Next.js、TypeScript 与 Tailwind CSS 搭建一个支持搜索、评论、暗色模式的个人博客，并部署到 GitHub Pages。"
+category: "技术"
+tags: [Next.js, React, TypeScript, 教程]
+---
+
+这篇文章会带你从零开始，用 Next.js 搭建一个功能完整的个人博客。
+
+## 为什么选择 Next.js？
+
+Next.js 是当下最流行的 React 全栈框架，对博客场景来说有几个突出优势：
+
+- **静态导出**：`output: "export"` 可以把网站构建成纯静态文件，免费托管到 GitHub Pages
+- **文件系统路由**：`app/` 目录即路由，天然适合博客的 URL 结构
+- **MDX 支持**：内容用 Markdown 编写，技术博客最顺手
+- **构建时生成**：`generateStaticParams` 可以在构建时预渲染所有文章页面
+
+## 初始化项目
+
+```bash
+npx create-next-app@latest my-blog --ts --tailwind --eslint --app
+```
+
+## 内容与路由设计
+
+博客的核心是「内容」与「路由」两层：
+
+```
+content/posts/          # Markdown 文章
+  hello-world.mdx
+  nextjs-guide.mdx
+app/
+  page.tsx              # 首页：文章列表
+  posts/[slug]/page.tsx # 文章详情
+  tags/[tag]/page.tsx   # 标签筛选
+  categories/[category]/page.tsx  # 分类筛选
+```
+
+## 读取与渲染文章
+
+用 `gray-matter` 解析 frontmatter，用 `unified` 管线渲染 Markdown：
+
+```ts
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import rehypeHighlight from "rehype-highlight";
+import rehypeStringify from "rehype-stringify";
+
+const html = await unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkRehype)
+  .use(rehypeHighlight)
+  .use(rehypeStringify)
+  .process(content);
+```
+
+## 静态导出部署
+
+在 `next.config.ts` 中开启静态导出：
+
+```ts
+const nextConfig: NextConfig = {
+  output: "export",
+  images: { unoptimized: true },
+  trailingSlash: true,
+};
+```
+
+然后用 GitHub Actions 在每次推送时自动构建并部署到 GitHub Pages。
+
+## 小结
+
+- 内容用 Markdown 管理，Git 版本控制
+- 静态导出，速度快、零成本托管
+- 搜索、评论、暗色模式这些「锦上添花」的功能都不难加

@@ -1,26 +1,345 @@
 @import "tailwindcss";
+@import "katex/dist/katex.min.css";
+@import "highlight.js/styles/github.css";
 
+@plugin "@tailwindcss/typography";
+
+/* 基于 class 的暗色模式（next-themes 会在 html 上添加 .dark） */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ---------- 神椿（Kamitsubaki）配色系统 ---------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f2ecdf; /* 米白纸色 */
+  --bg-soft: #faf5ea; /* 卡片 */
+  --bg-deep: #eae2d2; /* 深一档 */
+  --text: #201c15; /* 墨色 */
+  --text-soft: #6f6757; /* 次要文字 */
+  --line: #ddd2bf; /* 分割线 */
+  --gold: #a08a60; /* 复古金 */
+  --gold-strong: #8a744c; /* 深金 */
+  --cream: #fff7ea; /* 奶油 */
+  --ink: #12100d; /* 黑底 */
+}
+
+.dark {
+  --bg: #0e0d0b; /* 夜黑 */
+  --bg-soft: #161411; /* 卡片 */
+  --bg-deep: #0a0908;
+  --text: #f2e8d5; /* 米白 */
+  --text-soft: #a89b87; /* 灰米 */
+  --line: #2c2821; /* 暗线 */
+  --gold: #aa946d; /* 复古金 */
+  --gold-strong: #c6b18c; /* 亮金 */
+  --cream: #fff3e3; /* 椿色 */
+  --ink: #070605; /* 纯黑 */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bgsoft: var(--bg-soft);
+  --color-bgdeep: var(--bg-deep);
+  --color-text: var(--text);
+  --color-textsoft: var(--text-soft);
+  --color-line: var(--line);
+  --color-gold: var(--gold);
+  --color-goldstrong: var(--gold-strong);
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --font-serif: var(--font-noto-serif-sc), "Noto Serif SC", "Songti SC",
+    "SimSun", "Noto Serif JP", serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--cream);
+}
+
+/* ---------- 神椿衬线标题 ---------- */
+.kam-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+}
+
+/* ---------- 金色描边按钮（hover 金色填充反白） ---------- */
+.kam-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  background: transparent;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  transition: color 0.25s ease-out, border-color 0.25s ease-out;
+}
+.kam-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gold);
+  transition: left 0.28s ease-out;
+  z-index: 0;
+}
+.kam-btn:hover::before {
+  left: 0;
+}
+.kam-btn:hover {
+  color: var(--cream);
+  border-color: var(--gold);
+}
+.kam-btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- 导航链接（滑动填充动画） ---------- */
+.kam-nav-link {
+  position: relative;
+  overflow: hidden;
+}
+.kam-nav-link::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gold);
+  transition: left 0.25s ease-out;
+  z-index: 0;
+}
+.kam-nav-link:hover::before {
+  left: 0;
+}
+.kam-nav-link:hover {
+  color: var(--cream);
+}
+.kam-nav-link > * {
+  position: relative;
+  z-index: 1;
+}
+.kam-nav-link.active::before {
+  left: 0;
+}
+.kam-nav-link.active {
+  color: var(--cream);
+}
+
+/* ---------- 金色下划线链接 ---------- */
+.kam-link {
+  color: var(--gold-strong);
+  text-decoration: none;
+  background-image: linear-gradient(var(--gold), var(--gold));
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: left bottom;
+  transition: background-size 0.3s ease-out, color 0.3s ease-out;
+}
+.kam-link:hover {
+  color: var(--gold);
+  background-size: 100% 1px;
+}
+
+/* ---------- SCROLL 指示动画 ---------- */
+.kam-scroll {
+  position: relative;
+  width: 1px;
+  height: 56px;
+  background: var(--text-soft);
+  overflow: hidden;
+}
+.kam-scroll::after {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: var(--gold);
+  animation: kam-scroll-line 1.8s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+@keyframes kam-scroll-line {
+  0% {
+    top: -60%;
+  }
+  100% {
+    top: 110%;
+  }
+}
+
+/* ---------- 文章正文（神椿 prose） ---------- */
+.prose-kam {
+  --tw-prose-body: var(--text);
+  --tw-prose-headings: var(--text);
+  --tw-prose-lead: var(--text-soft);
+  --tw-prose-links: var(--gold-strong);
+  --tw-prose-bold: var(--text);
+  --tw-prose-counters: var(--text-soft);
+  --tw-prose-bullets: var(--gold);
+  --tw-prose-hr: var(--line);
+  --tw-prose-quotes: var(--text-soft);
+  --tw-prose-quote-borders: var(--gold);
+  --tw-prose-captions: var(--text-soft);
+  --tw-prose-code: var(--text);
+  --tw-prose-pre-code: var(--cream);
+  --tw-prose-pre-bg: var(--ink);
+  --tw-prose-th-borders: var(--line);
+  --tw-prose-td-borders: var(--line);
+  --tw-prose-invert-body: var(--text);
+  --tw-prose-invert-headings: var(--text);
+  --tw-prose-invert-links: var(--gold-strong);
+  --tw-prose-invert-bold: var(--text);
+  --tw-prose-invert-counters: var(--text-soft);
+  --tw-prose-invert-bullets: var(--gold);
+  --tw-prose-invert-hr: var(--line);
+  --tw-prose-invert-quotes: var(--text-soft);
+  --tw-prose-invert-quote-borders: var(--gold);
+  --tw-prose-invert-captions: var(--text-soft);
+  --tw-prose-invert-code: var(--text);
+  --tw-prose-invert-pre-code: var(--cream);
+  --tw-prose-invert-pre-bg: var(--ink);
+  --tw-prose-invert-th-borders: var(--line);
+  --tw-prose-invert-td-borders: var(--line);
+}
+.prose-kam :where(h1, h2, h3, h4, h5, h6) {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.prose-kam :where(a) {
+  text-decoration: none;
+  background-image: linear-gradient(var(--gold), var(--gold));
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: left bottom;
+  transition: background-size 0.3s ease-out, color 0.3s ease-out;
+}
+.prose-kam :where(a:hover) {
+  color: var(--gold);
+  background-size: 100% 1px;
+}
+.prose-kam :where(blockquote) {
+  font-style: normal;
+}
+.prose-kam :where(code):not(:where(pre code)) {
+  background: var(--bg-deep);
+  border-radius: 0.25rem;
+  padding: 0.15em 0.4em;
+  font-weight: 500;
+}
+.prose-kam :where(pre) {
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+.prose-kam :where(hr) {
+  border-color: var(--line);
+}
+.prose-kam :where(table) {
+  font-size: 0.9em;
+}
+.prose-kam :where(th) {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  background: var(--bg-soft);
+}
+
+/* ---------- 代码高亮（神椿色系，暗色） ---------- */
+.dark .hljs {
+  color: #e8dcc8;
+  background: #14120f;
+}
+.dark .hljs-comment,
+.dark .hljs-quote,
+.dark .hljs-formula {
+  color: #7c7466;
+}
+.dark .hljs-keyword,
+.dark .hljs-selector-tag,
+.dark .hljs-template-tag,
+.dark .hljs-type {
+  color: #c9a96a;
+}
+.dark .hljs-string,
+.dark .hljs-regexp,
+.dark .hljs-meta .hljs-string {
+  color: #e8dcc8;
+}
+.dark .hljs-number,
+.dark .hljs-literal,
+.dark .hljs-variable,
+.dark .hljs-attr,
+.dark .hljs-attribute {
+  color: #d8c9a8;
+}
+.dark .hljs-title,
+.dark .hljs-title.function_,
+.dark .hljs-section {
+  color: #f2e8d5;
+  font-weight: 700;
+}
+.dark .hljs-built_in,
+.dark .hljs-symbol,
+.dark .hljs-bullet {
+  color: #c6b18c;
+}
+.dark .hljs-name,
+.dark .hljs-selector-id,
+.dark .hljs-selector-class,
+.dark .hljs-selector-pseudo {
+  color: #c9a96a;
+}
+.dark .hljs-emphasis {
+  font-style: italic;
+}
+.dark .hljs-strong {
+  font-weight: 700;
+}
+.dark .hljs-addition {
+  color: #b7c98a;
+  background: rgba(183, 201, 138, 0.12);
+}
+.dark .hljs-deletion {
+  color: #d99a8a;
+  background: rgba(217, 154, 138, 0.12);
+}
+
+/* ---------- 滚动条 ---------- */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  opacity: 0.7;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-strong);
 }

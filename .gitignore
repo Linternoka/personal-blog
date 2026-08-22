@@ -17,6 +17,11 @@
 /.next/
 /out/
 
+# 构建生成的静态资源
+/public/rss.xml
+/public/search-index.json
+/public/sitemap.xml
+
 # production
 /build
 
