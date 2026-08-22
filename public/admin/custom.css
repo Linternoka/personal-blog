@@ -561,3 +561,32 @@ html[data-theme="dark"] #nc-root select {
   outline: none !important;
   border: none !important;
 }
+
+/* ============================================================
+   修复（2026-08-23，v11）：Markdown 模式编辑器变白
+   - 勾选 Markdown 后编辑区用 Slate 编辑器（.cms-editor-raw），
+     默认纯白底 + 深灰字（#444a57）
+   - 左侧还有 Decap 默认 2px 浅白竖线（#dfdfe3）→ 用户看到的「白色一竖」
+   修复：背景透明继承主题色、文字跟随主题、去掉左侧白竖线
+   ============================================================ */
+
+/* Markdown 模式 Slate 编辑器：白底/深灰字 → 主题深色/浅色字 */
+#nc-root .cms-editor-raw [data-slate-editor="true"],
+#nc-root [class*="RawEditorContainer"] [data-slate-editor="true"] {
+  background-color: transparent !important;
+  color: var(--decap-text) !important;
+}
+#nc-root .cms-editor-raw [data-slate-editor="true"] span,
+#nc-root .cms-editor-raw [data-slate-editor="true"] div {
+  color: var(--decap-text) !important;
+}
+/* 去掉左侧 Decap 默认浅白竖线（2px #dfdfe3） */
+#nc-root .cms-editor-raw [data-slate-editor="true"] {
+  border-left: none !important;
+}
+/* Raw 编辑器容器：统一主题背景 + 细线边框 */
+#nc-root [class*="RawEditorContainer"] {
+  background-color: var(--decap-bg) !important;
+  border: 1px solid var(--decap-line) !important;
+  border-radius: 2px !important;
+}
