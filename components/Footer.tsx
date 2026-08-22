@@ -23,8 +23,10 @@ export default function Footer() {
 
         {/* 版权行：订阅 / 关于（社交链接已移至「关于」页） / 版权 */}
         <p className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-xs tracking-widest text-textsoft">
+          {/* rss.xml 是静态文件不是页面路由，禁用 RSC 预取避免 404 噪音 */}
           <Link
             href="/rss.xml"
+            prefetch={false}
             className="kam-link flex items-center gap-1.5"
             title="RSS 订阅"
           >
@@ -42,8 +44,10 @@ export default function Footer() {
         </p>
 
         <p className="mt-5 text-center">
+          {/* /admin/ 是独立静态应用不是页面路由，禁用 RSC 预取避免 404 噪音 */}
           <Link
             href="/admin/"
+            prefetch={false}
             className="kam-link inline-flex items-center gap-1 text-xs tracking-widest text-textsoft/80 transition-colors hover:text-gold"
             title="进入图形化内容管理后台（Decap CMS）"
           >

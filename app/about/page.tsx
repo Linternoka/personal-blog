@@ -43,7 +43,7 @@ export default function AboutPage() {
           <h2 className="kam-title text-2xl text-text">
             {author.name}
           </h2>
-          <p className="mt-2 text-textsoft">{author.bio}</p>
+          {author.bio && <p className="mt-2 text-textsoft">{author.bio}</p>}
           <div className="mt-5 flex flex-wrap justify-center gap-x-5 gap-y-2 text-sm">
             {siteConfig.social.github && (
               <a

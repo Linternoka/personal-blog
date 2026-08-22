@@ -64,6 +64,7 @@ function rehypeWrapTables() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const walk = (node: any) => {
       if (node.type === "element" && Array.isArray(node.children)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         node.children = node.children.flatMap((child: any) => {
           if (child.type === "element" && child.tagName === "table") {
             return [

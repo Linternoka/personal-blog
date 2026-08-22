@@ -216,9 +216,11 @@ export default async function PostPage({
             <p className="kam-title text-sm text-text">
               {siteConfig.author.name}
             </p>
-            <p className="mt-0.5 text-xs text-textsoft">
-              {siteConfig.author.bio}
-            </p>
+            {siteConfig.author.bio && (
+              <p className="mt-0.5 text-xs text-textsoft">
+                {siteConfig.author.bio}
+              </p>
+            )}
           </div>
         </div>
           <Link href="/about" className="kam-link text-sm tracking-widest">

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { friends } from "@/lib/friends";
+import { friends, safeUrl } from "@/lib/friends";
 import Reveal from "@/components/Reveal";
 import EmptyState from "@/components/EmptyState";
 
@@ -25,7 +25,7 @@ export default function FriendsPage() {
           {friends.map((friend, i) => (
             <Reveal key={friend.url} delay={i * 70}>
               <a
-                href={friend.url}
+                href={safeUrl(friend.url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex items-start gap-4 border-b border-line py-5 transition-colors duration-300 hover:border-gold/40"

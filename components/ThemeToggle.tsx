@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { useTheme } from "next-themes";
 
 function SunIcon() {
@@ -40,9 +40,13 @@ function MoonIcon() {
 
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  // 服务端快照返回 false，客户端挂载后返回 true，避免 hydration mismatch
+  // （替代 useEffect + setState 的 mounted 模式，规避 set-state-in-effect）
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const isDark = mounted && resolvedTheme === "dark";
 

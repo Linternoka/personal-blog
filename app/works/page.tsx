@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getWorks, type WorkItem } from "@/lib/works";
+import { getWorks, safeUrl, type WorkItem } from "@/lib/works";
 import Reveal from "@/components/Reveal";
 import EmptyState from "@/components/EmptyState";
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 function WorkCard({ work }: { work: WorkItem }) {
   return (
     <a
-      href={work.url}
+      href={safeUrl(work.url)}
       target="_blank"
       rel="noopener noreferrer"
       className="card-archive group flex h-full flex-col"
