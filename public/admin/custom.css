@@ -398,3 +398,108 @@ body,
   color: var(--decap-red) !important;
   border: 1px solid var(--decap-red) !important;
 }
+
+/* ============================================================
+   修复（2026-08-22）：暗色模式下日期 / 分类控件配色
+   - 输入框文字色跟随主题（深色下不再是黑字看不清）
+   - DateTimeControl 残留的 Decap 默认白卡透明化
+   - 分类下拉（react-select）：容器/文字/选中项主题化
+   - 日期选择日历（react-datepicker）深色适配
+   注：react-select 类名是小写 "-container/-control/-menu"，
+   Decap 自带组件是大写 "Container/Control"，选择器大小写敏感互不干扰
+   ============================================================ */
+
+/* 输入框文字色跟随主题 + 金色光标 */
+#nc-root input[type="text"],
+#nc-root input[type="date"],
+#nc-root input[type="datetime-local"],
+#nc-root textarea,
+#nc-root select {
+  color: var(--decap-text) !important;
+  caret-color: var(--decap-gold) !important;
+}
+
+/* 日期控件容器：去掉 Decap 默认白卡 */
+#nc-root [class*="DateTimeControl"] {
+  background-color: transparent !important;
+}
+
+/* 分类下拉（react-select）外层容器透明 */
+#nc-root div[class*="-container"] {
+  background-color: transparent !important;
+}
+/* react-select 控制条：深色卡片底 + 细线 + 主题文字 */
+#nc-root div[class*="-control"] {
+  background-color: var(--decap-card) !important;
+  border-color: var(--decap-line) !important;
+  color: var(--decap-text) !important;
+}
+#nc-root div[class*="-control"]:hover,
+#nc-root div[class*="-control"]:focus-within {
+  border-color: var(--decap-gold) !important;
+  box-shadow: 0 0 0 1px var(--decap-gold) !important;
+}
+/* 分类显示值 / 输入 / 占位文字 */
+#nc-root div[class*="-control"] input,
+#nc-root div[class*="-control"] [class*="singleValue"],
+#nc-root div[class*="-control"] [class*="placeholder"] {
+  color: var(--decap-text) !important;
+}
+
+/* 下拉菜单与选项 */
+#nc-root div[class*="-menu"] {
+  background-color: var(--decap-card) !important;
+  border: 1px solid var(--decap-line) !important;
+  box-shadow: 0 12px 32px -18px rgba(0, 0, 0, 0.6) !important;
+}
+#nc-root div[class*="-menu"] [role="option"] {
+  color: var(--decap-text-soft) !important;
+  background-color: transparent !important;
+}
+#nc-root div[class*="-menu"] [role="option"]:hover {
+  background-color: var(--decap-gold-soft) !important;
+  color: var(--decap-gold) !important;
+}
+#nc-root div[class*="-menu"] [role="option"][aria-selected="true"] {
+  background-color: var(--decap-gold-soft) !important;
+  color: var(--decap-gold) !important;
+  font-weight: 600;
+}
+
+/* 日期选择日历（react-datepicker）：跟随主题 */
+#nc-root .react-datepicker-popper .react-datepicker,
+#nc-root .react-datepicker {
+  background-color: var(--decap-card) !important;
+  border: 1px solid var(--decap-line) !important;
+  color: var(--decap-text) !important;
+  box-shadow: 0 12px 32px -18px rgba(0, 0, 0, 0.6) !important;
+}
+#nc-root .react-datepicker__header {
+  background-color: var(--decap-bg-soft) !important;
+  border-bottom: 1px solid var(--decap-line) !important;
+}
+#nc-root .react-datepicker__current-month,
+#nc-root .react-datepicker__day-name,
+#nc-root .react-datepicker__day {
+  color: var(--decap-text) !important;
+}
+#nc-root .react-datepicker__day:hover {
+  background-color: var(--decap-gold-soft) !important;
+}
+#nc-root .react-datepicker__day--selected,
+#nc-root .react-datepicker__day--keyboard-selected {
+  background-color: var(--decap-gold) !important;
+  color: #fff !important;
+}
+#nc-root .react-datepicker__day--outside-month {
+  color: var(--decap-text-soft) !important;
+  opacity: 0.5;
+}
+#nc-root .react-datepicker__navigation {
+  border-color: var(--decap-text-soft) !important;
+}
+#nc-root .react-datepicker__time-container,
+#nc-root .react-datepicker__time-list-item {
+  background-color: var(--decap-card) !important;
+  color: var(--decap-text) !important;
+}
