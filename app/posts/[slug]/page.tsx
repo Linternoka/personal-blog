@@ -8,7 +8,10 @@ import { siteConfig } from "@/lib/site";
 import GiscusComments from "@/components/GiscusComments";
 
 export function generateStaticParams() {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
+  const posts = getAllPosts();
+  // 暂无文章时返回哨兵值，避免静态导出因空数组报错；该页面会走 notFound
+  if (posts.length === 0) return [{ slug: "__none__" }];
+  return posts.map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({

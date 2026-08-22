@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getCategoriesWithCount, getPostsByCategory } from "@/lib/posts";
+import { PRESET_CATEGORIES, getCategoriesWithCount, getPostsByCategory } from "@/lib/posts";
 import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
 
@@ -38,8 +38,10 @@ export default async function CategoryPage({
   const { category } = await params;
   const name = safeDecode(category);
   const posts = getPostsByCategory(name);
+  const isPreset = PRESET_CATEGORIES.includes(name);
 
-  if (posts.length === 0) notFound();
+  // 非预设分类且无文章 → 404；预设分类允许空态展示
+  if (posts.length === 0 && !isPreset) notFound();
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6">
@@ -57,13 +59,17 @@ export default async function CategoryPage({
         </p>
       </div>
 
-      <div className="mt-2 flex flex-col">
-        {posts.map((post, i) => (
-          <Reveal key={post.slug} delay={i * 90}>
-            <PostCard post={post} />
-          </Reveal>
-        ))}
-      </div>
+      {posts.length === 0 ? (
+        <p className="mt-8 text-textsoft">该分类下暂无文章</p>
+      ) : (
+        <div className="mt-2 flex flex-col">
+          {posts.map((post, i) => (
+            <Reveal key={post.slug} delay={i * 90}>
+              <PostCard post={post} />
+            </Reveal>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

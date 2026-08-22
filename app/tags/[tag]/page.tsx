@@ -14,7 +14,10 @@ function safeDecode(s: string): string {
 }
 
 export function generateStaticParams() {
-  return getTagsWithCount().map((t) => ({ tag: t.name }));
+  const tags = getTagsWithCount();
+  // 暂无标签时返回哨兵值，避免静态导出因空数组报错；该页面会走 notFound
+  if (tags.length === 0) return [{ tag: "__none__" }];
+  return tags.map((t) => ({ tag: t.name }));
 }
 
 export async function generateMetadata({

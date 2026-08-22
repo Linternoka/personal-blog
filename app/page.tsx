@@ -32,7 +32,7 @@ export default function HomePage() {
 
         {/* 左右竖排文字（逐字闪入） */}
         <span className="kam-vertical absolute left-6 top-1/2 z-10 hidden -translate-y-1/2 text-[11px] text-gold/60 md:block">
-          {"记录 · 分享 · 成长".split("").map((ch, i) => (
+          {"记录 · 展示 · 分享".split("").map((ch, i) => (
             <span
               key={i}
               className="kam-char"
@@ -126,10 +126,10 @@ export default function HomePage() {
           <Reveal>
             <section className="mb-16">
               <div className="flex flex-col gap-6 border-y border-line py-6 sm:flex-row sm:items-start sm:justify-between">
-                {categories.length > 0 && (
+                {categories.some((c) => c.count > 0) && (
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="kam-title mr-2 text-xs text-gold">分类</span>
-                    {categories.slice(0, 6).map((c) => (
+                    {categories.filter((c) => c.count > 0).slice(0, 6).map((c) => (
                       <Link
                         key={c.name}
                         href={`/categories/${encodeURIComponent(c.name)}`}

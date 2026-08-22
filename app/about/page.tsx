@@ -48,24 +48,14 @@ export default function AboutPage() {
 
       <div className="prose prose-kam mt-10 max-w-none">
         <h2>关于这个博客</h2>
-        <p>
-          {name} 是一个关于技术、生活与学习笔记的个人博客。这里会分享编程经验、
-          踩坑记录、读书笔记，以及一些生活的碎碎念。
-        </p>
+        <p>{name}，记录、展示、分享。</p>
         <h2>关于我</h2>
-        <ul>
-          <li>热爱写代码，也热爱生活</li>
-          <li>喜欢把学到的东西记录下来，也分享给需要的人</li>
-          <li>欢迎通过页面下方的联系方式与我交流</li>
-        </ul>
+        <p>{author.bio}</p>
         <h2>技术栈</h2>
         <p>
           本博客使用 Next.js、TypeScript 与 Tailwind CSS 构建，内容以 Markdown
           编写，部署在 GitHub Pages 上。
         </p>
-        <blockquote>
-          “记录是为了更好地思考，分享是为了更好地成长。”
-        </blockquote>
       </div>
     </div>
   );

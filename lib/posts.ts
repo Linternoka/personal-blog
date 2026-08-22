@@ -96,13 +96,20 @@ export function getTagsWithCount(): { name: string; count: number }[] {
     .sort((a, b) => b.count - a.count);
 }
 
+/** 预设分类：即使暂无文章也始终显示在分类页 */
+export const PRESET_CATEGORIES = ["杂谈", "评价", "记录", "其他"];
+
 export function getCategoriesWithCount(): { name: string; count: number }[] {
   const map = new Map<string, number>();
   for (const post of getAllPosts()) {
     const category = post.category || "未分类";
     map.set(category, (map.get(category) || 0) + 1);
   }
+  // 预设分类始终存在（即使 0 篇）
+  for (const c of PRESET_CATEGORIES) {
+    if (!map.has(c)) map.set(c, 0);
+  }
   return [...map.entries()]
     .map(([name, count]) => ({ name, count }))
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "zh"));
 }
