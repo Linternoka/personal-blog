@@ -15,7 +15,7 @@ export default function HomePage() {
     <>
       {/* ---------- Hero：留白开场 + 淡金氛围 ---------- */}
       <section className="kam-hero border-b border-line px-4 text-center">
-        <div className="kam-hero-frame" />
+        {/* 顶底边框由背景雾气承载 */}
 
         {/* 背景几何装饰（极淡，增加层次） */}
         <svg
@@ -55,50 +55,24 @@ export default function HomePage() {
           <path d="M15 23H23V15" />
         </svg>
 
-        {/* 左右竖排文字（逐字闪入） */}
-        <span className="kam-vertical absolute left-6 top-1/2 z-10 hidden -translate-y-1/2 text-[11px] text-gold/60 md:block">
-          {"记录 · 展示 · 分享".split("").map((ch, i) => (
-            <span
-              key={i}
-              className="kam-char"
-              style={{ animationDelay: `${0.6 + i * 0.07}s` }}
-            >
-              {ch === " " ? "\u00A0" : ch}
-            </span>
-          ))}
+        {/* 左右竖排文字 */}
+        <span className="kam-vertical absolute left-6 top-1/2 z-10 hidden -translate-y-1/2 text-[11px] text-gold/50 md:block">
+          记录 · 展示 · 分享
         </span>
-        <span className="kam-vertical absolute right-6 top-1/2 z-10 hidden -translate-y-1/2 text-[11px] text-gold/60 md:block">
-          {siteConfig.author.name.split("").map((ch, i) => (
-            <span
-              key={i}
-              className="kam-char"
-              style={{ animationDelay: `${0.6 + i * 0.07}s` }}
-            >
-              {ch === " " ? "\u00A0" : ch}
-            </span>
-          ))}
+        <span className="kam-vertical absolute right-6 top-1/2 z-10 hidden -translate-y-1/2 text-[11px] text-gold/50 md:block">
+          {siteConfig.author.name}
         </span>
 
         <div className="relative z-10 mx-auto flex max-w-3xl flex-col items-center pb-16">
-          {/* 小字英文标识 */}
-          <p className="kam-fade-up mb-5 text-xs tracking-[0.3em] text-gold">
-            PERSONAL BLOG
+          {/* 终端路径标识 */}
+          <p className="kam-fade-up mb-5 flex items-center justify-center gap-2 text-xs tracking-[0.3em] text-gold">
+            <span aria-hidden="true">❯</span>
+            <span className="kam-caret">~/personal-blog</span>
           </p>
 
-          {/* 中央大字标题（逐字闪入 + glitch 信号闪现） */}
-          <h1
-            data-text={siteConfig.name}
-            className="kam-hero-title kam-glitch text-5xl sm:text-7xl"
-          >
-            {siteConfig.name.split("").map((ch, i) => (
-              <span
-                key={i}
-                className="kam-char"
-                style={{ animationDelay: `${0.35 + i * 0.09}s` }}
-              >
-                {ch === " " ? "\u00A0" : ch}
-              </span>
-            ))}
+          {/* 中央大字标题（极轻字重） */}
+          <h1 className="kam-hero-title text-5xl leading-tight sm:text-7xl">
+            {siteConfig.name}
           </h1>
 
           {/* 金色分隔：线 + 菱形 */}
@@ -199,7 +173,7 @@ export default function HomePage() {
             {posts.length === 0 ? (
               <EmptyState title="还没有文章" hint="去 content/posts 目录添加第一篇吧" />
             ) : (
-              <div className="flex flex-col">
+              <div className="grid gap-5 md:grid-cols-2">
                 {posts.map((post, i) => (
                   <Reveal key={post.slug} delay={i * 90}>
                     <PostCard post={post} />

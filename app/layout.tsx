@@ -1,27 +1,30 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Geist, Geist_Mono, Noto_Serif_SC } from "next/font/google";
+import { Geist_Mono, Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { siteConfig } from "@/lib/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
-// 神椿风格的思源宋体（Noto Serif SC）
-const notoSerifSc = Noto_Serif_SC({
-  variable: "--font-noto-serif-sc",
+// 标题衬线：Noto Serif JP（废墟感、极轻字重）
+const notoSerifJp = Noto_Serif_JP({
+  variable: "--font-noto-serif-jp",
   subsets: ["latin"],
-  weight: ["400", "600", "700", "900"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+  display: "swap",
+});
+
+// 正文无衬线：Noto Sans JP（文书质感）
+const notoSansJp = Noto_Sans_JP({
+  variable: "--font-noto-sans-jp",
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500"],
   display: "swap",
 });
 
@@ -51,12 +54,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       lang="zh-CN"
       suppressHydrationWarning
       data-scroll-behavior="smooth"
-      className={`${geistSans.variable} ${geistMono.variable} ${notoSerifSc.variable} h-full antialiased`}
+      className={`${geistMono.variable} ${notoSerifJp.variable} ${notoSansJp.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-bg text-text">
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

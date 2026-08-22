@@ -6,6 +6,8 @@ import { renderMarkdown } from "@/lib/markdown";
 import { formatDate } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 import GiscusComments from "@/components/GiscusComments";
+import Toc from "@/components/Toc";
+import CodeBlockEnhancer from "@/components/CodeBlockEnhancer";
 
 export function generateStaticParams() {
   const posts = getAllPosts();
@@ -25,6 +27,20 @@ function safeDecodeSlug(slug: string): string {
   } catch {
     return slug;
   }
+}
+
+/** 从渲染后的 HTML 提取 h2/h3 标题，用于目录 */
+function extractHeadings(
+  html: string
+): { id: string; text: string; level: number }[] {
+  const headings: { id: string; text: string; level: number }[] = [];
+  const re = /<h([23])[^>]*id="([^"]*)"[^>]*>(.*?)<\/h\1>/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(html))) {
+    const text = m[3].replace(/<[^>]*>/g, "").trim();
+    if (text) headings.push({ id: m[2], text, level: Number(m[1]) });
+  }
+  return headings;
 }
 
 export async function generateMetadata({
@@ -59,67 +75,80 @@ export default async function PostPage({
   if (!post) notFound();
 
   const html = await renderMarkdown(post.content);
+  const headings = extractHeadings(html);
   const posts = getAllPosts();
   const index = posts.findIndex((p) => p.slug === post.slug);
   const prev = index > 0 ? posts[index - 1] : null;
   const next = index >= 0 && index < posts.length - 1 ? posts[index + 1] : null;
 
   return (
-    <article className="mx-auto w-full max-w-3xl px-4 py-10 sm:px-6">
-      {/* 文章头部 */}
-      <header>
-        <div className="flex flex-wrap items-center gap-3 text-sm text-textsoft">
-          <time dateTime={post.date} className="tabular-nums tracking-wider">
-            {formatDate(post.date)}
-          </time>
-          <span className="text-line-strong">/</span>
-          <Link
-            href={`/categories/${encodeURIComponent(post.category)}`}
-            className="tracking-widest transition-colors hover:text-goldstrong"
-          >
-            {post.category}
-          </Link>
-          {post.updated && post.updated !== post.date && (
-            <span className="text-xs text-textsoft/70">
-              更新于 {formatDate(post.updated)}
-            </span>
-          )}
-        </div>
-        <h1 className="kam-title mt-5 text-3xl font-bold leading-snug text-text sm:text-4xl">
-          {post.title}
-        </h1>
-        {post.description && (
-          <p className="mt-4 text-lg leading-relaxed text-textsoft">
-            {post.description}
-          </p>
-        )}
-        {post.tags.length > 0 && (
-          <div className="mt-5 flex flex-wrap gap-3">
-            {post.tags.map((tag) => (
+    <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
+      <CodeBlockEnhancer />
+      <div className="lg:flex lg:items-start lg:gap-12">
+        <article className="mx-auto w-full max-w-3xl lg:mx-0 lg:flex-1">
+          {/* 文章头部（极简元数据） */}
+          <header>
+            <div className="flex flex-wrap items-center gap-3 text-sm text-textsoft">
+              <time dateTime={post.date} className="tabular-nums tracking-wider">
+                {formatDate(post.date)}
+              </time>
+              <span className="text-line-strong">/</span>
               <Link
-                key={tag}
-                href={`/tags/${encodeURIComponent(tag)}`}
-                className="text-sm tracking-widest text-textsoft/80 transition-colors hover:text-goldstrong"
+                href={`/categories/${encodeURIComponent(post.category)}`}
+                className="tracking-widest transition-colors hover:text-goldstrong"
               >
-                #{tag}
+                {post.category}
               </Link>
-            ))}
+              {post.updated && post.updated !== post.date && (
+                <span className="text-xs text-textsoft/70">
+                  更新于 {formatDate(post.updated)}
+                </span>
+              )}
+            </div>
+            <h1 className="kam-title mt-5 text-3xl font-light leading-snug text-text sm:text-4xl">
+              {post.title}
+            </h1>
+            {post.description && (
+              <p className="mt-4 text-lg leading-relaxed text-textsoft">
+                {post.description}
+              </p>
+            )}
+            {post.tags.length > 0 && (
+              <div className="mt-5 flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <Link
+                    key={tag}
+                    href={`/tags/${encodeURIComponent(tag)}`}
+                    className="pill"
+                  >
+                    {tag}
+                  </Link>
+                ))}
+              </div>
+            )}
+            <div className="mt-8 h-px w-full bg-gradient-to-r from-gold/60 via-line to-transparent" />
+          </header>
+
+          {/* 正文 */}
+          <div
+            className="prose prose-kam mx-auto mt-10"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        </article>
+
+        {/* 目录（桌面端侧栏） */}
+        <aside className="hidden w-56 shrink-0 lg:block">
+          <div className="sticky top-24">
+            <Toc headings={headings} />
           </div>
-        )}
-        <div className="mt-8 h-px w-full bg-gradient-to-r from-gold/60 via-line to-transparent" />
-      </header>
+        </aside>
+      </div>
 
-      {/* 正文 */}
-      <div
-        className="prose prose-kam mt-10 max-w-none"
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
+      {/* 评论 / 上一篇下一篇 / 署名 */}
+      <div className="mx-auto w-full max-w-3xl">
+        <GiscusComments />
 
-      {/* 评论 */}
-      <GiscusComments />
-
-      {/* 上一篇 / 下一篇 */}
-      <nav className="mt-12 grid border-t border-line pt-6 sm:grid-cols-2">
+        <nav className="mt-12 grid border-t border-line pt-6 sm:grid-cols-2">
         {prev ? (
           <Link
             href={`/posts/${prev.slug}`}
@@ -174,10 +203,11 @@ export default async function PostPage({
             </p>
           </div>
         </div>
-        <Link href="/about" className="kam-link text-sm tracking-widest">
-          关于
-        </Link>
+          <Link href="/about" className="kam-link text-sm tracking-widest">
+            关于
+          </Link>
+        </div>
       </div>
-    </article>
+    </div>
   );
 }

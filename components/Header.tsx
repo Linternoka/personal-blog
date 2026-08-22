@@ -16,12 +16,17 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/85 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
-        {/* Logo */}
+        {/* 站点名（终端提示符前缀） */}
         <Link
           href="/"
-          className="kam-title text-lg font-bold tracking-[0.08em] text-goldstrong"
+          className="kam-title group flex items-center gap-2 text-lg font-light tracking-[0.08em] text-text"
         >
-          {siteConfig.name}
+          <span className="text-gold" aria-hidden="true">
+            ❯
+          </span>
+          <span className="transition-colors duration-500 group-hover:text-goldstrong">
+            {siteConfig.name}
+          </span>
         </Link>
 
         {/* 桌面端导航 */}

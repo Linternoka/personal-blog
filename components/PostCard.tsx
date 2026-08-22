@@ -4,15 +4,15 @@ import { formatDate } from "@/lib/utils";
 
 export default function PostCard({ post }: { post: PostMeta }) {
   return (
-    <article className="group border-b border-line py-7 transition-colors duration-300 hover:border-gold/40">
-      <div className="mb-2 flex flex-wrap items-center gap-3 text-xs">
-        <time dateTime={post.date} className="tabular-nums tracking-wider text-textsoft">
+    <article className="card-archive group h-full">
+      <div className="mb-3 flex flex-wrap items-center gap-3 text-xs text-textsoft">
+        <time dateTime={post.date} className="tabular-nums tracking-wider">
           {formatDate(post.date)}
         </time>
-        <span className="text-gold/50">/</span>
+        <span className="text-gold/60">/</span>
         <Link
           href={`/categories/${encodeURIComponent(post.category)}`}
-          className="tracking-widest text-textsoft transition-colors hover:text-goldstrong"
+          className="tracking-widest transition-colors hover:text-goldstrong"
         >
           {post.category}
         </Link>
@@ -20,7 +20,7 @@ export default function PostCard({ post }: { post: PostMeta }) {
       <h2 className="kam-title text-xl leading-snug sm:text-2xl">
         <Link
           href={`/posts/${post.slug}`}
-          className="text-text transition-colors duration-300 group-hover:text-goldstrong"
+          className="text-text transition-colors duration-500 group-hover:text-goldstrong"
         >
           {post.title}
         </Link>
@@ -31,12 +31,12 @@ export default function PostCard({ post }: { post: PostMeta }) {
         </p>
       )}
       {post.tags.length > 0 && (
-        <div className="mt-3 flex flex-wrap gap-3">
+        <div className="mt-4 flex flex-wrap gap-2">
           {post.tags.map((tag) => (
             <Link
               key={tag}
               href={`/tags/${encodeURIComponent(tag)}`}
-              className="text-xs tracking-widest text-textsoft/80 transition-colors hover:text-goldstrong"
+              className="pill"
             >
               #{tag}
             </Link>
