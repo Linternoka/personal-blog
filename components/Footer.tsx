@@ -11,9 +11,19 @@ export default function Footer() {
           {/* 站点名 */}
           <Link
             href="/"
-            className="kam-title text-xl font-bold tracking-[0.08em] text-goldstrong"
+            className="kam-title flex items-center gap-2.5 text-xl font-bold tracking-[0.08em] text-goldstrong"
           >
-            {siteConfig.name}
+            {siteConfig.logo && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={`${siteConfig.basePath}${siteConfig.logo}`}
+                alt=""
+                width={26}
+                height={26}
+                className="h-6 w-6 object-contain"
+              />
+            )}
+            <span>{siteConfig.name}</span>
           </Link>
 
           <p className="max-w-md text-center text-sm leading-relaxed text-textsoft">

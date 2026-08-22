@@ -138,9 +138,20 @@ export default async function PostPage({
       {/* 站点署名 */}
       <div className="mt-10 flex items-center justify-between border-t border-line pt-6">
         <div className="flex items-center gap-4">
-          <div className="kam-title flex h-11 w-11 items-center justify-center border border-gold/60 text-lg text-goldstrong">
-            {siteConfig.author.name.slice(0, 1)}
-          </div>
+          {siteConfig.avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={`${siteConfig.basePath}${siteConfig.avatar}`}
+              alt={siteConfig.author.name}
+              width={44}
+              height={44}
+              className="h-11 w-11 rounded-full border border-gold/60 object-cover"
+            />
+          ) : (
+            <div className="kam-title flex h-11 w-11 items-center justify-center border border-gold/60 text-lg text-goldstrong">
+              {siteConfig.author.name.slice(0, 1)}
+            </div>
+          )}
           <div>
             <p className="kam-title text-sm font-bold text-text">
               {siteConfig.author.name}

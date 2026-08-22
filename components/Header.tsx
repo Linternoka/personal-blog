@@ -19,9 +19,19 @@ export default function Header() {
         {/* Logo */}
         <Link
           href="/"
-          className="kam-title text-lg font-bold tracking-[0.08em] text-goldstrong"
+          className="kam-title flex items-center gap-2.5 text-lg font-bold tracking-[0.08em] text-goldstrong"
         >
-          {siteConfig.name}
+          {siteConfig.logo && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={`${siteConfig.basePath}${siteConfig.logo}`}
+              alt={siteConfig.name}
+              width={28}
+              height={28}
+              className="h-7 w-7 object-contain"
+            />
+          )}
+          <span>{siteConfig.name}</span>
         </Link>
 
         {/* 桌面端导航 */}

@@ -16,9 +16,20 @@ export default function AboutPage() {
       </div>
       <div className="mt-8 flex flex-col items-start gap-6 sm:flex-row">
         {/* 头像 */}
-        <div className="kam-title flex h-20 w-20 shrink-0 items-center justify-center border border-line-strong bg-bgsoft text-3xl text-text">
-          {author.name.slice(0, 1)}
-        </div>
+        {siteConfig.avatar ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`${siteConfig.basePath}${siteConfig.avatar}`}
+            alt={author.name}
+            width={80}
+            height={80}
+            className="h-20 w-20 shrink-0 rounded-full border border-line-strong object-cover"
+          />
+        ) : (
+          <div className="kam-title flex h-20 w-20 shrink-0 items-center justify-center border border-line-strong bg-bgsoft text-3xl text-text">
+            {author.name.slice(0, 1)}
+          </div>
+        )}
         <div>
           <h2 className="kam-title text-xl font-bold text-text">
             {author.name}
