@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { friends, safeUrl } from "@/lib/friends";
 import Reveal from "@/components/Reveal";
 import EmptyState from "@/components/EmptyState";
+import { LinkRepairIllustration } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "友链",
@@ -19,7 +20,13 @@ export default function FriendsPage() {
       </div>
 
       {friends.length === 0 ? (
-        <EmptyState title="暂无友链" hint="欢迎联系我交换链接" />
+        <EmptyState
+          title="暂无友链"
+          hint="欢迎联系我交换链接"
+          illustration={
+            <LinkRepairIllustration className="h-24 w-28 text-line-strong" />
+          }
+        />
       ) : (
         <div className="mt-2">
           {friends.map((friend, i) => (

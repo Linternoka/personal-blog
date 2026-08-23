@@ -117,3 +117,32 @@ export function BookRepairIllustration({ className }: IconProps) {
     </svg>
   );
 }
+
+/** 空态插画：两节链环被重新接合（友链交换主题，呼应「废书库修缮」） */
+export function LinkRepairIllustration({ className }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 120 96"
+      className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {/* 链环主体（feather link 放大 4x 居中） */}
+      <g transform="translate(12 0) scale(4)" strokeWidth="0.4">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+      </g>
+      {/* 修缮胶带：链环接合处 */}
+      <path d="m48 42 24 5-3 10-24-5z" opacity="0.9" />
+      {/* 装饰星点 */}
+      <path
+        d="M18 20v3M16.5 21.5h3M102 20v3M100.5 21.5h3M22 76v3M20.5 77.5h3M98 76v3M96.5 77.5h3"
+        opacity="0.55"
+      />
+    </svg>
+  );
+}
