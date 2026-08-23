@@ -20,7 +20,8 @@ export default function Header() {
         {/* 站标 + 站点名
             星轨 Logo（components/Logo.tsx）：线稿继承 currentColor，
             青绿强调用 var(--gold) 自动适配亮/暗色；悬停时旋转 90°。
-            站名下方为拼音副标 FEISHUKU（品牌识别，增大字距营造高级感） */}
+            站名下方为英文副标 Geniza（取希伯来语「藏经库」之意，
+            呼应收录旧文献的「废书库修缮」主题；增大字距营造高级感） */}
         <Link
           href="/"
           className="kam-title group flex items-center gap-5 text-2xl tracking-[0.08em] text-text"
@@ -31,7 +32,7 @@ export default function Header() {
               {siteConfig.name}
             </span>
             <span className="mt-2 text-base font-normal tracking-[0.22em] text-text/75">
-              FEISHUKU
+              Geniza
             </span>
           </span>
         </Link>

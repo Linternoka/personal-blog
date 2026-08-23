@@ -1,33 +1,64 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
-  <!-- 深色圆角底：favicon 独立渲染，不依赖 CSS 变量 -->
-  <rect width="600" height="600" rx="120" fill="#0a0e0d"/>
+  <!--
+    网站 favicon —— 与 components/Logo.tsx 视觉对齐
+    - 浏览器抓取 favicon 时不会解析 CSS 变量，所以这里用 @media (prefers-color-scheme) 内联适配亮/暗主题
+    - 几何（viewBox / translate / 五角星坐标 / 轨道半径）与 Logo 完全一致；favicon 在 16x16 渲染故 stroke-width 取 8（Logo 用 2）
+    - 暗色：底 #0a0e0d / 线 #e8eae9 / gold #7fdcc6（与 globals.css 暗色变量一致）
+    - 亮色：底 #f7f5f0 / 线 #2d3231 / gold #0f766e（与 globals.css 亮色变量一致）
+  -->
+  <style>
+    .bg     { fill: #0a0e0d; }
+    .line   { stroke: #e8eae9; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .core   { fill: rgba(127, 220, 198, 0.16); stroke: #e8eae9; stroke-linejoin: round; }
+    .dash   { stroke: #7fdcc6; fill: none; stroke-dasharray: 30 22; }
+    .ellipse{ stroke: #7fdcc6; fill: none; }
+    .dot    { fill: #7fdcc6; }
+    @media (prefers-color-scheme: light) {
+      .bg     { fill: #f7f5f0; }
+      .line   { stroke: #2d3231; }
+      .core   { fill: rgba(15, 118, 110, 0.18); stroke: #2d3231; }
+      .dash   { stroke: #0f766e; }
+      .ellipse{ stroke: #0f766e; }
+      .dot    { fill: #0f766e; }
+    }
+  </style>
+
+  <!-- 圆角底：favicon 16x16 渲染时提供清晰边界，避免透明背景在浅色标签栏上"消失" -->
+  <rect width="600" height="600" rx="120" class="bg" />
+
   <g transform="translate(300,300)">
     <!-- 外圈轨道 -->
-    <circle r="260" fill="none" stroke="#e8eae9" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle r="260" class="line" stroke-width="8" />
+
     <!-- 5 条斜轨道 -->
-    <g fill="none" stroke="#e8eae9" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="0" cy="-130" r="130"/>
-      <circle cx="0" cy="-130" r="130" transform="rotate(72)"/>
-      <circle cx="0" cy="-130" r="130" transform="rotate(144)"/>
-      <circle cx="0" cy="-130" r="130" transform="rotate(216)"/>
-      <circle cx="0" cy="-130" r="130" transform="rotate(288)"/>
+    <g class="line" stroke-width="8">
+      <circle cx="0" cy="-130" r="130" />
+      <circle cx="0" cy="-130" r="130" transform="rotate(72)" />
+      <circle cx="0" cy="-130" r="130" transform="rotate(144)" />
+      <circle cx="0" cy="-130" r="130" transform="rotate(216)" />
+      <circle cx="0" cy="-130" r="130" transform="rotate(288)" />
     </g>
+
     <!-- 星形核心 -->
     <polygon points="0,-110 32,-34 105,-34 43,13 64,90 0,55 -64,90 -43,13 -105,-34 -32,-34"
-             fill="rgba(127,220,198,0.16)" stroke="#e8eae9" stroke-width="8" stroke-linejoin="round"/>
-    <!-- 中层圆环 + 虚线环 -->
-    <circle r="180" fill="none" stroke="#e8eae9" stroke-width="8"/>
-    <circle r="180" fill="none" stroke="#7fdcc6" stroke-width="6" stroke-dasharray="30 22"/>
+             class="core" stroke-width="8" />
+
+    <!-- 中层实线圆环 -->
+    <circle r="180" class="line" stroke-width="8" />
+    <!-- 中层虚线圆环（青绿强调） -->
+    <circle r="180" class="dash" stroke-width="6" />
+
     <!-- 内层 5 个椭圆轨道 -->
-    <g fill="none" stroke="#7fdcc6" stroke-width="6">
-      <ellipse rx="60" ry="15" transform="rotate(0)"/>
-      <ellipse rx="60" ry="15" transform="rotate(72)"/>
-      <ellipse rx="60" ry="15" transform="rotate(144)"/>
-      <ellipse rx="60" ry="15" transform="rotate(216)"/>
-      <ellipse rx="60" ry="15" transform="rotate(288)"/>
+    <g class="ellipse" stroke-width="6">
+      <ellipse rx="60" ry="15" transform="rotate(0)" />
+      <ellipse rx="60" ry="15" transform="rotate(72)" />
+      <ellipse rx="60" ry="15" transform="rotate(144)" />
+      <ellipse rx="60" ry="15" transform="rotate(216)" />
+      <ellipse rx="60" ry="15" transform="rotate(288)" />
     </g>
+
     <!-- 中心圆核 -->
-    <circle r="25" fill="rgba(127,220,198,0.16)" stroke="#e8eae9" stroke-width="8"/>
-    <circle r="12" fill="#7fdcc6"/>
+    <circle r="25" class="core" stroke-width="8" />
+    <circle r="12" class="dot" />
   </g>
 </svg>
