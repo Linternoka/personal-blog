@@ -643,13 +643,13 @@ blockquote::before {
   box-shadow: 0 0 28px rgba(0, 0, 0, 0.28);
   transform: translateX(-100%);
   visibility: hidden;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
-    visibility 0s linear 0.5s;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.35s;
 }
 .toc-sidebar.is-open {
   transform: translateX(0);
   visibility: visible;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .toc-sidebar-head {
   display: flex;

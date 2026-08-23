@@ -25,12 +25,12 @@ export default function TocSidebar({ headings }: { headings: TocItem[] }) {
     const onMove = (e: MouseEvent) => {
       if (!isDesktop.current) return;
       const x = e.clientX;
-      if (x <= 32) {
+      if (x <= 20) {
         // 鼠标移到左缘热区 → 打开
         if (timer.current) window.clearTimeout(timer.current);
         setOpen(true);
-      } else if (x > 320) {
-        // 移出侧边栏范围 → 延迟关闭（留 40px 缓冲）
+      } else if (x > 300) {
+        // 移出侧边栏范围 → 延迟关闭（留 20px 缓冲）
         if (timer.current) window.clearTimeout(timer.current);
         timer.current = window.setTimeout(() => setOpen(false), 250);
       }
