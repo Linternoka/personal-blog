@@ -652,3 +652,59 @@ html[data-theme="dark"] #nc-root select {
   border: 1px solid var(--decap-line) !important;
   border-radius: 2px !important;
 }
+
+/* ============================================================
+   修复（2026-08-23，v16）：网格视图卡片深色主题化
+   - 文章列表默认是网格视图，卡片类名是 GridCard-card / GridCardLink，
+     v15 只覆盖了列表视图（ListCard-card），网格卡片仍是 Decap 默认
+     纯白背景 + 浅阴影，深色模式下异常突兀
+   修复：网格卡片与列表卡片统一（--decap-card 底 + 细线边框 + 无阴影），
+   卡片标题颜色跟随主题（列表视图 ListCardTitle 之前漏了 color）
+   ============================================================ */
+#nc-root [class*="GridCard-card"],
+#nc-root [class*="GridCardLink"] {
+  background-color: var(--decap-card) !important;
+  color: var(--decap-text) !important;
+}
+#nc-root [class*="GridCard-card"] {
+  border: 1px solid var(--decap-line) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+}
+/* 卡片标题文字：跟随主题（网格 CardHeading + 列表 ListCardTitle） */
+#nc-root [class*="CardHeading"],
+#nc-root [class*="ListCardTitle"] {
+  color: var(--decap-text) !important;
+}
+/* 卡片底部白色渐变线：Decap 给有图片的卡片做的淡出阴影（inset box-shadow
+   纯白），纯文字卡片上在深色背景下是一条刺眼白线 → 移除 */
+#nc-root [class*="CardBody"]::after {
+  box-shadow: none !important;
+}
+/* 新建内容按钮（＋ 文章）：Decap 默认灰 → 主题金色 */
+#nc-root [class*="CollectionTopNewButton"] {
+  background-color: var(--decap-gold) !important;
+  color: var(--decap-bg) !important;
+  border: 1px solid var(--decap-gold) !important;
+}
+#nc-root [class*="CollectionTopNewButton"]:hover {
+  background-color: var(--decap-gold-hover) !important;
+  border-color: var(--decap-gold-hover) !important;
+}
+
+/* ============================================================
+   修复（2026-08-23，v16）：富文本模式正文文字跟随主题
+   - v11 只修了 Markdown 模式（.cms-editor-raw）的 Slate 文字色，
+     富文本模式（.cms-editor-visual）的正文仍是 Decap 默认深色
+     （#444a57 / #313d3e），深色背景下几乎看不清 → 两种模式 UI 不一致
+   修复：富文本 Slate 编辑区文字、光标与 Markdown 模式统一为主题色
+   ============================================================ */
+#nc-root .cms-editor-visual [data-slate-editor="true"] {
+  color: var(--decap-text) !important;
+  caret-color: var(--decap-gold) !important;
+}
+#nc-root .cms-editor-visual [data-slate-editor="true"] span,
+#nc-root .cms-editor-visual [data-slate-editor="true"] p,
+#nc-root .cms-editor-visual [data-slate-editor="true"] div {
+  color: var(--decap-text) !important;
+}
