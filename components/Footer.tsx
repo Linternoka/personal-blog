@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
+import { Logo } from "./Logo";
 import { RssIcon, EditIcon } from "./icons";
 
 export default function Footer() {
@@ -8,11 +9,12 @@ export default function Footer() {
     <footer className="mt-16 border-t border-line">
       <div className="mx-auto w-full max-w-5xl px-4 pb-[calc(env(safe-area-inset-bottom)+3.5rem)] pt-14 sm:px-6">
         <div className="flex flex-col items-center gap-5">
-          {/* 站点名 */}
+          {/* 站标 + 站点名（竖排居中，Logo 用青绿强调色与 Header 呼应） */}
           <Link
             href="/"
-            className="kam-title text-xl tracking-[0.08em] text-goldstrong"
+            className="kam-title flex flex-col items-center gap-3 text-xl tracking-[0.08em] text-goldstrong"
           >
+            <Logo className="h-24 w-24 text-goldstrong" />
             {siteConfig.name}
           </Link>
 

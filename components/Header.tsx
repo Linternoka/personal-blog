@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { siteConfig } from "@/lib/site";
+import { Logo } from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
@@ -15,17 +16,23 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-line/70 bg-bg/60 backdrop-blur-md">
-      <div className="mx-auto flex h-16 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
-        {/* 站点名（终端提示符前缀） */}
+      <div className="mx-auto flex h-28 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
+        {/* 站标 + 站点名
+            星轨 Logo（components/Logo.tsx）：线稿继承 currentColor，
+            青绿强调用 var(--gold) 自动适配亮/暗色；悬停时旋转 90°。
+            站名下方为拼音副标 FEISHUKU（品牌识别，增大字距营造高级感） */}
         <Link
           href="/"
-          className="kam-title group flex items-center gap-2 text-lg tracking-[0.08em] text-text"
+          className="kam-title group flex items-center gap-5 text-2xl tracking-[0.08em] text-text"
         >
-          <span className="text-gold" aria-hidden="true">
-            ❯
-          </span>
-          <span className="transition-colors duration-500 group-hover:text-goldstrong">
-            {siteConfig.name}
+          <Logo className="h-24 w-24 shrink-0 text-gold transition-transform duration-700 group-hover:rotate-90" />
+          <span className="flex flex-col leading-none">
+            <span className="transition-colors duration-500 group-hover:text-goldstrong">
+              {siteConfig.name}
+            </span>
+            <span className="mt-2 text-base font-normal tracking-[0.22em] text-text/75">
+              FEISHUKU
+            </span>
           </span>
         </Link>
 
