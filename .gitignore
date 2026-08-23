@@ -36,11 +36,15 @@ yarn-error.log*
 .pnpm-debug.log*
 *.log
 
+# 构建/审计临时输出
+build.log
+npm-audit.json
+
 # env files (can opt-in for committing if needed)
 .env*
 
-# python virtual env
-.venv/
+# python virtual env（.venv / .venv-1 等任何变体）
+/.venv*/
 
 # vercel
 .vercel

@@ -53,13 +53,17 @@ function readCookie(cookieHeader, name) {
   return null;
 }
 
-/** 4xx/5xx 响应辅助：附 X-Content-Type-Options 防 MIME 嗅探 */
+/** 4xx/5xx 响应辅助：附安全头（防 MIME 嗅探 / clickjacking / Referer 泄露） */
 function errorResponse(statusCode, message) {
   return {
     statusCode,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "X-Content-Type-Options": "nosniff",
+      // 禁止 iframe 嵌入，防 clickjacking（Decap 用 window.open 弹窗，不受影响）
+      "X-Frame-Options": "DENY",
+      // 回调 URL 中的 code / 页面中的 token 不经 Referer 泄露给第三方
+      "Referrer-Policy": "no-referrer",
     },
     body: message,
   };
@@ -99,6 +103,10 @@ exports.handler = async (event) => {
         // HttpOnly 防 JS 读取；Secure 仅 HTTPS 传输；SameSite=Lax 允许 OAuth 弹窗回调
         "Set-Cookie": `${STATE_COOKIE}=${encodeURIComponent(state)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${STATE_MAX_AGE}`,
         "Cache-Control": "no-store",
+        // 防 clickjacking 与 Referer 泄露
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "no-referrer",
+        "X-Content-Type-Options": "nosniff",
       },
     };
   }
@@ -171,6 +179,10 @@ exports.handler = async (event) => {
       headers: {
         "Content-Type": "text/html; charset=utf-8",
         "X-Content-Type-Options": "nosniff",
+        // 禁止 iframe 嵌入，防 clickjacking（Decap 用 window.open 弹窗，不受影响）
+        "X-Frame-Options": "DENY",
+        // 页面内嵌了 access token，绝不允许第三方站点通过 Referer 拿到
+        "Referrer-Policy": "no-referrer",
         // 清除 state cookie，防止重放
         "Set-Cookie": `${STATE_COOKIE}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`,
         "Cache-Control": "no-store",

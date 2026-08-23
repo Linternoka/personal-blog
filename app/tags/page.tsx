@@ -6,6 +6,8 @@ import EmptyState from "@/components/EmptyState";
 export const metadata: Metadata = {
   title: "标签",
   description: "文章标签",
+  alternates: { canonical: "/tags" },
+  openGraph: { url: "/tags" },
 };
 
 export default function TagsPage() {

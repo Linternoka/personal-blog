@@ -5,6 +5,12 @@
  *
  * 注意：拒绝协议相对 URL（//evil.com）——它会被浏览器解析为与当前页同协议下的任意域，
  * 配置阶段就拒绝可避免后续重构（如给 <a> 加 _self 默认行为）时出现意外跳转。
+ *
+ * 返回的是 URL 规范化后的结果（u.href）而非原始输入：浏览器拿到的 href 与这里
+ * 校验的是同一个字符串，消除两者解析差异（如 https:\\evil.com 这类反斜杠、
+ * 控制字符、HTTPS:// 大小写混淆等），这是协议白名单校验的关键一环。
+ * 副作用：无路径的 URL（https://example.com）会规范化为 https://example.com/，
+ * 语义等价，不影响跳转。
  */
 export function safeUrl(url: string | undefined): string {
   if (!url) return "#";
@@ -13,7 +19,7 @@ export function safeUrl(url: string | undefined): string {
   if (/^\/\/|^\\\\/.test(trimmed)) return "#";
   try {
     const u = new URL(trimmed, "https://invalid.local");
-    return u.protocol === "http:" || u.protocol === "https:" ? trimmed : "#";
+    return u.protocol === "http:" || u.protocol === "https:" ? u.href : "#";
   } catch {
     return "#";
   }

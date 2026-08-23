@@ -23,6 +23,8 @@ export async function generateMetadata({
   return {
     title: `标签：${name}`,
     description: `标签「${name}」下的文章`,
+    alternates: { canonical: `/tags/${encodeURIComponent(name)}` },
+    openGraph: { url: `/tags/${encodeURIComponent(name)}` },
   };
 }
 

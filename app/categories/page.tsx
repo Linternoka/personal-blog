@@ -7,6 +7,8 @@ import EmptyState from "@/components/EmptyState";
 export const metadata: Metadata = {
   title: "分类",
   description: "文章分类",
+  alternates: { canonical: "/categories" },
+  openGraph: { url: "/categories" },
 };
 
 export default function CategoriesPage() {

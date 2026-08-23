@@ -6,6 +6,8 @@ import EmptyState from "@/components/EmptyState";
 export const metadata: Metadata = {
   title: "推荐作品",
   description: "记录与分享值得一看的作品",
+  alternates: { canonical: "/works" },
+  openGraph: { url: "/works" },
 };
 
 /** 单张推荐卡片：标题 / 类型 / 简介 / 链接（复用档案残片卡片设计） */

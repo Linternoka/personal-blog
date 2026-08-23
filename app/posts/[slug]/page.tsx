@@ -8,6 +8,7 @@ import { siteConfig } from "@/lib/site";
 import GiscusComments from "@/components/GiscusComments";
 import TocSidebar from "@/components/TocSidebar";
 import CodeBlockEnhancer from "@/components/CodeBlockEnhancer";
+import JsonLd from "@/components/JsonLd";
 
 export function generateStaticParams() {
   const posts = getAllPosts();
@@ -38,16 +39,35 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = getPostBySlug(safeDecode(slug));
   if (!post) return {};
+  // 中文 slug 需 percent-encode，与 sitemap/RSS 保持一致
+  const canonical = `/posts/${encodeURIComponent(post.slug)}`;
+  // og:image 优先用文章封面（只接受站内 /images/... 路径，相对 URL 由 Next.js 拼 metadataBase），
+  // 无封面则回退默认分享图 og.png
+  const ogImage =
+    post.cover && post.cover.startsWith("/") && !post.cover.startsWith("//")
+      ? post.cover
+      : "/og.png";
   return {
     title: post.title,
     description: post.description,
+    alternates: { canonical },
     openGraph: {
       title: post.title,
       description: post.description,
       type: "article",
+      url: canonical,
+      siteName: siteConfig.name,
+      locale: "zh_CN",
       publishedTime: post.date,
       modifiedTime: post.updated,
       tags: post.tags,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: [ogImage],
     },
   };
 }
@@ -68,8 +88,68 @@ export default async function PostPage({
   const prev = index > 0 ? posts[index - 1] : null;
   const next = index >= 0 && index < posts.length - 1 ? posts[index + 1] : null;
 
+  // SEO：绝对 URL 供 JSON-LD 使用
+  const siteUrl = `${siteConfig.url}${siteConfig.basePath}`;
+  const postUrl = `${siteUrl}/posts/${encodeURIComponent(post.slug)}/`;
+  const authorUrl = `${siteUrl}/`;
+
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
+      {/* SEO：BlogPosting 结构化数据（让搜索引擎理解文章语义、发布时间等） */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.description,
+          image: `${siteUrl}/og.png`,
+          datePublished: post.date,
+          dateModified: post.updated || post.date,
+          inLanguage: "zh-CN",
+          mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+          author: {
+            "@type": "Person",
+            name: siteConfig.author.name,
+            url: authorUrl,
+          },
+          publisher: {
+            "@type": "Organization",
+            name: siteConfig.name,
+            url: `${siteUrl}/`,
+            logo: {
+              "@type": "ImageObject",
+              url: `${siteUrl}/favicon.svg`,
+            },
+          },
+        }}
+      />
+      {/* SEO：面包屑导航（首页 > 分类 > 文章） */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "首页",
+              item: `${siteUrl}/`,
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: post.category,
+              item: `${siteUrl}/categories/${encodeURIComponent(post.category)}/`,
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: post.title,
+              item: postUrl,
+            },
+          ],
+        }}
+      />
       <CodeBlockEnhancer />
       <TocSidebar headings={headings} />
       <article className="mx-auto w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl">

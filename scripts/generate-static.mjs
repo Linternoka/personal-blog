@@ -41,7 +41,12 @@ function readPosts() {
   if (!fs.existsSync(postsDir)) return [];
   return fs
     .readdirSync(postsDir)
-    .filter((file) => /\.mdx?$/.test(file))
+    .filter((file) => {
+      if (!/\.mdx?$/.test(file)) return false;
+      // 与 lib/posts.ts 的 getPostBySlug 保持一致：仅允许文件名安全字符，
+      // 否则含《》/空格等字符的文件会进 RSS/sitemap/搜索索引，但页面不生成（404）
+      return /^[\w\u4e00-\u9fa5-]+$/.test(file.replace(/\.mdx?$/, ""));
+    })
     .map((file) => {
       const raw = fs.readFileSync(path.join(postsDir, file), "utf8");
       const { data, content } = matter(raw);
@@ -72,7 +77,7 @@ function main() {
     id: site.url,
     link: `${site.url}${basePath}`,
     language: "zh-CN",
-    favicon: `${site.url}${basePath}/favicon.ico`,
+    favicon: `${site.url}${basePath}/favicon.svg`,
     copyright: `Copyright © ${new Date().getFullYear()} ${site.author.name}`,
     author: {
       name: site.author.name,
@@ -82,10 +87,12 @@ function main() {
   });
 
   for (const post of posts) {
+    // 中文 slug 必须 percent-encode（与 sitemap 保持一致），否则 RSS 阅读器拿到原始中文 URL
+    const postUrl = `${site.url}${basePath}/posts/${encodeURIComponent(post.slug)}/`;
     feed.addItem({
       title: post.title,
-      id: `${site.url}${basePath}/posts/${post.slug}/`,
-      link: `${site.url}${basePath}/posts/${post.slug}/`,
+      id: postUrl,
+      link: postUrl,
       description: post.description,
       content: stripMarkdown(post.content).slice(0, 500),
       date: post.date,
@@ -116,15 +123,33 @@ function main() {
   // ---- 生成 sitemap.xml ----
   const categories = [...new Set(posts.map((p) => p.category))];
   const tags = [...new Set(posts.flatMap((p) => p.tags))];
-  const staticUrls = ["/", "/about/", "/friends/", "/search/", "/categories/", "/tags/"];
-  const allUrls = [
-    ...staticUrls,
-    ...posts.map((p) => `/posts/${encodeURIComponent(p.slug)}/`),
-    ...categories.map((c) => `/categories/${encodeURIComponent(c)}/`),
-    ...tags.map((t) => `/tags/${encodeURIComponent(t)}/`),
+  const staticUrls = [
+    "/",
+    "/about/",
+    "/friends/",
+    "/guide/",
+    "/search/",
+    "/categories/",
+    "/tags/",
+    "/works/",
   ];
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${allUrls
-    .map((u) => `  <url><loc>${site.url}${basePath}${u}</loc></url>`)
+  const sitemapUrls = [
+    ...staticUrls.map((loc) => ({ loc })),
+    // 文章带 lastmod（updated 优先，其次 date），提示搜索引擎内容更新时间
+    ...posts.map((p) => ({
+      loc: `/posts/${encodeURIComponent(p.slug)}/`,
+      lastmod: (p.updated || p.date).toISOString().slice(0, 10),
+    })),
+    ...categories.map((c) => ({
+      loc: `/categories/${encodeURIComponent(c)}/`,
+    })),
+    ...tags.map((t) => ({ loc: `/tags/${encodeURIComponent(t)}/` })),
+  ];
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapUrls
+    .map(
+      (u) =>
+        `  <url><loc>${site.url}${basePath}${u.loc}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ""}</url>`
+    )
     .join("\n")}\n</urlset>\n`;
   fs.writeFileSync(path.join(outDir, "sitemap.xml"), sitemap, "utf8");
 

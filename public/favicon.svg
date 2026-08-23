@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <!-- 站点 favicon：深底 + 星轨 Logo 简化版（外圈轨道 + 五角星核心），呼应 components/Logo.tsx -->
+  <rect x="30" y="30" width="540" height="540" rx="110" fill="#11151c"/>
+  <g transform="translate(300,300)" fill="none" stroke="#7fdcc6" stroke-width="26" stroke-linecap="round" stroke-linejoin="round">
+    <circle r="205"/>
+    <polygon points="0,-112 33,-38 108,-38 45,10 67,92 0,56 -67,92 -45,10 -108,-38 -33,-38" fill="#7fdcc6" stroke="none"/>
+    <circle r="20" fill="#11151c" stroke="#7fdcc6" stroke-width="14"/>
+  </g>
+</svg>

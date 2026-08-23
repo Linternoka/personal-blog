@@ -21,6 +21,8 @@ export async function generateMetadata({
   return {
     title: `分类：${name}`,
     description: `「${name}」分类下的文章`,
+    alternates: { canonical: `/categories/${encodeURIComponent(name)}` },
+    openGraph: { url: `/categories/${encodeURIComponent(name)}` },
   };
 }
 

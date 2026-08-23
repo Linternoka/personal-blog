@@ -5,6 +5,8 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   title: "使用与维护指南",
   description: `如何使用与维护 ${siteConfig.name}`,
+  alternates: { canonical: "/guide" },
+  openGraph: { url: "/guide" },
 };
 
 const adminHref = "/admin/";

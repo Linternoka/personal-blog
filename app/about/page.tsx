@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/lib/site";
 import ContactLink from "@/components/ContactLink";
+import JsonLd from "@/components/JsonLd";
 import {
   GitHubIcon,
   BilibiliIcon,
@@ -12,12 +13,30 @@ import {
 export const metadata: Metadata = {
   title: "关于",
   description: `关于 ${siteConfig.name} 与 ${siteConfig.author.name}`,
+  alternates: { canonical: "/about" },
+  openGraph: { url: "/about" },
 };
 
 export default function AboutPage() {
   const { author, name } = siteConfig;
+  const siteUrl = `${siteConfig.url}${siteConfig.basePath}`;
+  // Person 结构化数据：sameAs 只收 http(s) 社交链接（排除 mailto:）
+  const sameAs = Object.values(siteConfig.social).filter(
+    (v): v is string => typeof v === "string" && /^https?:/.test(v)
+  );
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6">
+      {/* SEO：Person 结构化数据（作者身份与社交主页关联） */}
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Person",
+          name: author.name,
+          url: `${siteUrl}/`,
+          image: `${siteUrl}${siteConfig.avatar || ""}`,
+          sameAs,
+        }}
+      />
       <div className="border-b border-line pb-6">
         <h1 className="kam-section-ja text-3xl">关于</h1>
       </div>

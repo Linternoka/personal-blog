@@ -9,6 +9,8 @@ import { LinkRepairIllustration } from "@/components/icons";
 export const metadata: Metadata = {
   title: "友链",
   description: "我的朋友们",
+  alternates: { canonical: "/friends" },
+  openGraph: { url: "/friends" },
 };
 
 export default function FriendsPage() {

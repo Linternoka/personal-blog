@@ -154,10 +154,14 @@ netlify/              OAuth 代理
 ## 顺手做的安全处理
 
 - 文章 Markdown 渲染前过一遍 rehype-sanitize，危险协议和事件属性会被滤掉
-- slug 只允许文件名安全字符，防路径穿越
-- 作品和友链链接走协议白名单
+- slug 只允许文件名安全字符，防路径穿越；`scripts/generate-static.mjs` 的 RSS/sitemap/搜索索引与页面共用同一套校验，不会收录会 404 的文章
+- 作品和友链链接走协议白名单，且返回的是 URL 规范化结果（消除浏览器与校验器的解析差异）
 - 所有新窗口链接都带 rel="noopener noreferrer"
-- 密钥不进仓库，OAuth secret 只在 Netlify 环境变量里
+- 站内 `<meta http-equiv>` CSP：限制资源来源、禁 object/plugin、base-uri 防劫持（静态导出实测可输出）
+- 外链图片（文章插图、友链头像）带 `referrerPolicy="no-referrer"`，防图床追踪访客
+- OAuth 代理：state CSRF 校验 + HttpOnly/Secure cookie + `X-Frame-Options: DENY` + `Referrer-Policy: no-referrer` 防 clickjacking 与 token 泄露
+- GitHub Actions 固定到发布 tag 的 SHA（防供应链投毒）
+- 密钥不进仓库，OAuth secret 只在 Netlify 环境变量里；`.env*`、`.venv*`、构建日志均被 .gitignore 覆盖
 
 ## 技术栈
 
