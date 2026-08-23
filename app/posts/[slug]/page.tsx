@@ -6,7 +6,7 @@ import { renderMarkdown } from "@/lib/markdown";
 import { formatDate, safeDecode } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 import GiscusComments from "@/components/GiscusComments";
-import Toc from "@/components/Toc";
+import TocSidebar from "@/components/TocSidebar";
 import CodeBlockEnhancer from "@/components/CodeBlockEnhancer";
 
 export function generateStaticParams() {
@@ -71,8 +71,8 @@ export default async function PostPage({
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
       <CodeBlockEnhancer />
-      <div className="lg:flex lg:items-start lg:gap-12">
-        <article className="mx-auto w-full max-w-3xl lg:mx-0 lg:flex-1">
+      <TocSidebar headings={headings} />
+      <article className="mx-auto w-full max-w-3xl">
           {/* 文章头部（极简元数据） */}
           <header>
             <div className="flex flex-wrap items-center gap-3 text-sm text-textsoft">
@@ -116,38 +116,12 @@ export default async function PostPage({
             <div className="mt-8 h-px w-full bg-gradient-to-r from-gold/60 via-line to-transparent" />
           </header>
 
-          {/* 移动端目录（折叠，lg 以下显示） */}
-          {headings.length > 0 && (
-            <details className="group mt-8 rounded-sm border border-line bg-bgsoft/50 lg:hidden">
-              <summary className="flex cursor-pointer select-none items-center justify-between px-4 py-3 text-sm tracking-[0.3em] text-gold">
-                <span>目录</span>
-                <span
-                  aria-hidden="true"
-                  className="text-textsoft transition-transform duration-500 group-open:rotate-45"
-                >
-                  ＋
-                </span>
-              </summary>
-              <div className="px-4 pb-4">
-                <Toc headings={headings} hideTitle />
-              </div>
-            </details>
-          )}
-
           {/* 正文 */}
           <div
             className="prose prose-kam mx-auto mt-10"
             dangerouslySetInnerHTML={{ __html: html }}
           />
         </article>
-
-        {/* 目录（桌面端侧栏） */}
-        <aside className="hidden w-56 shrink-0 lg:block">
-          <div className="sticky top-24">
-            <Toc headings={headings} />
-          </div>
-        </aside>
-      </div>
 
       {/* 评论 / 上一篇下一篇 / 署名 */}
       <div className="mx-auto w-full max-w-3xl">

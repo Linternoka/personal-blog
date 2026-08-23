@@ -85,6 +85,52 @@ function rehypeWrapTables() {
   };
 }
 
+/**
+ * rehype 插件：把段落内软换行（\n）转为 <br>（GitHub 式硬换行），
+ * 用于中日文分行对照——日文原文与中文翻译各占一行。
+ * 注意：micromark 4 已移除 remarkParse 的 breaks 选项，需在此手动转换。
+ */
+function rehypeHardBreaks() {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (tree: any) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const walk = (node: any) => {
+      if (
+        (node.type === "element" || node.type === "root") &&
+        Array.isArray(node.children)
+      ) {
+        node.children = node.children.flatMap((child: any) => {
+          // 只处理含实际内容的文本节点：块级元素之间的纯换行文本（如 "\n"）跳过，
+          // 避免在 <h2> 与 <p> 之间误插 <br>
+          if (
+            child.type === "text" &&
+            child.value.trim() !== "" &&
+            child.value.includes("\n")
+          ) {
+            const parts: string[] = child.value.split("\n");
+            const out: any[] = [];
+            parts.forEach((part: string, i: number) => {
+              if (part) out.push({ type: "text", value: part });
+              if (i < parts.length - 1) {
+                out.push({
+                  type: "element",
+                  tagName: "br",
+                  properties: {},
+                  children: [],
+                });
+              }
+            });
+            return out;
+          }
+          walk(child);
+          return [child];
+        });
+      }
+    };
+    walk(tree);
+  };
+}
+
 /** 将 Markdown/MDX 正文渲染为 HTML 字符串（已消毒，防 XSS） */
 export async function renderMarkdown(content: string): Promise<string> {
   const file = await unified()
@@ -96,6 +142,7 @@ export async function renderMarkdown(content: string): Promise<string> {
     .use(rehypeKatex)
     .use(rehypeHighlight)
     .use(rehypeSanitize, sanitizeSchema)
+    .use(rehypeHardBreaks)
     .use(rehypeWrapTables)
     .use(rehypeBasePathImages)
     .use(rehypeStringify)
