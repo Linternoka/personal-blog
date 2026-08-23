@@ -72,7 +72,7 @@ export default async function PostPage({
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
       <CodeBlockEnhancer />
       <TocSidebar headings={headings} />
-      <article className="mx-auto w-full max-w-3xl">
+      <article className="mx-auto w-full max-w-3xl lg:max-w-4xl">
           {/* 文章头部（极简元数据） */}
           <header>
             <div className="flex flex-wrap items-center gap-3 text-sm text-textsoft">
@@ -124,7 +124,7 @@ export default async function PostPage({
         </article>
 
       {/* 评论 / 上一篇下一篇 / 署名 */}
-      <div className="mx-auto w-full max-w-3xl">
+      <div className="mx-auto w-full max-w-3xl lg:max-w-4xl">
         <GiscusComments />
 
         <nav className="mt-12 grid border-t border-line pt-6 sm:grid-cols-2">

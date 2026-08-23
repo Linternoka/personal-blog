@@ -221,7 +221,7 @@ cover: "/images/xxx.png"   # 可选，封面图
           <code className="rounded bg-bgsoft px-1.5 py-0.5 text-sm">npm run dev</code>
           ，浏览器打开本地地址就能预览。注意 Windows 上要用{" "}
           <code className="rounded bg-bgsoft px-1.5 py-0.5 text-sm">
-            cmd /c "npm run dev"
+            cmd /c &quot;npm run dev&quot;
           </code>{" "}
           这种方式跑。
         </p>

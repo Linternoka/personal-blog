@@ -99,6 +99,7 @@ function rehypeHardBreaks() {
         (node.type === "element" || node.type === "root") &&
         Array.isArray(node.children)
       ) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         node.children = node.children.flatMap((child: any) => {
           // 只处理含实际内容的文本节点：块级元素之间的纯换行文本（如 "\n"）跳过，
           // 避免在 <h2> 与 <p> 之间误插 <br>
@@ -108,6 +109,7 @@ function rehypeHardBreaks() {
             child.value.includes("\n")
           ) {
             const parts: string[] = child.value.split("\n");
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const out: any[] = [];
             parts.forEach((part: string, i: number) => {
               if (part) out.push({ type: "text", value: part });
