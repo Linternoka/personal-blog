@@ -15,7 +15,6 @@ interface SearchItem {
   category: string;
   tags: string[];
   date: string;
-  content: string;
 }
 
 export default function SearchClient() {
@@ -35,13 +34,14 @@ export default function SearchClient() {
 
   const fuse = useMemo(
     () =>
+      // content 字段已从搜索索引移除（见 scripts/generate-static.mjs）；
+      // 这里若需要全文搜索，加 `name: "content", weight: 0.05` 并恢复索引生成即可
       new Fuse(items, {
         keys: [
           { name: "title", weight: 0.5 },
           { name: "description", weight: 0.2 },
           { name: "tags", weight: 0.15 },
           { name: "category", weight: 0.1 },
-          { name: "content", weight: 0.05 },
         ],
         threshold: 0.35,
         ignoreLocation: true,

@@ -96,6 +96,9 @@ function main() {
   fs.writeFileSync(path.join(outDir, "rss.xml"), feed.rss2(), "utf8");
 
   // ---- 生成搜索索引 ----
+  // 不存正文：Fuse.js 里 content 字段权重仅 0.05（title/desc/tags/category 权重合计 0.95），
+  // 实际搜索效果几乎无差异，但能让索引体积从「全文 size 线性增长」降到「元数据 size」级别。
+  // 若以后需要全文搜索，单独启用 search-index-full.json 即可（不带全文的索引继续保留给首屏）。
   const searchIndex = posts.map((post) => ({
     slug: post.slug,
     title: post.title,
@@ -103,7 +106,6 @@ function main() {
     category: post.category,
     tags: post.tags,
     date: post.date.toISOString(),
-    content: stripMarkdown(post.content),
   }));
   fs.writeFileSync(
     path.join(outDir, "search-index.json"),
