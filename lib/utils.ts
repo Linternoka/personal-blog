@@ -2,12 +2,18 @@
  * 仅允许 http/https 协议的外链，过滤 javascript: / data: / vbscript: 等危险协议防 XSS。
  * 友链、推荐作品等链接可能指向第三方，渲染前必须净化。
  * 不合法的输入返回 "#"，调用方据此不渲染外链。
+ *
+ * 注意：拒绝协议相对 URL（//evil.com）——它会被浏览器解析为与当前页同协议下的任意域，
+ * 配置阶段就拒绝可避免后续重构（如给 <a> 加 _self 默认行为）时出现意外跳转。
  */
 export function safeUrl(url: string | undefined): string {
   if (!url) return "#";
+  // 拒绝 protocol-relative（//evil.com、///foo）与反斜杠形式（\\evil.com 旧浏览器会当协议）
+  const trimmed = url.trim();
+  if (/^\/\/|^\\\\/.test(trimmed)) return "#";
   try {
-    const u = new URL(url, "https://invalid.local");
-    return u.protocol === "http:" || u.protocol === "https:" ? url : "#";
+    const u = new URL(trimmed, "https://invalid.local");
+    return u.protocol === "http:" || u.protocol === "https:" ? trimmed : "#";
   } catch {
     return "#";
   }

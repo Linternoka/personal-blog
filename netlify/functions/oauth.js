@@ -13,39 +13,108 @@
  *
  * 协议：与 Decap 的 NetlifyAuthenticator 兼容——
  *   popup 打开 {base_url}/auth → 302 到 GitHub 授权页
- *   GitHub 回调 /callback → 用 code 换 token
+ *   GitHub 回调 /callback → 验证 state → 用 code 换 token
  *   → 页面通过 window.postMessage 与 Decap 完成握手：
  *     'authorizing:github' → 'authorization:github:success:{"token":"..."}'
+ *
+ * 安全要点：
+ * - state CSRF 防护：/auth 生成密码学随机 state 写入 HttpOnly+Secure+SameSite=Lax cookie，
+ *   /callback 比对 URL 中的 state 与 cookie 中的 state 是否一致，不一致直接拒绝
+ *   （state 通过 cookie 而非内存存储：Netlify Functions 是 serverless，每次冷启动
+ *   会重新初始化，无法用进程内 Map 存 state）
+ * - 启动时校验必需环境变量，缺配直接 500 而非 fallback 到错误的 Netlify 占位域名
  */
 
 const CLIENT_ID = process.env.GITHUB_OAUTH_CLIENT_ID;
 const CLIENT_SECRET = process.env.GITHUB_OAUTH_CLIENT_SECRET;
-const BASE_URL = process.env.OAUTH_BASE_URL || "https://spontaneous-frangollo-baf0ae.netlify.app";
-const REDIRECT_URI = `${BASE_URL}/callback`;
+const BASE_URL = process.env.OAUTH_BASE_URL;
+const REDIRECT_URI = BASE_URL ? `${BASE_URL}/callback` : "";
+
+// OAuth state cookie 配置：10 分钟有效（与 GitHub code 有效期一致），仅 HTTPS，
+// SameSite=Lax 允许 GitHub 回调后的跨站 GET 携带 cookie（弹窗与主站同源，可放宽）
+const STATE_COOKIE = "decap_oauth_state";
+const STATE_MAX_AGE = 600;
+
+/** 生成密码学随机 state（256 bit，URL safe hex） */
+function generateState() {
+  const bytes = crypto.getRandomValues(new Uint8Array(32));
+  let hex = "";
+  for (const b of bytes) hex += b.toString(16).padStart(2, "0");
+  return hex;
+}
+
+/** 从 Cookie 头中提取指定 name 的值，未找到返回 null */
+function readCookie(cookieHeader, name) {
+  if (!cookieHeader) return null;
+  for (const part of cookieHeader.split(";")) {
+    const [k, ...rest] = part.trim().split("=");
+    if (k === name) return decodeURIComponent(rest.join("="));
+  }
+  return null;
+}
+
+/** 4xx/5xx 响应辅助：附 X-Content-Type-Options 防 MIME 嗅探 */
+function errorResponse(statusCode, message) {
+  return {
+    statusCode,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "X-Content-Type-Options": "nosniff",
+    },
+    body: message,
+  };
+}
 
 exports.handler = async (event) => {
+  // 配置检查：缺环境变量直接报错，避免 OAuth 流程跑到一半才发现错配
+  if (!CLIENT_ID || !CLIENT_SECRET || !BASE_URL) {
+    const missing = [];
+    if (!CLIENT_ID) missing.push("GITHUB_OAUTH_CLIENT_ID");
+    if (!CLIENT_SECRET) missing.push("GITHUB_OAUTH_CLIENT_SECRET");
+    if (!BASE_URL) missing.push("OAUTH_BASE_URL");
+    return errorResponse(
+      500,
+      `OAuth proxy misconfigured: missing ${missing.join(", ")}`
+    );
+  }
+
   const path = event.path || "";
   const params = event.queryStringParameters || {};
+  const cookies = event.headers?.cookie || event.headers?.Cookie || "";
 
-  // 1) 发起 GitHub 授权
+  // 1) 发起 GitHub 授权：生成 state 并写入 cookie
   if (path.endsWith("/auth")) {
+    const state = generateState();
     const qs = new URLSearchParams({
       client_id: CLIENT_ID,
       redirect_uri: REDIRECT_URI,
       scope: "repo user:email",
       response_type: "code",
+      state,
     });
     return {
       statusCode: 302,
-      headers: { Location: `https://github.com/login/oauth/authorize?${qs}` },
+      headers: {
+        Location: `https://github.com/login/oauth/authorize?${qs}`,
+        // HttpOnly 防 JS 读取；Secure 仅 HTTPS 传输；SameSite=Lax 允许 OAuth 弹窗回调
+        "Set-Cookie": `${STATE_COOKIE}=${encodeURIComponent(state)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=${STATE_MAX_AGE}`,
+        "Cache-Control": "no-store",
+      },
     };
   }
 
-  // 2) GitHub 回调：用授权码换取 access token
+  // 2) GitHub 回调：先验证 state，再用授权码换取 access token
   if (path.endsWith("/callback")) {
     const code = params.code;
-    if (!code) {
-      return { statusCode: 400, body: "Missing authorization code" };
+    const state = params.state;
+    const savedState = readCookie(cookies, STATE_COOKIE);
+
+    // state 缺失或不匹配 → 拒绝（可能是 CSRF 攻击或过期/重放）
+    if (!code || !state || !savedState || state !== savedState) {
+      return errorResponse(
+        400,
+        "Invalid or missing OAuth state parameter (possible CSRF or expired session)"
+      );
     }
 
     let data;
@@ -58,18 +127,19 @@ exports.handler = async (event) => {
           client_secret: CLIENT_SECRET,
           code,
           redirect_uri: REDIRECT_URI,
+          state,
         }),
       });
       data = await res.json();
     } catch (err) {
-      return { statusCode: 502, body: `Token request failed: ${err.message}` };
+      return errorResponse(502, `Token request failed: ${err.message}`);
     }
 
     if (!data.access_token) {
-      return {
-        statusCode: 400,
-        body: `OAuth error: ${data.error_description || data.error || "unknown"}`,
-      };
+      return errorResponse(
+        400,
+        `OAuth error: ${data.error_description || data.error || "unknown"}`
+      );
     }
 
     // 与 Decap 的 NetlifyAuthenticator 握手
@@ -98,10 +168,16 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      headers: { "Content-Type": "text/html; charset=utf-8" },
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "X-Content-Type-Options": "nosniff",
+        // 清除 state cookie，防止重放
+        "Set-Cookie": `${STATE_COOKIE}=; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=0`,
+        "Cache-Control": "no-store",
+      },
       body: html,
     };
   }
 
-  return { statusCode: 404, body: "Not found" };
+  return errorResponse(404, "Not found");
 };
