@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import { renderMarkdown } from "@/lib/markdown";
-import { formatDate } from "@/lib/utils";
+import { formatDate, safeDecode } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 import GiscusComments from "@/components/GiscusComments";
 import Toc from "@/components/Toc";
@@ -14,19 +14,6 @@ export function generateStaticParams() {
   // 暂无文章时返回哨兵值，避免静态导出因空数组报错；该页面会走 notFound
   if (posts.length === 0) return [{ slug: "__none__" }];
   return posts.map((post) => ({ slug: post.slug }));
-}
-
-/**
- * 安全解码动态路由参数：Next.js 16 对中文等非 ASCII slug 会传入 URL 编码形式
- * （如 %E6%B5%8B...），而 generateStaticParams 返回未编码的中文；
- * 统一解码后再查找，兼容两种情况；畸形编码回退原值，避免抛错。
- */
-function safeDecodeSlug(slug: string): string {
-  try {
-    return decodeURIComponent(slug);
-  } catch {
-    return slug;
-  }
 }
 
 /** 从渲染后的 HTML 提取 h2/h3 标题，用于目录 */
@@ -49,7 +36,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(safeDecodeSlug(slug));
+  const post = getPostBySlug(safeDecode(slug));
   if (!post) return {};
   return {
     title: post.title,
@@ -71,7 +58,7 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const post = getPostBySlug(safeDecodeSlug(slug));
+  const post = getPostBySlug(safeDecode(slug));
   if (!post) notFound();
 
   const html = await renderMarkdown(post.content);

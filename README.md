@@ -31,11 +31,21 @@ npx serve out
 
 部署在子路径（`/<repo>`）时，想本地看子路径效果就设 `NEXT_PUBLIC_BASE_PATH=/personal-blog`。
 
+Windows 上 npm 脚本会被 PowerShell 拦，用 `cmd /c "npm run dev"` 这种方式跑。
+
 ## 写文章
 
 两种方式。
 
-直接在 `content/posts/` 放一个 .mdx：
+### 方式一：后台（图形化）
+
+部署后访问 `/personal-blog/admin/`，点「使用 GitHub 登录」，授权完就能在网页里写。写完点保存，直接提交到 main，触发重新构建。认证走自托管 OAuth 代理，见部署一节。
+
+页脚有「后台管理」入口，或者直接在地址栏输入后台地址。
+
+### 方式二：直接写文件
+
+文章就是 `content/posts/` 下的 .mdx，文件名是网址里的 slug。开头是 frontmatter：
 
 ```mdx
 ---
@@ -46,12 +56,47 @@ description: "摘要"
 category: "杂谈"           # 杂谈 / 评价 / 记录 / 其他
 tags: [记录]
 draft: false               # true 则不发布
+cover: "/images/xxx.png"   # 可选
 ---
 
 正文。
 ```
 
-或者用后台。部署后访问 `/personal-blog/admin/`，点「使用 GitHub 登录」，授权完就能在网页里写，保存后直接提交到 main，触发重新构建。认证走自托管 OAuth 代理，见部署一节。
+写完 git 提交推 main 就发布。没有本地环境的话，GitHub 网页上直接编辑也能提交。
+
+提醒：后台和本地同时改会分叉，推之前先 `git fetch` + `git rebase`，别直接覆盖。
+
+## 添加推荐
+
+「推荐」页数据在 `content/works.json`，数组里加一组：
+
+```json
+{
+  "title": "作品标题",
+  "type": "轻小说",
+  "description": "一句话简介",
+  "url": "https://example.com",
+  "author": "作者（可选）",
+  "date": "2026-08-22（可选）"
+}
+```
+
+`url` 只认 http/https，其他协议会被过滤掉。
+
+## 添加友链
+
+友链在 `lib/friends.ts` 的 `friends` 数组：
+
+```ts
+{
+  name: "站点名",
+  url: "https://example.com",
+  description: "一句话介绍",
+  avatar: "/images/friend.png", // 可选
+}
+```
+
+`avatar` 填站内路径或外链都行，不填用站点名首字符代替。url 同样只收 http/https。
 
 ## 配置
 
@@ -64,11 +109,11 @@ draft: false               # true 则不发布
 | `author` | name / email / bio |
 | `social` | 社交链接 |
 
-推荐作品在 `content/works.json`，每条带 title / type / description / url。url 只允许 http/https，其他协议会被过滤掉。
+导航菜单在 `lib/site.ts` 的 `nav` 数组。
 
 评论要开的话，去 [giscus.app](https://giscus.app) 拿配置，填进 `lib/site.ts` 的 giscus 字段，把 enabled 改成 true。
 
-友链在 `lib/friends.ts`，url 同样只收 http/https。
+预设分类在 `lib/posts.ts` 的 `PRESET_CATEGORIES`，改的时候记得同步 `public/admin/config.yml` 里的分类选项。
 
 ## 部署
 
@@ -81,19 +126,30 @@ draft: false               # true 则不发布
 - Netlify 上配三个环境变量：`GITHUB_OAUTH_CLIENT_ID`、`GITHUB_OAUTH_CLIENT_SECRET`、`OAUTH_BASE_URL`
 - GitHub OAuth App 的回调地址填 `https://<netlify站点>.netlify.app/callback`
 
-## 目录
+## 网站架构
+
+代码和内容在同一个仓库，构建时全部页面导出成静态文件，没有服务器也没有数据库。
 
 ```text
-app/                页面（App Router）
-components/         UI 组件
-content/            posts 文章 + works.json 作品
-lib/                站点配置、文章读取、Markdown 渲染
-public/admin/       Decap CMS 后台
-public/images/      配图
-scripts/            构建时生成 rss / sitemap / 搜索索引
-netlify/            OAuth 代理
-.github/workflows/  部署
+app/                  页面（App Router）
+components/           UI 组件
+content/              posts 文章 + works.json 作品
+lib/                  站点配置、文章读取、Markdown 渲染、公共工具
+public/admin/         Decap CMS 后台
+public/images/        配图
+scripts/              构建时生成 rss / sitemap / 搜索索引
+netlify/              OAuth 代理
+.github/workflows/    部署
 ```
+
+几条数据线：
+
+- 文章在 `content/posts/`，`lib/posts.ts` 构建时读进来生成页面，`lib/markdown.ts` 负责渲染（过 rehype-sanitize 消毒）
+- `scripts/generate-static.mjs` 在构建前跑，产出 `public/rss.xml`、`sitemap.xml`、`search-index.json`
+- 搜索是纯前端的，Fuse.js 在浏览器里查索引
+- 评论 Giscus 挂在 GitHub Discussions 上
+- 后台 Decap CMS 登录走 Netlify OAuth 代理，保存直接 commit 到 main
+- 构建流程：`npm run build` → 先生成静态资源 → Next.js 导出到 `out/` → Actions 上传 Pages
 
 ## 顺手做的安全处理
 

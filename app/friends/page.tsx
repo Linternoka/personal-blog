@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { friends, safeUrl } from "@/lib/friends";
+import { siteConfig } from "@/lib/site";
 import Reveal from "@/components/Reveal";
 import EmptyState from "@/components/EmptyState";
+import FriendAvatar from "@/components/FriendAvatar";
 import { LinkRepairIllustration } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -37,9 +39,11 @@ export default function FriendsPage() {
                 rel="noopener noreferrer"
                 className="group flex items-start gap-4 border-b border-line py-5 transition-colors duration-300 hover:border-gold/40"
               >
-                <div className="kam-title flex h-11 w-11 shrink-0 items-center justify-center border border-line-strong text-base text-text">
-                  {friend.name.slice(0, 1)}
-                </div>
+                <FriendAvatar
+                  name={friend.name}
+                  avatar={friend.avatar}
+                  basePath={siteConfig.basePath}
+                />
                 <div className="min-w-0">
                   <h2 className="kam-title text-text transition-colors group-hover:text-goldstrong">
                     {friend.name}

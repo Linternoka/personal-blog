@@ -2,16 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTagsWithCount, getPostsByTag } from "@/lib/posts";
+import { safeDecode } from "@/lib/utils";
 import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
-
-function safeDecode(s: string): string {
-  try {
-    return decodeURIComponent(s);
-  } catch {
-    return s;
-  }
-}
 
 export function generateStaticParams() {
   const tags = getTagsWithCount();

@@ -2,17 +2,10 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PRESET_CATEGORIES, getCategoriesWithCount, getPostsByCategory } from "@/lib/posts";
+import { safeDecode } from "@/lib/utils";
 import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
 import EmptyState from "@/components/EmptyState";
-
-function safeDecode(s: string): string {
-  try {
-    return decodeURIComponent(s);
-  } catch {
-    return s;
-  }
-}
 
 export function generateStaticParams() {
   return getCategoriesWithCount().map((c) => ({ category: c.name }));
