@@ -176,6 +176,20 @@ h4,
   transform: translateY(0);
 }
 
+/* ---------- 文章正文乱码解码：赛博故障感（正文色 + RGB 分离 + 少量故障色点缀） ---------- */
+.kam-char.glitching {
+  color: var(--text);
+  text-shadow:
+    1px 0 rgba(255, 60, 120, 0.75),
+    -1px 0 rgba(0, 220, 255, 0.75);
+}
+.kam-char.glitching.glitch-magenta {
+  color: var(--accent-b);
+}
+.kam-char.glitching.glitch-cyan {
+  color: var(--gold);
+}
+
 /* ---------- 分段渐入（慢速） ---------- */
 .kam-fade-up {
   opacity: 0;

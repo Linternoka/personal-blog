@@ -8,6 +8,7 @@ import { siteConfig } from "@/lib/site";
 import GiscusComments from "@/components/GiscusComments";
 import TocSidebar from "@/components/TocSidebar";
 import CodeBlockEnhancer from "@/components/CodeBlockEnhancer";
+import ArticleTextReveal from "@/components/ArticleTextReveal";
 import JsonLd from "@/components/JsonLd";
 
 export function generateStaticParams() {
@@ -151,6 +152,7 @@ export default async function PostPage({
         }}
       />
       <CodeBlockEnhancer />
+      <ArticleTextReveal />
       <TocSidebar headings={headings} />
       <article className="mx-auto w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl">
           {/* 文章头部（极简元数据） */}
@@ -196,8 +198,9 @@ export default async function PostPage({
             <div className="mt-8 h-px w-full bg-gradient-to-r from-gold/60 via-line to-transparent" />
           </header>
 
-          {/* 正文 */}
+          {/* 正文（id 供 ArticleTextReveal 定位，做加载中闪烁渐入） */}
           <div
+            id="article-content"
             className="prose prose-kam mx-auto mt-10"
             dangerouslySetInnerHTML={{ __html: html }}
           />
