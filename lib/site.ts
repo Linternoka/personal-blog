@@ -23,11 +23,11 @@ export const siteConfig = {
    * 配置好 repo / repoId / categoryId 后把 enabled 设为 true 即可启用评论
    */
   giscus: {
-    enabled: false,
-    repo: "", // 格式：owner/repo
-    repoId: "",
+    enabled: true,
+    repo: "Linternoka/personal-blog", // 格式：owner/repo
+    repoId: "R_kgDOUAZk1Q",
     category: "Announcements",
-    categoryId: "",
+    categoryId: "DIC_kwDOUAZk1c4DEFeD",
     mapping: "pathname" as const,
     reactionsEnabled: "1" as const,
     inputPosition: "top" as const,
