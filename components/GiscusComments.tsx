@@ -1,6 +1,7 @@
 "use client";
 
 import Giscus from "@giscus/react";
+import { useTheme } from "next-themes";
 import { siteConfig } from "@/lib/site";
 
 /**
@@ -10,6 +11,7 @@ import { siteConfig } from "@/lib/site";
  */
 export default function GiscusComments() {
   const { giscus } = siteConfig;
+  const { resolvedTheme } = useTheme();
   if (!giscus.enabled || !giscus.repo || !giscus.repoId || !giscus.categoryId) {
     return null;
   }
@@ -25,7 +27,7 @@ export default function GiscusComments() {
         mapping={giscus.mapping}
         reactionsEnabled={giscus.reactionsEnabled}
         inputPosition={giscus.inputPosition}
-        theme={giscus.theme}
+        theme={resolvedTheme === "dark" ? "dark" : "light"}
         lang={giscus.lang}
       />
     </section>
