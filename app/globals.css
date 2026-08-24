@@ -76,7 +76,7 @@
 body {
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.9;
   letter-spacing: 0.02em;
   background: linear-gradient(180deg, #fafaf8 0%, #f4f4f0 100%);
@@ -143,24 +143,42 @@ h4,
   letter-spacing: 0.05em;
 }
 
-/* ---------- 选中 / 滚动条 ---------- */
+/* ---------- 选中 / 自定义滚动条（废墟赛博风：青绿细条，亮暗自适应） ---------- */
 ::selection {
   background: var(--gold-soft);
   color: var(--text);
 }
+/* WebKit / Blink：默认青绿半透明，hover 转亮青绿发光 */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
-  border-radius: 4px;
+  background: var(--gold-soft);
+  border: 2px solid transparent;
+  border-radius: 6px;
+  background-clip: padding-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(127, 220, 198, 0.4);
+  background: var(--gold);
+  background-clip: padding-box;
+  box-shadow: 0 0 10px var(--gold-soft);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* Firefox：细滚动条 + 青绿主题色（仅支持 scrollbar-width 的浏览器应用） */
+@supports (scrollbar-width: thin) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-soft) transparent;
+  }
+  html:hover {
+    scrollbar-color: var(--gold) transparent;
+  }
 }
 
 /* ---------- 慢速滚动渐入（现代：轻微位移，无模糊） ---------- */
@@ -488,7 +506,7 @@ blockquote::before {
   --tw-prose-th-borders: var(--line-strong);
   --tw-prose-td-borders: var(--line);
   max-width: 68ch;
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.9;
   letter-spacing: 0.02em;
   font-family: var(--font-sans);
@@ -715,7 +733,7 @@ blockquote::before {
   align-items: center;
   justify-content: center;
 }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .toc-hotzone {
     display: flex;
   }
@@ -745,7 +763,7 @@ blockquote::before {
   background: var(--gold-soft);
 }
 
-/* 遮罩（仅小屏显示，lg 以上隐藏） */
+/* 遮罩（仅小屏显示，768px 以上隐藏；显隐由 CSS 控制，去掉 JSX 的 lg:hidden） */
 .toc-overlay {
   position: fixed;
   inset: 0;
@@ -753,8 +771,14 @@ blockquote::before {
   background: rgba(0, 0, 0, 0.45);
   opacity: 0;
   visibility: hidden;
+  display: none;
   transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1),
     visibility 0s linear 0.4s;
+}
+@media (max-width: 767px) {
+  .toc-overlay {
+    display: block;
+  }
 }
 .toc-overlay.is-open {
   opacity: 1;
@@ -786,7 +810,7 @@ blockquote::before {
     border-color 0.5s cubic-bezier(0.16, 1, 0.3, 1),
     visibility 0s linear 0.5s;
 }
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .toc-toggle {
     display: none;
   }
@@ -802,6 +826,66 @@ blockquote::before {
 .toc-toggle svg {
   width: 12px;
   height: 12px;
+}
+
+/* ---------- 阅读进度计（参照 SCP-CN-4001：右侧垂直居中，标签 + 大数字） ---------- */
+.reading-progress-side {
+  position: fixed;
+  top: 50vh;
+  right: 2rem;
+  transform: translateY(-50%);
+  z-index: 40;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.15rem;
+}
+.reading-side-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  color: var(--text-soft);
+  text-transform: uppercase;
+  filter: opacity(0.7);
+}
+.reading-side-num {
+  font-family: var(--font-serif);
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+/* 移动端：移到右下角缩小（避开左下角 TOC 按钮） */
+@media (max-width: 767px) {
+  .reading-progress-side {
+    top: auto;
+    bottom: 4.75rem;
+    right: 0.75rem;
+    transform: none;
+    align-items: flex-end;
+    filter: opacity(0.55);
+  }
+  .reading-side-label {
+    font-size: 0.55rem;
+  }
+  .reading-side-num {
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- Logo 持续慢速旋转（星轨） ---------- */
+@keyframes kam-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.kam-spin {
+  animation: kam-spin 4s linear infinite;
 }
 
 /* ---------- 无障碍：尊重系统减弱动态效果 ---------- */

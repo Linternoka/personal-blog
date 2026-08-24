@@ -16,7 +16,7 @@ export default function TocSidebar({ headings }: { headings: TocItem[] }) {
   const isDesktop = useRef(false);
 
   useEffect(() => {
-    const mq = window.matchMedia("(min-width: 1024px)");
+    const mq = window.matchMedia("(min-width: 768px)");
     isDesktop.current = mq.matches;
     const onChange = () => (isDesktop.current = mq.matches);
     mq.addEventListener("change", onChange);
@@ -59,7 +59,7 @@ export default function TocSidebar({ headings }: { headings: TocItem[] }) {
     <>
       {/* 遮罩：小屏点击关闭 */}
       <div
-        className={`toc-overlay lg:hidden ${open ? "is-open" : ""}`}
+        className={`toc-overlay ${open ? "is-open" : ""}`}
         onClick={() => setOpen(false)}
         aria-hidden="true"
       />

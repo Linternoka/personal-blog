@@ -150,6 +150,7 @@ export default function ArticleTextReveal({
     const startAt = new Map<HTMLElement, number>();
     let idx = 0;
     let rafId = 0;
+    let running = false;
 
     const tick = (now: number) => {
       // 视口底部：字符滚到此处立即启动解码
@@ -195,9 +196,30 @@ export default function ArticleTextReveal({
         }
       }
 
+      // 无进行中的动画、且视口内无待解码字符 → 暂停循环（静止时零开销）
+      if (active.size === 0) {
+        let hasPending = false;
+        for (const c of chars) {
+          if (c.dataset.done !== "1" && +(c.dataset.y ?? "0") <= scanY) {
+            hasPending = true;
+            break;
+          }
+        }
+        if (!hasPending) {
+          running = false;
+          cancelAnimationFrame(rafId);
+          return;
+        }
+      }
       rafId = requestAnimationFrame(tick);
     };
-    rafId = requestAnimationFrame(tick);
+    const start = () => {
+      if (!running) {
+        running = true;
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+    start();
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -219,14 +241,30 @@ export default function ArticleTextReveal({
             c.dataset.idx = String(idx++);
             chars.push(c);
           });
+          // 有新字符入队 → 确保解码循环在跑
+          if (newChars.length > 0) start();
         });
       },
       { threshold: 0.05, rootMargin: "0px 0px -10px 0px" }
     );
 
     blocks.forEach((el) => observer.observe(el));
+
+    // 滚动时重启循环（新字符进入视口）；被动监听不影响滚动性能
+    window.addEventListener("scroll", start, { passive: true });
+    // 兜底：scroll 事件缺失/被吞的环境，轮询检测滚动位置变化
+    let pollLastY = window.scrollY;
+    const poll = window.setInterval(() => {
+      if (Math.abs(window.scrollY - pollLastY) > 0.5) {
+        pollLastY = window.scrollY;
+        start();
+      }
+    }, 1000);
+
     return () => {
       observer.disconnect();
+      window.removeEventListener("scroll", start);
+      window.clearInterval(poll);
       cancelAnimationFrame(rafId);
     };
   }, [containerId]);

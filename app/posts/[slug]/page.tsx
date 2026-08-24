@@ -9,6 +9,7 @@ import GiscusComments from "@/components/GiscusComments";
 import TocSidebar from "@/components/TocSidebar";
 import CodeBlockEnhancer from "@/components/CodeBlockEnhancer";
 import ArticleTextReveal from "@/components/ArticleTextReveal";
+import ReadingProgress from "@/components/ReadingProgress";
 import JsonLd from "@/components/JsonLd";
 
 export function generateStaticParams() {
@@ -153,6 +154,7 @@ export default async function PostPage({
       />
       <CodeBlockEnhancer />
       <ArticleTextReveal />
+      <ReadingProgress />
       <TocSidebar headings={headings} />
       <article className="mx-auto w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl">
           {/* 文章头部（极简元数据） */}

@@ -19,20 +19,20 @@ export default function Header() {
       <div className="mx-auto flex h-28 w-full max-w-5xl items-center justify-between px-4 sm:px-6">
         {/* 站标 + 站点名
             星轨 Logo（components/Logo.tsx）：线稿继承 currentColor，
-            青绿强调用 var(--gold) 自动适配亮/暗色；悬停时旋转 90°。
-            站名下方为英文副标 Geniza（取希伯来语「藏经库」之意，
-            呼应收录旧文献的「废书库修缮」主题；增大字距营造高级感） */}
+            青绿强调用 var(--gold) 自动适配亮/暗色；持续慢速旋转（kam-spin）。
+            站名下方为英文全称副标 Geniza Renovation Committee
+            （Geniza 取希伯来语「藏经库」之意，呼应收录旧文献的「废书库修缮」主题） */}
         <Link
           href="/"
           className="kam-title group flex items-center gap-5 text-2xl tracking-[0.08em] text-text"
         >
-          <Logo className="h-24 w-24 shrink-0 text-gold transition-transform duration-700 group-hover:rotate-90" />
+          <Logo className="kam-spin h-20 w-20 shrink-0 text-gold sm:h-24 sm:w-24" />
           <span className="flex flex-col leading-none">
             <span className="transition-colors duration-500 group-hover:text-goldstrong">
               {siteConfig.name}
             </span>
-            <span className="mt-2 text-base font-normal tracking-[0.22em] text-text/75">
-              Geniza
+            <span className="mt-2 text-sm font-normal tracking-[0.14em] text-text/75">
+              Geniza R.C.
             </span>
           </span>
         </Link>
