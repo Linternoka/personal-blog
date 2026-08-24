@@ -1,11 +1,18 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import { renderMarkdown } from "@/lib/markdown";
 import { formatDate, safeDecode } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
-import GiscusComments from "@/components/GiscusComments";
+// KaTeX 数学公式样式：仅文章页按需加载（无公式时也不至于让全站背 KaTeX 字体体积）
+import "katex/dist/katex.min.css";
+// Giscus 评论懒加载：siteConfig.giscus.enabled 为 false 时页面不渲染该组件，
+// @giscus/react（约 32KB）进入独立动态 chunk，仅启用评论时才下载
+const GiscusComments = dynamic(() => import("@/components/GiscusComments"), {
+  loading: () => null,
+});
 import TocSidebar from "@/components/TocSidebar";
 import CodeBlockEnhancer from "@/components/CodeBlockEnhancer";
 import ArticleTextReveal from "@/components/ArticleTextReveal";
@@ -210,7 +217,7 @@ export default async function PostPage({
 
       {/* 评论 / 上一篇下一篇 / 署名 */}
       <div className="mx-auto w-full max-w-3xl lg:max-w-4xl xl:max-w-5xl">
-        <GiscusComments />
+        {siteConfig.giscus.enabled && <GiscusComments />}
 
         <nav className="mt-12 grid border-t border-line pt-6 sm:grid-cols-2">
         {prev ? (

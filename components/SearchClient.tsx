@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Fuse from "fuse.js";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { siteConfig } from "@/lib/site";
 import { formatDate } from "@/lib/utils";
 import Reveal from "./Reveal";
@@ -21,6 +21,15 @@ export default function SearchClient() {
   const [query, setQuery] = useState("");
   const [items, setItems] = useState<SearchItem[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // 仅桌面端自动聚焦：移动端打开搜索页若自动聚焦会强制弹出虚拟键盘，
+  // 遮挡页面影响浏览（用 useEffect 而非 autoFocus 属性，避免 hydration mismatch）
+  useEffect(() => {
+    if (window.matchMedia("(min-width: 768px)").matches) {
+      inputRef.current?.focus();
+    }
+  }, []);
 
   useEffect(() => {
     fetch(`${siteConfig.basePath}/search-index.json`)
@@ -77,12 +86,12 @@ export default function SearchClient() {
           <path d="m21 21-4.3-4.3" />
         </svg>
         <input
+          ref={inputRef}
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="输入关键词，回车或直接搜索…"
           className="w-full border-b border-line-strong bg-transparent py-3 pl-12 pr-4 text-text outline-none transition-colors focus:border-text"
-          autoFocus
         />
       </div>
 
