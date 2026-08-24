@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Script from "next/script";
 import { Geist_Mono, Noto_Sans_JP, Noto_Serif_SC } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header";
@@ -111,10 +112,15 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             frame-ancestors 在 meta 中无效已省略；giscus 未启用但预留 frame-src */}
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self'; frame-src https://giscus.app; base-uri 'self'; form-action 'self'; object-src 'none'"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://linternoka-blog.goatcounter.com; frame-src https://giscus.app; base-uri 'self'; form-action 'self'; object-src 'none'"
         />
       </head>
       <body className="flex min-h-full flex-col bg-bg text-text">
+        <Script
+          data-goatcounter="https://linternoka-blog.goatcounter.com/count"
+          async
+          src="https://gc.zgo.at/count.js"
+        />
         {/* SEO：WebSite 结构化数据（全站） */}
         <JsonLd
           data={{

@@ -113,6 +113,8 @@ cover: "/images/xxx.png"   # 可选
 
 评论要开的话，去 [giscus.app](https://giscus.app) 拿配置，填进 `lib/site.ts` 的 giscus 字段，把 enabled 改成 true。
 
+访问统计使用 GoatCounter，后台地址是 [linternoka-blog.goatcounter.com](https://linternoka-blog.goatcounter.com/)。统计脚本在 `app/layout.tsx` 中配置。
+
 预设分类在 `lib/posts.ts` 的 `PRESET_CATEGORIES`，改的时候记得同步 `public/admin/config.yml` 里的分类选项。
 
 ## 部署
