@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // GoatCounter 官方脚本（从 gc.zgo.at 下载的第三方文件，勿 lint）
+    "public/count.js",
   ]),
 ]);
 

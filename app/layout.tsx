@@ -109,17 +109,24 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             preconnect 必须排在任何资源请求之前——Next.js 16 自动加在 <head> 前面部分 */}
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         {/* CSP：default-src 等限制资源来源（script-src 含 unsafe-inline 为 RSC 内联脚本所需）；
-            frame-ancestors 在 meta 中无效已省略；giscus 未启用但预留 frame-src */}
+            frame-ancestors 在 meta 中无效已省略；giscus 未启用但预留 frame-src
+            GoatCounter 脚本已本地托管在 /count.js（public/ 下），故 script-src 不再依赖 gc.zgo.at；
+            统计上报端点仍为 linternoka-blog.goatcounter.com（connect-src 放行） */}
         <meta
           httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://linternoka-blog.goatcounter.com; frame-src https://giscus.app; base-uri 'self'; form-action 'self'; object-src 'none'"
+          content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://linternoka-blog.goatcounter.com; frame-src https://giscus.app; base-uri 'self'; form-action 'self'; object-src 'none'"
         />
       </head>
       <body className="flex min-h-full flex-col bg-bg text-text">
+        {/* 访问统计（GoatCounter）：脚本本地托管（public/count.js，从 gc.zgo.at 下载），
+            避免 gc.zgo.at CDN 在部分网络下不可达导致统计失效。
+            next/script 不会给 public 文件自动拼 basePath，需用 siteConfig.basePath 显式拼接
+            （部署子路径 /personal-blog 时即 /personal-blog/count.js）。
+            更新脚本：curl -o public/count.js https://gc.zgo.at/count.js */}
         <Script
           data-goatcounter="https://linternoka-blog.goatcounter.com/count"
           async
-          src="https://gc.zgo.at/count.js"
+          src={`${siteConfig.basePath}/count.js`}
         />
         {/* SEO：WebSite 结构化数据（全站） */}
         <JsonLd

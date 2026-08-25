@@ -115,6 +115,8 @@ cover: "/images/xxx.png"   # 可选
 
 访问统计使用 GoatCounter，后台地址是 [linternoka-blog.goatcounter.com](https://linternoka-blog.goatcounter.com/)。统计脚本在 `app/layout.tsx` 中配置。
 
+> **脚本本地托管**：统计脚本从 `gc.zgo.at/count.js` 下载到 `public/count.js`（该 CDN 在部分网络下不可达，本地托管避免统计失效）。统计上报端点仍是 `linternoka-blog.goatcounter.com`。更新脚本：`curl -o public/count.js https://gc.zgo.at/count.js`。
+
 预设分类在 `lib/posts.ts` 的 `PRESET_CATEGORIES`，改的时候记得同步 `public/admin/config.yml` 里的分类选项。
 
 ## 部署
