@@ -87,6 +87,15 @@ export function EditIcon({ className }: IconProps) {
   );
 }
 
+/** 访问统计：三根柱状图（feather bar-chart-2 风格，呼应收录统计的「访问统计」入口） */
+export function ChartIcon({ className }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} {...strokeProps} aria-hidden="true">
+      <path d="M18 20V10M12 20V4M6 20v-6" />
+    </svg>
+  );
+}
+
 /** 空态插画：一本被修缮的旧书（呼应「废书库修缮」主题） */
 export function BookRepairIllustration({ className }: IconProps) {
   return (

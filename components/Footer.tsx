@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
 import { Logo } from "./Logo";
-import { RssIcon, EditIcon } from "./icons";
+import { RssIcon, EditIcon, ChartIcon } from "./icons";
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -45,17 +45,29 @@ export default function Footer() {
           </span>
         </p>
 
-        <p className="mt-5 text-center">
+        <p className="mt-5 flex flex-wrap items-center justify-center gap-x-3 gap-y-2 text-center text-xs tracking-widest text-textsoft/80">
           {/* /admin/ 是独立静态应用不是页面路由，禁用 RSC 预取避免 404 噪音 */}
           <Link
             href="/admin/"
             prefetch={false}
-            className="kam-link inline-flex items-center gap-1 text-xs tracking-widest text-textsoft/80 transition-colors hover:text-gold"
+            className="kam-link inline-flex items-center gap-1 transition-colors hover:text-gold"
             title="进入图形化内容管理后台（Decap CMS）"
           >
             <EditIcon className="h-3 w-3" />
             后台管理
           </Link>
+          <span className="text-line-strong">/</span>
+          {/* 统计后台是外链，新窗口打开；target=_blank 一律带 noopener noreferrer（安全约定） */}
+          <a
+            href="https://linternoka-blog.goatcounter.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="kam-link inline-flex items-center gap-1 transition-colors hover:text-gold"
+            title="查看访问统计（GoatCounter）"
+          >
+            <ChartIcon className="h-3 w-3" />
+            访问统计
+          </a>
         </p>
       </div>
     </footer>
