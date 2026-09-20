@@ -32,5 +32,8 @@
 
 - push 到 `main` 触发 GitHub Actions → GitHub Pages（子路径 `/<repo>`）
 - Netlify 仅承载 OAuth 代理（见 `netlify.toml` / `netlify/functions/oauth.js`）
-- 本地 push 需设代理 `$env:HTTP_PROXY='http://127.0.0.1:7897'`，并跳过系统 GCM
+- 本地 push 需先启动 Clash Verge，再设 `$env:HTTPS_PROXY='http://127.0.0.1:7897'`
+  - git 对 `https://` 远端只认 `HTTPS_PROXY` / `https_proxy`，写成 `HTTP_PROXY` **不生效**（2026-09-20 实测：只设 `HTTP_PROXY` 走直连并在 21s 后超时；只设 `HTTPS_PROXY` 才走代理）
+  - 系统 GCM 已在 `~/.gitconfig` 用空 helper 覆盖，凭据走 `gh auth git-credential`
+  - 代理不可用时，可用 `gh api` 经 `api.github.com` 建分支 / 提交 / 开 PR（实测比 git 直连稳定）
 
