@@ -1,0 +1,41 @@
+# 代码质量门禁：PR 与推送 main 时跑 ESLint + TypeScript 类型检查
+#
+# 背景：deploy.yml 只做 `npm run build`，没有 lint/类型检查，
+# 因此本地跑不过 lint 的改动也能直接构建上线。这里把把关前移。
+# 两个 action 的 SHA 与 deploy.yml 保持完全一致（同为 v4.x，pin 到 commit）。
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.x
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.x
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npx tsc --noEmit
