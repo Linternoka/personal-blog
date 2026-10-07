@@ -33,6 +33,13 @@ collections:
       - { label: "日期", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
       - { label: "摘要", name: "description", widget: "text", required: false }
       - {
+          label: "封面图（可选：显示在文章顶部，16:9 观感最佳）",
+          name: "cover",
+          widget: "image",
+          required: false,
+          choose_url: false,
+        }
+      - {
           label: "分类",
           name: "category",
           widget: "select",

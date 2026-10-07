@@ -56,19 +56,19 @@ const ROW_INTERVAL = 6;
 
 /** 赛博故障乱码池：片假名碎片 + 汉字部件（全角）/ 符号（半角） */
 const GLITCH_WIDE = [
-  "ｱ",
-  "ｲ",
-  "ｳ",
-  "ｴ",
-  "ｵ",
-  "ｶ",
-  "ﾅ",
-  "ﾆ",
-  "ﾊ",
-  "ﾋ",
-  "ﾒ",
-  "ﾔ",
-  "ﾜ",
+  "ア",
+  "イ",
+  "ウ",
+  "エ",
+  "オ",
+  "カ",
+  "ナ",
+  "ニ",
+  "ハ",
+  "ヒ",
+  "メ",
+  "ヤ",
+  "ワ",
   "ヵ",
   "ヶ",
   "亻",
@@ -101,10 +101,23 @@ const GLITCH_NARROW = [
   "|",
 ];
 
-/** 判断是否为全角宽字符（中文/假名/全角标点/谚文/CJK 扩展） */
+/**
+ * 判断是否为全角宽字符（中文/假名/全角标点/谚文/CJK 扩展）
+ *
+ * 实测（Noto 系 CJK 字体：正文全角 16.328px、半角 8.297px）：U+2000–U+2E7F 里有一批
+ * 实际按全角渲染、旧版却漏判的符号 —— ― … ① ② → √ — 实测 14.6–16.3px。
+ * 被判成窄字符后会换成半角乱码，等于自己制造字宽跳变，故一并纳入。
+ * 拉丁字母（含 w/m/W 这类本身偏宽的）不算宽字符，仍走窄字符池。
+ */
 function isWideChar(ch: string): boolean {
   const code = ch.codePointAt(0) ?? 0;
   return (
+    (code >= 0x2010 && code <= 0x203b) || // 全角标点：— ― … ※ 引号
+    (code >= 0x2190 && code <= 0x21ff) || // 箭头 →
+    (code >= 0x2200 && code <= 0x22ff) || // 数学运算符 √
+    (code >= 0x2460 && code <= 0x24ff) || // 带圈字母数字 ①②
+    (code >= 0x2500 && code <= 0x257f) || // 制表符
+    (code >= 0x25a0 && code <= 0x25ff) || // 几何图形 ■ ▲
     (code >= 0x2e80 && code <= 0x9fff) ||
     (code >= 0xac00 && code <= 0xd7af) ||
     (code >= 0xff00 && code <= 0xffef) ||
@@ -116,9 +129,9 @@ function pick<T>(arr: T[]): T {
   return arr[(Math.random() * arr.length) | 0];
 }
 
-/** 生成乱码占位：空白保持空白，宽字符用全角乱码，窄字符用半角乱码 */
+/** 生成乱码占位：空白统一给半角空格（避免把换行喂给 ::after 的 content），宽字符用全角乱码，窄字符用半角乱码 */
 function randomGlitch(real: string): string {
-  if (/\s/.test(real)) return real;
+  if (/\s/.test(real)) return " ";
   return isWideChar(real) ? pick(GLITCH_WIDE) : pick(GLITCH_NARROW);
 }
 
@@ -274,8 +287,10 @@ export default function ArticleTextReveal({
 
 /**
  * 把块内文本拆成单字符 span（保留行内结构；跳过代码块与 KaTeX 公式）。
- * 每个 span 记录文档纵坐标 data-y（用于视口驱动），显示乱码占位，
- * 真实字符存于 data-real，初始半透明。返回按文档顺序排列的字符 span。
+ * 每个 span 记录文档纵坐标 data-y（用于视口驱动）与 data-real（真字）。
+ * 真字始终留在 span 内撑住字宽，乱码字形另存 data-glitch、由 CSS ::after 覆盖绘制，
+ * 因此乱码怎么换字形都不会推动后面的文字（拉丁文是比例字宽，只靠挑等宽乱码修不干净）。
+ * 初始半透明。返回按文档顺序排列的字符 span。
  */
 function splitToChars(root: HTMLElement): HTMLElement[] {
   const chars: HTMLElement[] = [];
@@ -317,7 +332,9 @@ function splitToChars(root: HTMLElement): HTMLElement[] {
       if (Math.random() < 0.12) {
         span.dataset.tint = Math.random() < 0.5 ? "magenta" : "cyan";
       }
-      span.textContent = randomGlitch(ch);
+      // 真字常驻 span 内撑住字宽；乱码字形放 data-glitch，由 CSS ::after 覆盖绘制
+      span.textContent = ch;
+      span.dataset.glitch = randomGlitch(ch);
       span.style.opacity = "0.15";
       chars.push(span);
       frag.appendChild(span);
@@ -336,14 +353,14 @@ function animateChar(el: HTMLElement, k: number) {
   } else if (el.dataset.tint === "cyan") {
     el.classList.add("glitch-cyan");
   }
-  if (k < REVEAL_AT) {
-    el.textContent = randomGlitch(el.dataset.real ?? " ");
-  }
+  const real = el.dataset.real ?? " ";
+  // 只改覆盖层的乱码字形：真字（决定字宽的那个）从头到尾不动
+  el.dataset.glitch = k < REVEAL_AT ? randomGlitch(real) : real;
 }
 
-/** 解码完成：正文亮起并清除动画痕迹，标记 done 防止再次启动 */
+/** 解码完成：撤掉乱码覆盖层让真字显形，清除动画痕迹，标记 done 防止再次启动 */
 function finishChar(el: HTMLElement) {
-  el.textContent = el.dataset.real ?? "";
+  delete el.dataset.glitch;
   el.style.removeProperty("opacity");
   el.classList.remove("glitching", "glitch-magenta", "glitch-cyan");
   el.dataset.done = "1";

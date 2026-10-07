@@ -8,6 +8,7 @@ import {
   BookIcon,
   StarIcon,
   ShieldIcon,
+  InfoIcon,
 } from "@/components/icons";
 
 export const metadata: Metadata = {
@@ -38,7 +39,10 @@ export default function AboutPage() {
         }}
       />
       <div className="border-b border-line pb-6">
-        <h1 className="kam-section-ja text-3xl">关于</h1>
+        <h1 className="kam-section-ja kam-ico text-3xl">
+          <InfoIcon className="mr-2.5 inline-block h-6 w-6 align-[0.18em] text-gold" />
+          关于
+        </h1>
       </div>
       <div className="mt-10 flex flex-col items-center text-center">
         {/* 头像 */}
@@ -50,6 +54,7 @@ export default function AboutPage() {
               alt={author.name}
               width={112}
               height={112}
+              decoding="async"
               className="h-28 w-28 rounded-full object-cover"
             />
           </span>
@@ -137,7 +142,16 @@ export default function AboutPage() {
         <h2>技术栈</h2>
         <p>
           本博客使用 Next.js、TypeScript 与 Tailwind CSS 构建，内容以 Markdown
-          编写，部署在 GitHub Pages 上。
+          编写，部署在 GitHub Pages 上。界面图标来自开源图标库{" "}
+          <a
+            href="https://lucide.dev"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="kam-link"
+          >
+            Lucide
+          </a>
+          （ISC 许可）。
         </p>
       </div>
     </div>

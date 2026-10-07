@@ -14,8 +14,8 @@ import rehypeStringify from "rehype-stringify";
  * - 保留标题锚点 id（rehype-slug 生成）
  * - 所有元素额外允许 className（rehype-katex / rehype-highlight 的样式类，
  *   class 本身无脚本风险；默认 schema 的 * 通配不含 className，需显式补上）
- * - img 额外允许 referrerPolicy / loading（rehypeNoReferrerImages 给图片加
- *   no-referrer 防外链图床追踪、lazy 懒加载提升性能）
+ * - img 额外允许 referrerPolicy / loading / decoding（rehypeNoReferrerImages 给图片加
+ *   no-referrer 防外链图床追踪、lazy 懒加载、async 异步解码）
  * - 默认 schema 已过滤 javascript:/vbscript: 等危险协议、事件属性与危险标签
  */
 const sanitizeSchema = {
@@ -25,7 +25,7 @@ const sanitizeSchema = {
     Object.entries(defaultSchema.attributes ?? {}).map(([k, v]) => [
       k,
       k === "img"
-        ? [...v, "className", "referrerPolicy", "loading"]
+        ? [...v, "className", "referrerPolicy", "loading", "decoding"]
         : [...v, "className"],
     ])
   ),
@@ -59,10 +59,10 @@ function rehypeBasePathImages() {
 }
 
 /**
- * rehype 插件：给所有图片加 referrerPolicy="no-referrer" 与 loading="lazy"，
- * 前者防止外链图床通过 Referer 得知访客来自本站（隐私 + 防追踪），
- * 后者让视口外的图片延迟加载（性能）。
- * 在 rehype-sanitize 之后运行（schema 已允许这两个属性）。
+ * rehype 插件：给所有图片加 referrerPolicy="no-referrer"、loading="lazy"、decoding="async"，
+ * 第一个防止外链图床通过 Referer 得知访客来自本站（隐私 + 防追踪），
+ * 第二个让视口外的图片延迟加载，第三个让解码离开主线程、避免长图解码时卡住滚动。
+ * 在 rehype-sanitize 之后运行（schema 已允许这三个属性）。
  */
 function rehypeNoReferrerImages() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,6 +76,7 @@ function rehypeNoReferrerImages() {
       ) {
         node.properties.referrerPolicy = "no-referrer";
         node.properties.loading = "lazy";
+        node.properties.decoding = "async";
       }
       node.children?.forEach(walk);
     };

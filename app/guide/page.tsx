@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site";
+import { GuideIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "使用与维护指南",
@@ -37,7 +38,10 @@ export default function GuidePage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6">
       <div className="border-b border-line pb-6">
-        <h1 className="kam-section-ja text-3xl">使用与维护指南</h1>
+        <h1 className="kam-section-ja kam-ico text-3xl">
+          <GuideIcon className="mr-2.5 inline-block h-6 w-6 align-[0.18em] text-gold" />
+          使用与维护指南
+        </h1>
         <p className="mt-3 text-sm tracking-widest text-textsoft">
           写文章、传图片、加推荐、换友链、改配置，都在这页说清楚
         </p>
@@ -86,6 +90,10 @@ export default function GuidePage() {
             里选一个。想加新分类得动代码，见第十节。
           </li>
           <li>标签选填，可以填多个，用英文逗号隔开。</li>
+          <li>
+            封面图选填，会显示在文章顶部，进入画面时有个「像素化解码」的小动效。
+            用 16:9 的图观感最好，宽度 1200px 左右足够，不用传太大的。
+          </li>
           <li>草稿勾上后文章不会出现在网站上，适合写一半先存着。</li>
           <li>正文用 Markdown 写，标题、列表、代码块、公式、引用都支持。</li>
         </ul>

@@ -48,6 +48,7 @@ export default function FriendAvatar({
       width={44}
       height={44}
       loading="lazy"
+      decoding="async"
       // 外链头像不向图床泄露访客 Referer（隐私 + 防追踪）
       referrerPolicy="no-referrer"
       onError={() => setFailed(true)}

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { getCategoriesWithCount } from "@/lib/posts";
 import Reveal from "@/components/Reveal";
 import EmptyState from "@/components/EmptyState";
+import { FolderIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "分类",
@@ -17,7 +18,10 @@ export default function CategoriesPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6">
       <div className="border-b border-line pb-6">
-        <h1 className="kam-section-ja text-3xl">分类</h1>
+        <h1 className="kam-section-ja kam-ico text-3xl">
+          <FolderIcon className="mr-2.5 inline-block h-6 w-6 align-[0.18em] text-gold" />
+          分类
+        </h1>
         <p className="mt-3 text-sm tracking-widest text-textsoft">
           共 {categories.length} 个分类
         </p>

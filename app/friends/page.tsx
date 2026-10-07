@@ -4,7 +4,11 @@ import { siteConfig } from "@/lib/site";
 import Reveal from "@/components/Reveal";
 import EmptyState from "@/components/EmptyState";
 import FriendAvatar from "@/components/FriendAvatar";
-import { LinkRepairIllustration } from "@/components/icons";
+import {
+  ExternalLinkIcon,
+  LinkRepairIllustration,
+  UsersIcon,
+} from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "友链",
@@ -17,7 +21,10 @@ export default function FriendsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6">
       <div className="border-b border-line pb-6">
-        <h1 className="kam-section-ja text-3xl">友链</h1>
+        <h1 className="kam-section-ja kam-ico text-3xl">
+          <UsersIcon className="mr-2.5 inline-block h-6 w-6 align-[0.18em] text-gold" />
+          友链
+        </h1>
         <p className="mt-3 text-sm tracking-widest text-textsoft">
           我的朋友们，欢迎互相交换友链~
         </p>
@@ -54,6 +61,8 @@ export default function FriendsPage() {
                     {friend.description}
                   </p>
                 </div>
+                {/* 站外链接标记：提示点击会离开本站 */}
+                <ExternalLinkIcon className="ml-auto mt-1 h-3.5 w-3.5 shrink-0 text-line-strong transition-colors group-hover:text-gold" />
               </a>
             </Reveal>
           ))}

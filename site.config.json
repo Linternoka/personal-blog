@@ -16,5 +16,9 @@
     "bangumi": "https://bangumi.tv/user/linternoka11",
     "scp": "https://scp-wiki-cn.wikidot.com/linternoka",
     "email": "mailto:15716291510@163.com"
+  },
+  "analytics": {
+    "enabled": true,
+    "endpoint": "https://linternoka-blog.goatcounter.com/count"
   }
 }

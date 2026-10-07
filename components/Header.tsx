@@ -6,6 +6,33 @@ import { useState } from "react";
 import { siteConfig } from "@/lib/site";
 import { Logo } from "./Logo";
 import ThemeToggle from "./ThemeToggle";
+import {
+  CloseIcon,
+  FolderIcon,
+  GuideIcon,
+  HomeIcon,
+  InfoIcon,
+  LibraryIcon,
+  MenuIcon,
+  SearchIcon,
+  TagsIcon,
+  UsersIcon,
+} from "./icons";
+
+/**
+ * 移动端菜单的导航图标（按 href 映射）
+ * 桌面端导航保持纯文字 + CSS "/" 前缀的终端风格，不加图标
+ */
+const navIcons: Record<string, (props: { className?: string }) => React.JSX.Element> = {
+  "/": HomeIcon,
+  "/categories": FolderIcon,
+  "/tags": TagsIcon,
+  "/search": SearchIcon,
+  "/works": LibraryIcon,
+  "/guide": GuideIcon,
+  "/about": InfoIcon,
+  "/friends": UsersIcon,
+};
 
 export default function Header() {
   const pathname = usePathname();
@@ -66,13 +93,9 @@ export default function Header() {
             className="inline-flex h-9 w-9 items-center justify-center text-text transition-colors hover:text-gold"
           >
             {open ? (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="h-5 w-5">
-                <path d="M18 6 6 18M6 6l12 12" />
-              </svg>
+              <CloseIcon className="h-5 w-5" />
             ) : (
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="h-5 w-5">
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
+              <MenuIcon className="h-5 w-5" />
             )}
           </button>
         </div>
@@ -81,18 +104,29 @@ export default function Header() {
       {/* 移动端菜单 */}
       {open && (
         <nav className="kam-menu-enter border-t border-line bg-bg px-4 py-3 md:hidden">
-          {siteConfig.nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              className={`kam-nav block border-b border-line/60 py-3 text-sm last:border-b-0 ${
-                isActive(item.href) ? "text-text" : "text-textsoft"
-              }`}
-            >
-              {item.title}
-            </Link>
-          ))}
+          {siteConfig.nav.map((item) => {
+            const Icon = navIcons[item.href];
+            const active = isActive(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className={`kam-nav flex items-center gap-3 border-b border-line/60 py-3 text-sm last:border-b-0 ${
+                  active ? "text-text" : "text-textsoft"
+                }`}
+              >
+                {Icon && (
+                  <Icon
+                    className={`h-4 w-4 shrink-0 ${
+                      active ? "text-gold" : "text-textsoft/70"
+                    }`}
+                  />
+                )}
+                {item.title}
+              </Link>
+            );
+          })}
         </nav>
       )}
     </header>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HomeIcon, SearchIcon } from "@/components/icons";
 
 export default function NotFound() {
   return (
@@ -14,9 +15,11 @@ export default function NotFound() {
       </p>
       <div className="mt-8 flex gap-3">
         <Link href="/" className="kam-btn px-6 py-2.5 text-sm">
+          <HomeIcon className="h-4 w-4" />
           回到首页
         </Link>
         <Link href="/search" className="kam-btn px-6 py-2.5 text-sm">
+          <SearchIcon className="h-4 w-4" />
           搜索文章
         </Link>
       </div>

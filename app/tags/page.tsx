@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getTagsWithCount } from "@/lib/posts";
 import EmptyState from "@/components/EmptyState";
+import { TagsIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "标签",
@@ -16,7 +17,10 @@ export default function TagsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-14 sm:px-6">
       <div className="border-b border-line pb-6">
-        <h1 className="kam-section-ja text-3xl">标签</h1>
+        <h1 className="kam-section-ja kam-ico text-3xl">
+          <TagsIcon className="mr-2.5 inline-block h-6 w-6 align-[0.18em] text-gold" />
+          标签
+        </h1>
         <p className="mt-3 text-sm tracking-widest text-textsoft">
           共 {tags.length} 个标签
         </p>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { MailIcon } from "./icons";
+import { CheckIcon, MailIcon } from "./icons";
 
 /** 复制文本到剪贴板：优先 Clipboard API，失败降级 execCommand */
 async function copyText(text: string): Promise<boolean> {
@@ -62,8 +62,12 @@ export default function ContactLink({
       title={`复制邮箱 ${email}`}
       className={`inline-flex items-center gap-1.5 ${className}`}
     >
-      <MailIcon className="h-3.5 w-3.5" />
-      {copied ? "邮箱已复制 ✓" : label}
+      {copied ? (
+        <CheckIcon className="h-3.5 w-3.5" />
+      ) : (
+        <MailIcon className="h-3.5 w-3.5" />
+      )}
+      {copied ? "邮箱已复制" : label}
     </a>
   );
 }

@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { notFound } from "next/navigation";
 import { getAllPosts, getPostBySlug } from "@/lib/posts";
 import { renderMarkdown } from "@/lib/markdown";
-import { formatDate, safeDecode } from "@/lib/utils";
+import { formatDate, safeDecode, safeUrl } from "@/lib/utils";
 import { siteConfig } from "@/lib/site";
 // KaTeX 数学公式样式：仅文章页按需加载（无公式时也不至于让全站背 KaTeX 字体体积）
 import "katex/dist/katex.min.css";
@@ -18,6 +18,8 @@ import CodeBlockEnhancer from "@/components/CodeBlockEnhancer";
 import ArticleTextReveal from "@/components/ArticleTextReveal";
 import ReadingProgress from "@/components/ReadingProgress";
 import JsonLd from "@/components/JsonLd";
+import PixelReveal from "@/components/PixelReveal";
+import { ArrowLeftIcon, ArrowRightIcon } from "@/components/icons";
 
 export function generateStaticParams() {
   const posts = getAllPosts();
@@ -101,6 +103,13 @@ export default async function PostPage({
   const siteUrl = `${siteConfig.url}${siteConfig.basePath}`;
   const postUrl = `${siteUrl}/posts/${encodeURIComponent(post.slug)}/`;
   const authorUrl = `${siteUrl}/`;
+
+  // 封面地址：站内路径（/images/...）拼部署子路径，外链走协议白名单；无封面则不渲染
+  const coverSrc = post.cover
+    ? post.cover.startsWith("/") && !post.cover.startsWith("//")
+      ? `${siteConfig.basePath}${post.cover}`
+      : safeUrl(post.cover)
+    : "";
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
@@ -207,6 +216,13 @@ export default async function PostPage({
             <div className="mt-8 h-px w-full bg-gradient-to-r from-gold/60 via-line to-transparent" />
           </header>
 
+          {/* 封面（可选，frontmatter 的 cover 字段）：进入视口时做像素化揭示 */}
+          {coverSrc && (
+            <div className="mt-10">
+              <PixelReveal src={coverSrc} alt={post.title} />
+            </div>
+          )}
+
           {/* 正文（id 供 ArticleTextReveal 定位，做加载中闪烁渐入） */}
           <div
             id="article-content"
@@ -225,7 +241,10 @@ export default async function PostPage({
             href={`/posts/${prev.slug}`}
             className="group py-2 pr-4"
           >
-            <span className="text-xs tracking-widest text-gold">← 上一篇</span>
+            <span className="inline-flex items-center gap-1.5 text-xs tracking-widest text-gold">
+              <ArrowLeftIcon className="h-3.5 w-3.5" />
+              上一篇
+            </span>
             <p className="kam-title mt-1.5 text-base leading-snug text-text transition-colors group-hover:text-goldstrong">
               {prev.title}
             </p>
@@ -238,7 +257,10 @@ export default async function PostPage({
             href={`/posts/${next.slug}`}
             className="group mt-4 border-t border-line py-2 pl-4 pt-4 text-right sm:mt-0 sm:border-t-0 sm:border-l sm:pt-2"
           >
-            <span className="text-xs tracking-widest text-gold">下一篇 →</span>
+            <span className="inline-flex items-center gap-1.5 text-xs tracking-widest text-gold">
+              下一篇
+              <ArrowRightIcon className="h-3.5 w-3.5" />
+            </span>
             <p className="kam-title mt-1.5 text-base leading-snug text-text transition-colors group-hover:text-goldstrong">
               {next.title}
             </p>
@@ -258,6 +280,7 @@ export default async function PostPage({
               alt={siteConfig.author.name}
               width={44}
               height={44}
+              decoding="async"
               className="h-11 w-11 rounded-full border border-gold/60 object-cover"
             />
           ) : (

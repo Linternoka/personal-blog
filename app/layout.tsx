@@ -5,6 +5,7 @@ import { Geist_Mono, Noto_Sans_JP, Noto_Serif_SC } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import BackToTop from "@/components/BackToTop";
 import FontWarm from "@/components/FontWarm";
 import JsonLd from "@/components/JsonLd";
 import { siteConfig } from "@/lib/site";
@@ -17,12 +18,13 @@ const geistMono = Geist_Mono({
 });
 
 // 标题衬线：Noto Serif SC（思源宋体，覆盖简体中文，极轻字重 200）
-// 字重裁剪到 200/300/400 三个字重（实际用到：标题 200、导航 300、表格 th 400）；
-// 500/600/700 完全未使用，省下 6→3 字重 ≈ 50% Noto Serif SC 体积
+// 字重裁剪到 200/300 两个字重（标题 200、表格表头 300）；
+// 原先还留着 400，但它只为「表格表头」一处服务，却要多背一整套 CJK 切片
+// （构建产物体积 + 每页 CSS 里的 @font-face 规则），已去掉。
 const notoSerifSc = Noto_Serif_SC({
   variable: "--font-noto-serif-sc",
   subsets: ["latin"],
-  weight: ["200", "300", "400"],
+  weight: ["200", "300"],
   display: "swap",
   // adjustFontFallback=true 让 Next.js 内联 size-adjust / ascent-override metric override，
   // 浏览器立即用本地 fallback 字体布局，CLS=0，避免「自定义字体加载完 → 文字跳动」
@@ -87,13 +89,37 @@ export const metadata: Metadata = {
 // 站点绝对根地址（url + 部署子路径），JSON-LD 里要求绝对 URL
 const siteUrl = `${siteConfig.url}${siteConfig.basePath}`;
 
+// 统计上报端点：填了才拼进 CSP 的 connect-src，避免改了配置忘记同步 CSP 被拦
+const analytics = siteConfig.analytics;
+const analyticsEndpoint = analytics?.enabled ? analytics.endpoint : "";
+let analyticsOrigin = "";
+try {
+  analyticsOrigin = analyticsEndpoint ? new URL(analyticsEndpoint).origin : "";
+} catch {
+  analyticsOrigin = "";
+}
+
 // 注：CSP 通过 <meta http-equiv> 输出（GitHub Pages 不支持自定义 HTTP header，
 // 静态导出的产物在 out/*.html 中实测可正常渲染，Next.js 16 不过滤 httpEquiv）。
 // - frame-ancestors 在 meta 中会被浏览器忽略（仅 header 生效），故未写入；
 //   主站是纯静态内容无敏感操作，clickjacking 面有限，OAuth 代理已单独加 X-Frame-Options。
 // - script-src 含 'unsafe-inline' 是静态导出 RSC 内联脚本的硬性要求，
 //   残留 XSS 风险仍由 lib/markdown.ts 的 rehype-sanitize（默认 schema + className 白名单）阻断。
+// - font-src 只留 'self' data:：字体已由 next/font 在构建期自托管到 /_next/static/media，
+//   运行时不再有 Google Fonts 请求，实测首屏外部请求为 0（原先放行 fonts.gstatic.com 纯属多余）。
 // - 若未来部署平台支持自定义 header，可改用 next.config.ts 的 headers() 输出更强 CSP（含 frame-ancestors）。
+const csp = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: https:",
+  "font-src 'self' data:",
+  `connect-src 'self'${analyticsOrigin ? ` ${analyticsOrigin}` : ""}`,
+  "frame-src https://giscus.app",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+].join("; ");
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -104,30 +130,27 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${geistMono.variable} ${notoSerifSc.variable} ${notoSansJp.variable} h-full antialiased`}
     >
       <head>
-        {/* DNS+TCP+TLS 预热：Google Fonts 字体二进制实际从 fonts.gstatic.com 下载，
-            在 <head> 提前建立连接能把首字渲染的 RTT 节省 100-300ms。
-            preconnect 必须排在任何资源请求之前——Next.js 16 自动加在 <head> 前面部分 */}
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        {/* CSP：default-src 等限制资源来源（script-src 含 unsafe-inline 为 RSC 内联脚本所需）；
-            frame-ancestors 在 meta 中无效已省略；giscus 未启用但预留 frame-src
-            GoatCounter 脚本已本地托管在 /count.js（public/ 下），故 script-src 不再依赖 gc.zgo.at；
-            统计上报端点仍为 linternoka-blog.goatcounter.com（connect-src 放行） */}
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://linternoka-blog.goatcounter.com; frame-src https://giscus.app; base-uri 'self'; form-action 'self'; object-src 'none'"
-        />
+        {/* 这里曾有一条到 fonts.gstatic.com 的 preconnect。
+            next/font 是构建期把字体文件自托管到 /_next/static/media，
+            运行时并不会再向 Google 取字体，实测首屏外部请求为 0，
+            所以那条 preconnect 只会白开一条到境外的 DNS/TCP/TLS 连接
+            （实测该主机握手约 0.23s，国内网络下纯属浪费），已移除。 */}
+        <meta httpEquiv="Content-Security-Policy" content={csp} />
       </head>
       <body className="flex min-h-full flex-col bg-bg text-text">
         {/* 访问统计（GoatCounter）：脚本本地托管（public/count.js，从 gc.zgo.at 下载），
             避免 gc.zgo.at CDN 在部分网络下不可达导致统计失效。
             next/script 不会给 public 文件自动拼 basePath，需用 siteConfig.basePath 显式拼接
             （部署子路径 /personal-blog 时即 /personal-blog/count.js）。
+            端点与开关走 site.config.json 的 analytics，可在不改代码的前提下关闭或改指向。
             更新脚本：curl -o public/count.js https://gc.zgo.at/count.js */}
-        <Script
-          data-goatcounter="https://linternoka-blog.goatcounter.com/count"
-          async
-          src={`${siteConfig.basePath}/count.js`}
-        />
+        {analyticsEndpoint && (
+          <Script
+            data-goatcounter={analyticsEndpoint}
+            async
+            src={`${siteConfig.basePath}/count.js`}
+          />
+        )}
         {/* SEO：WebSite 结构化数据（全站） */}
         <JsonLd
           data={{
@@ -149,6 +172,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
+          {/* 回到顶部：滚过一屏才浮现（客户端组件，显隐见 globals.css .back-to-top） */}
+          <BackToTop />
           <FontWarm />
         </ThemeProvider>
       </body>

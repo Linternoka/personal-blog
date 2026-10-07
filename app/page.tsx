@@ -5,6 +5,14 @@ import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
 import ContactLink from "@/components/ContactLink";
 import EmptyState from "@/components/EmptyState";
+import {
+  ArrowRightIcon,
+  FolderIcon,
+  GitHubIcon,
+  InfoIcon,
+  ScrollTextIcon,
+  TagsIcon,
+} from "@/components/icons";
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -23,9 +31,20 @@ export default function HomePage() {
             <span className="h-px w-8 bg-current opacity-30" />
           </p>
 
-          {/* 中央大字标题（极轻字重） */}
+          {/* 中央大字标题（极轻字重）：逐字错峰浮现
+              —— 服务端拆字 + 纯 CSS 动画：不用 JS、不引库，
+              文字依旧可选中、对搜索引擎与读屏友好（对面是用单字母 PNG 实现的，
+              代价是文字不可选中、SEO 差、多几十个请求） */}
           <h1 className="kam-hero-title text-4xl leading-tight sm:text-6xl lg:text-7xl">
-            {siteConfig.name}
+            {Array.from(siteConfig.name).map((ch, i) => (
+              <span
+                key={`${ch}-${i}`}
+                className="kam-hero-char"
+                style={{ animationDelay: `${0.05 + i * 0.05}s` }}
+              >
+                {ch === " " ? "\u00a0" : ch}
+              </span>
+            ))}
           </h1>
 
           {/* 分隔：细线 + 圆点 */}
@@ -48,6 +67,7 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className="kam-btn px-7 py-2.5 text-sm"
               >
+                <GitHubIcon className="h-4 w-4" />
                 GitHub
               </a>
             )}
@@ -58,6 +78,7 @@ export default function HomePage() {
               />
             )}
             <Link href="/about" className="kam-btn px-7 py-2.5 text-sm">
+              <InfoIcon className="h-4 w-4" />
               关于我
             </Link>
           </div>
@@ -87,7 +108,10 @@ export default function HomePage() {
               <div className="flex flex-col gap-6 border-y border-line py-6 sm:flex-row sm:items-start sm:justify-between">
                 {categories.some((c) => c.count > 0) && (
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="kam-title mr-2 text-xs text-gold">分类</span>
+                    <span className="kam-title mr-2 inline-flex items-center gap-1.5 text-xs text-gold">
+                      <FolderIcon className="h-3 w-3" />
+                      分类
+                    </span>
                     {categories.filter((c) => c.count > 0).slice(0, 6).map((c) => (
                       <Link
                         key={c.name}
@@ -101,7 +125,10 @@ export default function HomePage() {
                 )}
                 {tags.length > 0 && (
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="kam-title mr-2 text-xs text-gold">标签</span>
+                    <span className="kam-title mr-2 inline-flex items-center gap-1.5 text-xs text-gold">
+                      <TagsIcon className="h-3 w-3" />
+                      标签
+                    </span>
                     {tags.slice(0, 8).map((t) => (
                       <Link
                         key={t.name}
@@ -122,12 +149,16 @@ export default function HomePage() {
         <Reveal>
           <section>
             <div className="mb-8 flex items-end justify-between border-b border-line pb-4">
-              <h2 className="kam-section-ja text-2xl">最新文章</h2>
+              <h2 className="kam-section-ja kam-ico text-2xl">
+                <ScrollTextIcon className="mr-2.5 inline-block h-5 w-5 align-[0.18em] text-gold" />
+                最新文章
+              </h2>
               <Link
                 href="/categories"
-                className="kam-link text-sm tracking-widest"
+                className="kam-link inline-flex items-center gap-1.5 text-sm tracking-widest"
               >
                 查看全部
+                <ArrowRightIcon className="h-3.5 w-3.5" />
               </Link>
             </div>
             {posts.length === 0 ? (

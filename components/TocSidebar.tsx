@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Toc, { type TocItem } from "./Toc";
+import { CloseIcon, TocIcon } from "./icons";
 
 /**
  * 文章目录侧边栏：固定左侧、默认隐藏，随页面滚动固定不动。
@@ -67,16 +68,7 @@ export default function TocSidebar({ headings }: { headings: TocItem[] }) {
       {/* 左缘触发标签（仅桌面端，视觉提示） */}
       <div className="toc-hotzone" aria-hidden="true">
         <span className="toc-hotzone-tab">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <path d="M8 6h13M8 12h13M8 18h13" />
-            <path d="M3 6h.01M3 12h.01M3 18h.01" />
-          </svg>
+          <TocIcon />
         </span>
       </div>
 
@@ -95,7 +87,7 @@ export default function TocSidebar({ headings }: { headings: TocItem[] }) {
             onClick={() => setOpen(false)}
             aria-label="关闭目录"
           >
-            ×
+            <CloseIcon className="h-4 w-4" />
           </button>
         </div>
         <Toc headings={headings} hideTitle />
@@ -110,17 +102,7 @@ export default function TocSidebar({ headings }: { headings: TocItem[] }) {
         aria-expanded={open}
         aria-controls="toc-sidebar"
       >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          className="h-3 w-3"
-        >
-          <path d="M8 6h13M8 12h13M8 18h13" />
-          <path d="M3 6h.01M3 12h.01M3 18h.01" />
-        </svg>
+        <TocIcon className="h-3 w-3" />
         TOC
       </button>
     </>

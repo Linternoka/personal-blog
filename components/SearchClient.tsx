@@ -7,6 +7,7 @@ import { siteConfig } from "@/lib/site";
 import { formatDate } from "@/lib/utils";
 import Reveal from "./Reveal";
 import EmptyState from "./EmptyState";
+import { CloseIcon, SearchIcon } from "./icons";
 
 interface SearchItem {
   slug: string;
@@ -67,32 +68,39 @@ export default function SearchClient() {
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-14 sm:px-6">
       <div className="border-b border-line pb-6">
-        <h1 className="kam-section-ja text-3xl">搜索</h1>
+        <h1 className="kam-section-ja kam-ico text-3xl">
+          <SearchIcon className="mr-2.5 inline-block h-6 w-6 align-[0.18em] text-gold" />
+          搜索
+        </h1>
         <p className="mt-3 text-sm tracking-widest text-textsoft">
           搜索博客中的文章、标签与内容
         </p>
       </div>
 
       <div className="relative mt-8">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-textsoft"
-        >
-          <circle cx="11" cy="11" r="8" />
-          <path d="m21 21-4.3-4.3" />
-        </svg>
+        <SearchIcon className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-textsoft" />
         <input
           ref={inputRef}
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="输入关键词，回车或直接搜索…"
-          className="w-full border-b border-line-strong bg-transparent py-3 pl-12 pr-4 text-text outline-none transition-colors focus:border-text"
+          className="w-full border-b border-line-strong bg-transparent py-3 pl-12 pr-12 text-text outline-none transition-colors focus:border-text"
         />
+        {/* 清空按钮：仅在有关键词时出现，省得长按退格逐个删 */}
+        {query && (
+          <button
+            type="button"
+            aria-label="清空搜索"
+            onClick={() => {
+              setQuery("");
+              inputRef.current?.focus();
+            }}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-textsoft transition-colors hover:text-gold"
+          >
+            <CloseIcon className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
       {!loaded && (

@@ -1,9 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+import { CHECK_ICON_MARKUP, COPY_ICON_MARKUP } from "./icons";
 
 /**
  * 文章代码块增强：包一层带文件名与复制按钮的框架
+ *
+ * 按钮是命令式 DOM 构建（代码块内容来自 dangerouslySetInnerHTML，React 管不到里面），
+ * 所以按钮图标用 icons.tsx 导出的 SVG 标记字符串，与站点图标同源同线宽。
  */
 export default function CodeBlockEnhancer() {
   useEffect(() => {
@@ -30,14 +34,22 @@ export default function CodeBlockEnhancer() {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "code-copy-btn";
-      btn.textContent = "复制";
+      // 图标与文字分开：切状态只改文字节点，图标整块换 innerHTML（Copy ⇄ Check）
+      const icon = document.createElement("span");
+      icon.className = "code-copy-icon";
+      icon.innerHTML = COPY_ICON_MARKUP;
+      const label = document.createElement("span");
+      label.textContent = "复制";
+      btn.append(icon, label);
       btn.addEventListener("click", () => {
         const text = pre.innerText;
         const done = () => {
-          btn.textContent = "已复制";
+          label.textContent = "已复制";
+          icon.innerHTML = CHECK_ICON_MARKUP;
           btn.classList.add("copied");
           setTimeout(() => {
-            btn.textContent = "复制";
+            label.textContent = "复制";
+            icon.innerHTML = COPY_ICON_MARKUP;
             btn.classList.remove("copied");
           }, 1600);
         };

@@ -41,9 +41,10 @@
   --hero-fg-soft: rgba(22, 24, 26, 0.75);
   --hero-fg-faint: rgba(22, 24, 26, 0.4);
   --hero-glow: transparent;
-  --fog-a: transparent;
-  --fog-b: transparent;
-  --grid: transparent;
+  /* Hero 质感层：雾（青绿 + 品红）与网格，实际由 .kam-hero::before / ::after 使用 */
+  --fog-a: rgba(15, 118, 110, 0.085);
+  --fog-b: rgba(157, 23, 77, 0.05);
+  --grid: rgba(15, 118, 110, 0.07);
   --code-bg: rgba(22, 24, 26, 0.06); /* 行内代码背景（浅色） */
 }
 
@@ -69,9 +70,9 @@
   --hero-fg-soft: rgba(232, 234, 233, 0.72);
   --hero-fg-faint: rgba(232, 234, 233, 0.38);
   --hero-glow: transparent;
-  --fog-a: transparent;
-  --fog-b: transparent;
-  --grid: transparent;
+  --fog-a: rgba(127, 220, 198, 0.11);
+  --fog-b: rgba(199, 125, 171, 0.085);
+  --grid: rgba(127, 220, 198, 0.045);
   --code-bg: rgba(255, 255, 255, 0.07); /* 行内代码背景（深色） */
 }
 
@@ -197,17 +198,31 @@ h4,
   transform: translateY(0);
 }
 
-/* ---------- 文章正文乱码解码：赛博故障感（正文色 + RGB 分离 + 少量故障色点缀） ---------- */
-.kam-char.glitching {
+/* ---------- 文章正文乱码解码：赛博故障感（正文色 + RGB 分离 + 少量故障色点缀） ----------
+   排版稳定性：真字始终留在字符 span 里撑住字宽（color: transparent 隐藏起来），
+   乱码字形由绝对定位的 ::after 覆盖绘制。乱码换字形只影响覆盖层，
+   推不动后面的文字——拉丁文是比例字宽，靠「挑等宽乱码」是修不干净的。 */
+.kam-char[data-glitch] {
+  position: relative;
+  color: transparent;
+}
+.kam-char[data-glitch]::after {
+  content: attr(data-glitch);
+  position: absolute;
+  left: 0;
+  top: 0;
   color: var(--text);
+}
+/* 解码进行中：RGB 分离闪烁 */
+.kam-char.glitching::after {
   text-shadow:
     1px 0 rgba(255, 60, 120, 0.75),
     -1px 0 rgba(0, 220, 255, 0.75);
 }
-.kam-char.glitching.glitch-magenta {
+.kam-char.glitching.glitch-magenta::after {
   color: var(--accent-b);
 }
-.kam-char.glitching.glitch-cyan {
+.kam-char.glitching.glitch-cyan::after {
   color: var(--gold);
 }
 
@@ -431,6 +446,10 @@ blockquote::before {
   background: linear-gradient(90deg, var(--accent), transparent);
   opacity: 0.55;
 }
+/* 分区标题改用语义图标时（.kam-ico）：隐藏通用圆点，图标由 JSX 内联在正文前 */
+.kam-section-ja.kam-ico::before {
+  display: none;
+}
 
 /* ---------- Hero：全屏留白，居中（现代编辑风） ---------- */
 .kam-hero {
@@ -440,6 +459,69 @@ blockquote::before {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+/* ---------- Hero 大标题：逐字错峰浮现（服务端拆字 + 纯 CSS，零 JS） ----------
+   每个字上移 + 模糊 + 淡入，50ms 依次错开；forwards 停在终态。
+   不依赖 JS，文字仍可选中、可被读屏与搜索引擎正常读取。
+   （对面用单字母 PNG 做同样观感，代价是文字不可选中、SEO 差、多几十个请求） */
+.kam-hero-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.34em);
+  filter: blur(7px);
+  animation: kam-hero-char-in 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes kam-hero-char-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* ---------- Hero 质感层：淡网格 + 双色雾（--grid / --fog-a / --fog-b 在此落地） ----------
+   绝对定位脱离 flex 流，z-index 0 在正文（z-10）之下；overflow: hidden 已裁剪外溢。
+   全屏噪点另有 body::before，这里只做 Hero 局部的网格与雾。 */
+.kam-hero::before,
+.kam-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+/* 网格：40px 方格，用遮罩向中心淡出，只在中央可见 */
+.kam-hero::before {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 78% 66% at 50% 46%,
+    #000 22%,
+    transparent 78%
+  );
+  mask-image: radial-gradient(
+    ellipse 78% 66% at 50% 46%,
+    #000 22%,
+    transparent 78%
+  );
+}
+/* 双色雾：青绿 + 品红，极慢漂移（减弱动效时由全局规则自动停掉） */
+.kam-hero::after {
+  background:
+    radial-gradient(58% 48% at 24% 26%, var(--fog-a), transparent 70%),
+    radial-gradient(52% 44% at 76% 74%, var(--fog-b), transparent 72%);
+  animation: kam-fog-drift 26s ease-in-out infinite alternate;
+}
+@keyframes kam-fog-drift {
+  from {
+    transform: translate3d(-1.6%, -1%, 0) scale(1.03);
+  }
+  to {
+    transform: translate3d(1.6%, 1.4%, 0) scale(1.07);
+  }
 }
 
 @theme inline {
@@ -574,8 +656,48 @@ blockquote::before {
 }
 .prose-kam :where(th) {
   font-family: var(--font-serif);
-  font-weight: 400;
+  /* 用 300 而非 400：思源宋体的 400 字重只为表头这一个用途加载，
+     整套 CJK 切片（CSS 里的 @font-face + 构建产物里的 woff2）却要多背一份，
+     不值得。表头在 300 下与 400 的观感差异很小。 */
+  font-weight: 300;
   background: var(--bg-soft);
+}
+
+/* ---------- 文章封面：canvas 像素化揭示（组件见 components/PixelReveal.tsx） ----------
+   固定 16:9 比例框：封面尺寸不可预知，用比例框 + object-fit 保证零 CLS。 */
+.cover-frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-soft);
+}
+.cover-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* 覆盖层 canvas：揭示结束后淡出并彻底隐藏，释放合成层 */
+.cover-frame canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.cover-frame.is-revealed canvas {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.4s linear,
+    visibility 0s linear 0.4s;
+}
+/* 减弱动效：不做揭示，原图直接可见 */
+@media (prefers-reduced-motion: reduce) {
+  .cover-frame canvas {
+    display: none;
+  }
 }
 
 /* ---------- 代码块框架（文件名 + 复制） ---------- */
@@ -614,6 +736,9 @@ blockquote::before {
   margin: 0;
 }
 .code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.22);
   color: rgba(201, 209, 217, 0.8);
@@ -624,6 +749,11 @@ blockquote::before {
   letter-spacing: 0.1em;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* 复制按钮里的图标容器（React 图标用 createRoot 渲染进来，见 CodeBlockEnhancer） */
+.code-copy-icon {
+  display: inline-flex;
+  align-items: center;
+}
 .code-copy-btn:hover {
   color: #7fdcc6;
   border-color: rgba(127, 220, 198, 0.5);
@@ -632,6 +762,13 @@ blockquote::before {
 .code-copy-btn.copied {
   color: #7fdcc6;
   border-color: #7fdcc6;
+}
+
+/* ---------- 搜索框：隐藏浏览器原生清空按钮（搜索页已自绘图标清空按钮） ---------- */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 /* ---------- 目录（TOC） ---------- */
@@ -881,6 +1018,60 @@ blockquote::before {
   }
 }
 
+/* ---------- 回到顶部（长文章 / 长列表；滚过一屏后浮现） ---------- */
+.back-to-top {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 45;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--text-soft);
+  background: var(--bg-soft);
+  box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition:
+    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0.45s;
+}
+.back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition:
+    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.back-to-top:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--gold-soft);
+}
+/* 小屏：收窄并让位给右侧阅读进度计（进度计位于其上方） */
+@media (max-width: 767px) {
+  .back-to-top {
+    right: 0.75rem;
+    bottom: 0.9rem;
+    width: 36px;
+    height: 36px;
+  }
+}
+
 /* ---------- Logo 持续慢速旋转（星轨） ---------- */
 @keyframes kam-spin {
   to {
@@ -904,7 +1095,8 @@ blockquote::before {
     animation: none;
   }
   .kam-reveal,
-  .kam-fade-up {
+  .kam-fade-up,
+  .kam-hero-char {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;

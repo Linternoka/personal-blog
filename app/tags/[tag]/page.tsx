@@ -5,6 +5,7 @@ import { getTagsWithCount, getPostsByTag } from "@/lib/posts";
 import { safeDecode } from "@/lib/utils";
 import PostCard from "@/components/PostCard";
 import Reveal from "@/components/Reveal";
+import { TagIcon } from "@/components/icons";
 
 export function generateStaticParams() {
   const tags = getTagsWithCount();
@@ -49,7 +50,10 @@ export default async function TagPage({
         <span className="text-text">#{name}</span>
       </nav>
       <div className="mt-6 border-b border-line pb-6">
-        <h1 className="kam-section-ja text-3xl">#{name}</h1>
+        <h1 className="kam-section-ja kam-ico text-3xl">
+          <TagIcon className="mr-2.5 inline-block h-6 w-6 align-[0.18em] text-gold" />
+          #{name}
+        </h1>
         <p className="mt-3 text-sm tracking-widest text-textsoft">
           共 {posts.length} 篇文章
         </p>

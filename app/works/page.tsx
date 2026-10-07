@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getWorks, safeUrl, type WorkItem } from "@/lib/works";
 import Reveal from "@/components/Reveal";
 import EmptyState from "@/components/EmptyState";
+import { ArrowUpRightIcon, LibraryIcon } from "@/components/icons";
 
 export const metadata: Metadata = {
   title: "推荐作品",
@@ -45,8 +46,9 @@ function WorkCard({ work }: { work: WorkItem }) {
         </p>
       )}
 
-      <span className="kam-link mt-auto inline-flex items-center gap-1 pt-4 text-xs tracking-widest">
-        查看 →
+      <span className="kam-link mt-auto inline-flex items-center gap-1.5 pt-4 text-xs tracking-widest">
+        查看
+        <ArrowUpRightIcon className="h-3.5 w-3.5" />
       </span>
     </a>
   );
@@ -58,7 +60,10 @@ export default function WorksPage() {
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-14 sm:px-6">
       <div className="border-b border-line pb-6">
-        <h1 className="kam-section-ja text-3xl">推荐作品</h1>
+        <h1 className="kam-section-ja kam-ico text-3xl">
+          <LibraryIcon className="mr-2.5 inline-block h-6 w-6 align-[0.18em] text-gold" />
+          推荐作品
+        </h1>
         <p className="mt-3 text-sm tracking-widest text-textsoft">
           记录与分享值得一看的作品
         </p>
