@@ -41,10 +41,9 @@
   --hero-fg-soft: rgba(22, 24, 26, 0.75);
   --hero-fg-faint: rgba(22, 24, 26, 0.4);
   --hero-glow: transparent;
-  /* Hero 质感层：雾（青绿 + 品红）与网格，实际由 .kam-hero::before / ::after 使用 */
-  --fog-a: rgba(15, 118, 110, 0.085);
-  --fog-b: rgba(157, 23, 77, 0.05);
-  --grid: rgba(15, 118, 110, 0.07);
+  /* Hero 质感层：极淡网格线颜色（由 .kam-hero::before 使用）。
+     透明度过高会铺成方格纸，实测 0.035 左右刚好「有纸感、不成图案」。 */
+  --grid: rgba(15, 118, 110, 0.035);
   --code-bg: rgba(22, 24, 26, 0.06); /* 行内代码背景（浅色） */
 }
 
@@ -70,9 +69,7 @@
   --hero-fg-soft: rgba(232, 234, 233, 0.72);
   --hero-fg-faint: rgba(232, 234, 233, 0.38);
   --hero-glow: transparent;
-  --fog-a: rgba(127, 220, 198, 0.11);
-  --fog-b: rgba(199, 125, 171, 0.085);
-  --grid: rgba(127, 220, 198, 0.045);
+  --grid: rgba(127, 220, 198, 0.03);
   --code-bg: rgba(255, 255, 255, 0.07); /* 行内代码背景（深色） */
 }
 
@@ -480,48 +477,32 @@ blockquote::before {
   }
 }
 
-/* ---------- Hero 质感层：淡网格 + 双色雾（--grid / --fog-a / --fog-b 在此落地） ----------
+/* ---------- Hero 质感层：极淡网格（--grid 在此落地） ----------
    绝对定位脱离 flex 流，z-index 0 在正文（z-10）之下；overflow: hidden 已裁剪外溢。
-   全屏噪点另有 body::before，这里只做 Hero 局部的网格与雾。 */
-.kam-hero::before,
-.kam-hero::after {
+   这里原先还有一层青绿/品红的双色雾，实测在暖白底上像两块脏印子、暗色下发灰，
+   与「极简编辑风」的留白打架，已去掉；全屏噪点另有 body::before 负责。
+   网格的分寸也要紧：原先 40px、透明度 0.07 会铺满整屏像方格纸，
+   故间距拉到 56px、透明度约减半，并用遮罩收紧到标题附近一小块。 */
+.kam-hero::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-}
-/* 网格：40px 方格，用遮罩向中心淡出，只在中央可见 */
-.kam-hero::before {
   background-image:
     linear-gradient(to right, var(--grid) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-size: 56px 56px;
   -webkit-mask-image: radial-gradient(
-    ellipse 78% 66% at 50% 46%,
-    #000 22%,
-    transparent 78%
+    ellipse 52% 42% at 50% 48%,
+    #000 0%,
+    transparent 72%
   );
   mask-image: radial-gradient(
-    ellipse 78% 66% at 50% 46%,
-    #000 22%,
-    transparent 78%
+    ellipse 52% 42% at 50% 48%,
+    #000 0%,
+    transparent 72%
   );
-}
-/* 双色雾：青绿 + 品红，极慢漂移（减弱动效时由全局规则自动停掉） */
-.kam-hero::after {
-  background:
-    radial-gradient(58% 48% at 24% 26%, var(--fog-a), transparent 70%),
-    radial-gradient(52% 44% at 76% 74%, var(--fog-b), transparent 72%);
-  animation: kam-fog-drift 26s ease-in-out infinite alternate;
-}
-@keyframes kam-fog-drift {
-  from {
-    transform: translate3d(-1.6%, -1%, 0) scale(1.03);
-  }
-  to {
-    transform: translate3d(1.6%, 1.4%, 0) scale(1.07);
-  }
 }
 
 @theme inline {
