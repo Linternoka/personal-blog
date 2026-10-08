@@ -96,6 +96,14 @@ export default function HomePage() {
               —— Wittgenstein, L. TLP, 6.43.
             </p>
           </div>
+
+          {/* 声明：文案与开关都在 site.config.json 的 aiNotice 里，改字不用动代码 */}
+          {siteConfig.aiNotice.enabled && (
+            <p className="kam-fade-up kam-delay-4 mt-10 inline-flex items-center gap-2 rounded-full border border-line px-4 py-1.5 text-[11px] tracking-[0.25em] text-herofgs">
+              <InfoIcon className="h-3.5 w-3.5 shrink-0" />
+              {siteConfig.aiNotice.text}
+            </p>
+          )}
         </div>
       </section>
 

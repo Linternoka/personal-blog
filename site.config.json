@@ -2,6 +2,10 @@
   "name": "废书库修缮委员会",
   "title": "废书库修缮委员会 · 记录、展示、分享",
   "description": "记录、展示、分享",
+  "aiNotice": {
+    "enabled": true,
+    "text": "本站代码皆为 AIGC"
+  },
   "url": "https://linternoka.github.io",
   "avatar": "/images/avatar.jpg",
   "author": {
